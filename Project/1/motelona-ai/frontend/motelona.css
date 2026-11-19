@@ -1,0 +1,644 @@
+/* MoteLona add-on. All selectors are namespaced so portfolio styles remain untouched. */
+.motelona-project-card { position: relative; overflow: hidden; }
+.motelona-project-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  height: auto;
+  object-fit: contain;
+  background: #08131d;
+  border: 1px solid var(--animfolio-border, rgba(127,127,127,.24));
+  border-radius: 16px;
+  margin: 0 0 1.2rem;
+}
+.motelona-project-mark { display:flex; align-items:center; justify-content:center; width:68px; height:68px; margin: 0 0 1.2rem; border-radius:20px; color:var(--animfolio-on-accent,#fff); background:linear-gradient(135deg,var(--animfolio-accent,#7c3aed),var(--animfolio-secondary,#2563eb)); font:800 2.1rem/1 var(--animfolio-font-heading,system-ui,sans-serif); box-shadow:0 12px 32px var(--animfolio-accent-light,rgba(124,58,237,.18)); }
+.motelona-project-mark span { color:rgba(255,255,255,.7); }
+.motelona-project-kicker,.motelona-project-note__eyebrow { color:var(--animfolio-accent,#7c3aed); font:700 .72rem/1.5 var(--animfolio-font-body,system-ui,sans-serif); letter-spacing:.12em; }
+.motelona-project-status { display:flex; align-items:flex-start; gap:.6rem; margin-top:1rem; color:var(--animfolio-text-secondary,var(--animfolio-text,#222)); font-size:.86rem; line-height:1.5; }
+.motelona-status-dot { flex:0 0 8px; width:8px; height:8px; margin-top:.42rem; border-radius:50%; background:#d97706; box-shadow:0 0 0 4px rgba(217,119,6,.12); }
+.motelona-project-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.25rem; }
+.motelona-project-actions button { font:inherit; cursor:pointer; }
+.motelona-project-actions a { text-decoration:none; }
+.motelona-project-note { align-self:stretch; padding:clamp(1.2rem,3vw,2rem); border:1px solid var(--animfolio-border,rgba(127,127,127,.24)); border-radius:var(--animfolio-card-radius,16px); background:var(--animfolio-surface,var(--animfolio-bg-secondary,rgba(127,127,127,.045))); color:var(--animfolio-text,var(--animfolio-text-primary,#222)); }
+.motelona-project-note h3 { margin:.45rem 0 1rem; font-size:clamp(1.2rem,2vw,1.55rem); }
+.motelona-project-note ul { margin:0; padding-left:1.2rem; display:grid; gap:.7rem; line-height:1.5; }
+.motelona-project-note li::marker { color:var(--animfolio-accent,#7c3aed); }
+.motelona-project-note__fineprint { margin:1.3rem 0 0; color:var(--animfolio-text-muted,var(--animfolio-text-secondary,#777)); font-size:.85rem; line-height:1.55; }
+.motelona-ai-root { --motelona-accent:var(--animfolio-accent,#7c3aed); --motelona-bg:var(--animfolio-bg,#fff); --motelona-surface:var(--animfolio-surface,var(--animfolio-bg-secondary,#f7f7fb)); --motelona-text:var(--animfolio-text,#20212a); --motelona-muted:var(--animfolio-text-secondary,#6c6e78); --motelona-border:var(--animfolio-border,rgba(127,127,127,.24)); --motelona-radius:18px; font-family:var(--animfolio-font-body,system-ui,sans-serif); color:var(--motelona-text); }
+.motelona-ai-launcher {
+  position:fixed; z-index:99990; right:max(20px,env(safe-area-inset-right)); bottom:max(20px,env(safe-area-inset-bottom));
+  display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:58px; min-width:150px; padding:0 25px;
+  border:1px solid color-mix(in srgb,var(--motelona-accent) 56%,white 18%); border-radius:19px;
+  color:var(--animfolio-on-accent,#fff);
+  background:linear-gradient(135deg,var(--motelona-accent),color-mix(in srgb,var(--motelona-accent) 72%,var(--animfolio-secondary,#91B96A) 28%));
+  box-shadow:0 12px 34px color-mix(in srgb,var(--motelona-accent) 35%,transparent),inset 0 1px 0 rgba(255,255,255,.22);
+  font:800 .96rem/1 var(--animfolio-font-body,system-ui,sans-serif); letter-spacing:.035em; cursor:pointer;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  transition:transform .22s ease,box-shadow .22s ease,filter .22s ease,border-color .22s ease;
+}
+.motelona-ai-launcher::before { content:""; width:8px; height:8px; flex:0 0 8px; border-radius:50%; background:currentColor; box-shadow:0 0 0 5px rgba(255,255,255,.16),0 0 15px rgba(255,255,255,.55); }
+.motelona-ai-launcher:hover { transform:translateY(-3px); filter:saturate(1.08) brightness(1.05); box-shadow:0 16px 42px color-mix(in srgb,var(--motelona-accent) 43%,transparent),inset 0 1px 0 rgba(255,255,255,.27); }
+.motelona-ai-launcher:active { transform:translateY(-1px) scale(.985); }
+.motelona-ai-launcher:focus-visible,.motelona-ai-root button:focus-visible,.motelona-ai-root input:focus-visible,.motelona-ai-root textarea:focus-visible { outline:3px solid var(--motelona-accent); outline-offset:4px; }
+.motelona-ai-panel { position:fixed; z-index:99991; right:max(20px,env(safe-area-inset-right)); bottom:calc(max(20px,env(safe-area-inset-bottom)) + 68px); display:flex; flex-direction:column; width:min(420px,calc(100vw - 28px)); height:min(690px,calc(100dvh - 115px)); min-height:min(420px,calc(100dvh - 115px)); overflow:hidden; border:1px solid var(--motelona-border); border-radius:var(--motelona-radius); color:var(--motelona-text); background:var(--motelona-bg); box-shadow:0 24px 80px rgba(0,0,0,.24); }
+.motelona-ai-panel[hidden],.motelona-ai-launcher[hidden] { display:none!important; }
+.motelona-ai-header { display:flex; align-items:center; gap:12px; padding:15px 16px; border-bottom:1px solid var(--motelona-border); background:var(--motelona-surface); }
+/* Drag the open assistant by its title bar; buttons remain independently clickable. */
+.motelona-ai-header { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.motelona-ai-header:active { cursor: grabbing; }
+.motelona-ai-header button { cursor: pointer; touch-action: manipulation; }
+.motelona-ai-panel.is-dragging { transition: none !important; }
+.motelona-ai-panel.is-dragging .motelona-ai-header { cursor: grabbing; }
+.motelona-ai-brand { display:flex; align-items:center; justify-content:center; flex:0 0 40px; width:40px; height:40px; border-radius:13px; background:var(--motelona-accent); color:var(--animfolio-on-accent,#fff); font-weight:800; }
+.motelona-ai-heading { min-width:0; flex:1; }
+.motelona-ai-title { margin:0; font-size:1rem; font-weight:750; line-height:1.3; }
+.motelona-ai-subtitle { margin:.18rem 0 0; color:var(--motelona-muted); font-size:.75rem; }
+.motelona-ai-icon-button { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; padding:0; border:1px solid var(--motelona-border); border-radius:10px; color:var(--motelona-text); background:transparent; cursor:pointer; font-size:1rem; }
+.motelona-ai-toolsbar { display:flex; flex-wrap:wrap; align-items:center; gap:7px; padding:9px 13px; border-bottom:1px solid var(--motelona-border); }
+.motelona-ai-search[hidden],.motelona-ai-search-results[hidden] { display:none!important; }
+.motelona-ai-search { display:flex; flex-wrap:wrap; align-items:center; gap:7px; padding:9px 13px; border-bottom:1px solid var(--motelona-border); }
+.motelona-ai-search__input { flex:1 1 135px; min-width:0; padding:8px 10px; border:1px solid var(--motelona-border); border-radius:10px; color:var(--motelona-text); background:var(--motelona-surface); font:inherit; font-size:.8rem; }
+.motelona-ai-search-results { max-height:150px; overflow:auto; padding:9px 13px; border-bottom:1px solid var(--motelona-border); font-size:.78rem; line-height:1.5; }
+.motelona-ai-search-results p { margin:7px 0; }
+.motelona-ai-search-result { padding:7px 8px; border-left:2px solid var(--motelona-accent); overflow-wrap:anywhere; background:var(--motelona-surface); }
+.motelona-ai-search-result--error { border-left-color:#dc2626; }
+.motelona-ai-chip { border:1px solid var(--motelona-border); border-radius:999px; padding:6px 9px; color:var(--motelona-text); background:transparent; font:500 .72rem/1.3 var(--animfolio-font-body,system-ui,sans-serif); cursor:pointer; }
+.motelona-ai-chip[aria-pressed="true"] { border-color:var(--motelona-accent); background:color-mix(in srgb,var(--motelona-accent) 11%,transparent); }
+.motelona-ai-status { display:flex; align-items:center; gap:6px; padding:0 14px 8px; color:var(--motelona-muted); font-size:.72rem; }
+.motelona-ai-status__dot { width:7px; height:7px; border-radius:50%; background:#d97706; }
+.motelona-ai-status[data-state="online"] .motelona-ai-status__dot { background:#16a34a; }
+.motelona-ai-status[data-state="offline"] .motelona-ai-status__dot { background:#dc2626; }
+.motelona-ai-messages { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding:15px 13px; overscroll-behavior:contain; }
+.motelona-ai-message { max-width:94%; padding:11px 12px; border:1px solid var(--motelona-border); border-radius:14px; font-size:.87rem; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
+.motelona-ai-message--assistant { align-self:flex-start; background:var(--motelona-surface); border-bottom-left-radius:5px; }
+.motelona-ai-message--user { align-self:flex-end; background:var(--motelona-accent); color:var(--animfolio-on-accent,#fff); border-color:transparent; border-bottom-right-radius:5px; }
+.motelona-ai-message--error { border-color:#dc2626; }
+.motelona-ai-message__meta { display:block; margin-top:5px; font-size:.68rem; opacity:.72; }
+.motelona-ai-suggestions { display:flex; flex-wrap:wrap; gap:7px; padding:0 13px 12px; }
+.motelona-ai-compose { display:flex; align-items:flex-end; gap:8px; padding:11px; border-top:1px solid var(--motelona-border); background:var(--motelona-bg); }
+.motelona-ai-input { flex:1; width:100%; min-height:43px; max-height:120px; resize:vertical; padding:11px 12px; border:1px solid var(--motelona-border); border-radius:13px; color:var(--motelona-text); background:var(--motelona-surface); font:inherit; font-size:.86rem; }
+.motelona-ai-send { display:inline-flex; align-items:center; justify-content:center; flex:0 0 44px; width:44px; height:44px; border:0; border-radius:13px; background:var(--motelona-accent); color:var(--animfolio-on-accent,#fff); cursor:pointer; font-size:1rem; }
+.motelona-ai-send:disabled { opacity:.5; cursor:not-allowed; }
+.motelona-ai-footer { display:flex; justify-content:space-between; gap:8px; padding:0 13px 10px; color:var(--motelona-muted); font-size:.65rem; }
+.motelona-ai-footer button { border:0; padding:0; color:inherit; background:transparent; text-decoration:underline; cursor:pointer; font:inherit; }
+.motelona-ai-popover { position:fixed; z-index:99992; width:min(330px,calc(100vw - 24px)); max-height:min(320px,60dvh); overflow:auto; padding:14px; border:1px solid var(--motelona-border); border-radius:14px; color:var(--motelona-text); background:var(--motelona-bg); box-shadow:0 18px 52px rgba(0,0,0,.23); }
+.motelona-ai-popover[hidden] { display:none!important; }
+.motelona-ai-popover h4 { margin:0 26px 7px 0; font-size:.95rem; }
+.motelona-ai-popover p { margin:0; white-space:pre-wrap; font-size:.83rem; line-height:1.55; }
+.motelona-ai-popover__close { position:absolute; top:7px; right:7px; }
+.motelona-ai-consent { display:none; position:absolute; inset:0; z-index:2; padding:18px; overflow:auto; background:var(--motelona-bg); }
+.motelona-ai-consent.is-open { display:block; }
+.motelona-ai-consent h3 { margin:.25rem 0 .75rem; font-size:1rem; }
+.motelona-ai-consent p { color:var(--motelona-muted); font-size:.82rem; line-height:1.5; }
+.motelona-ai-consent__row { display:flex; align-items:flex-start; gap:9px; margin:12px 0; font-size:.83rem; line-height:1.4; }
+.motelona-ai-consent__row input { margin-top:.15rem; accent-color:var(--motelona-accent); }
+.motelona-ai-consent__actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.motelona-ai-consent__actions button { padding:9px 12px; border:1px solid var(--motelona-border); border-radius:10px; color:var(--motelona-text); background:var(--motelona-surface); cursor:pointer; font:inherit; font-size:.8rem; }
+.motelona-ai-consent__actions .motelona-ai-primary { color:var(--animfolio-on-accent,#fff); background:var(--motelona-accent); border-color:transparent; }
+.motelona-ai-target-pulse { outline:2px solid var(--motelona-accent)!important; outline-offset:4px!important; border-radius:6px; }
+::highlight(motelona-ai-terms) { background:color-mix(in srgb,var(--motelona-accent) 18%,transparent); text-decoration:underline dotted var(--motelona-accent); text-underline-offset:3px; }
+::highlight(motelona-ai-target) { background:#ffe45c; color:#1b1b1b; text-decoration:underline solid #9a7100 2px; text-underline-offset:2px; }
+.motelona-ai-navigation-highlight { background:#ffe45c!important; color:#1b1b1b!important; border-radius:.12em; box-shadow:0 0 0 2px rgba(255,228,92,.28); }
+.motelona-ai-web-results { display:grid; gap:8px; margin:0 8px 10px; }
+.motelona-ai-web-results__heading { padding:0 2px; color:var(--animfolio-text-secondary,#bdc9c2); font-size:.78rem; }
+.motelona-ai-web-result { display:grid; gap:4px; padding:9px 10px; border:1px solid var(--animfolio-border,rgba(255,255,255,.12)); border-radius:10px; background:var(--animfolio-bg-secondary,rgba(255,255,255,.035)); }
+.motelona-ai-web-result a { color:var(--motelona-accent,#73d2a2); font-weight:700; overflow-wrap:anywhere; }
+.motelona-ai-web-result p { margin:0; color:var(--animfolio-text-secondary,#bdc9c2); font-size:.84rem; line-height:1.45; }
+@media (max-width:650px) {
+  .motelona-project-note { grid-column:1 / -1; }
+  .motelona-ai-launcher { right:12px; bottom:12px; min-width:132px; min-height:51px; padding:0 19px; border-radius:16px; }
+  .motelona-ai-panel { right:8px; bottom:70px; width:calc(100vw - 16px); height:min(700px,calc(100dvh - 82px)); min-height:min(360px,calc(100dvh - 82px)); border-radius:16px; }
+}
+@media (prefers-reduced-motion:reduce) { .motelona-ai-launcher { transition:none; } }
+
+/* Featured-project layout: keep the single MoteLona card compact and centered. */
+.motelona-project-grid {
+  grid-template-columns: minmax(0, 560px);
+  justify-content: center;
+  width: 100%;
+}
+.motelona-project-card {
+  width: 100%;
+  max-width: 560px;
+  padding: clamp(24px, 3vw, 34px);
+}
+.motelona-project-card .animfolio-project__title { margin-top: 14px; }
+
+/* Zoom- and viewport-safe chat panel sizing. */
+.motelona-ai-panel {
+  width: min(420px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 96px);
+}
+
+.motelona-ai-messages {
+  min-height: 0;
+  overscroll-behavior-y: contain;
+}
+
+.motelona-ai-compose,
+.motelona-ai-header,
+.motelona-ai-toolsbar,
+.motelona-ai-search,
+.motelona-ai-footer {
+  min-width: 0;
+}
+
+.motelona-ai-compose > *,
+.motelona-ai-header > * {
+  min-width: 0;
+}
+
+.motelona-ai-panel button,
+.motelona-ai-panel input,
+.motelona-ai-panel textarea {
+  max-width: 100%;
+}
+
+@media (max-width: 650px) {
+  .motelona-ai-launcher {
+    right: max(8px, env(safe-area-inset-right));
+    bottom: max(8px, env(safe-area-inset-bottom));
+    max-width: calc(100vw - 16px);
+  }
+
+  .motelona-ai-panel {
+    right: 8px;
+    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 62px);
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    height: min(680px, calc(100dvh - 84px));
+    min-height: min(320px, calc(100dvh - 84px));
+    max-height: calc(100dvh - 84px);
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 350px) {
+  .motelona-ai-panel {
+    right: 6px;
+    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 58px);
+    width: calc(100vw - 12px);
+    max-width: calc(100vw - 12px);
+    padding: 0;
+  }
+
+  .motelona-ai-header {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .motelona-ai-brand {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .motelona-ai-title {
+    font-size: .92rem;
+  }
+
+  .motelona-ai-subtitle {
+    font-size: .68rem;
+  }
+
+  .motelona-ai-toolsbar,
+  .motelona-ai-search {
+    padding-inline: 9px;
+  }
+
+  .motelona-ai-messages {
+    padding: 10px 9px;
+  }
+
+  .motelona-ai-compose {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .motelona-ai-input {
+    min-width: 0;
+    padding: 9px;
+    font-size: 16px;
+  }
+
+  .motelona-ai-send {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-height: 500px) and (max-width: 650px) {
+  .motelona-ai-panel {
+    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 54px);
+    height: calc(100dvh - 68px);
+    min-height: 0;
+    max-height: calc(100dvh - 68px);
+  }
+}
+
+
+/* Match the desktop homepage zoom compensation for the fixed chat controls.
+   The right/bottom offsets are divided by the scale because CSS zoom also
+   scales the fixed element's own coordinate system. Mobile is excluded. */
+@media (min-width: 1025px) {
+  html[data-homepage-zoom-fixed="true"] .motelona-ai-launcher {
+    zoom: var(--homepage-zoom-compensation, 1);
+    right: calc(20px / var(--homepage-zoom-compensation, 1));
+    bottom: calc(20px / var(--homepage-zoom-compensation, 1));
+  }
+
+  html[data-homepage-zoom-fixed="true"] .motelona-ai-panel {
+    zoom: var(--homepage-zoom-compensation, 1);
+    right: calc(20px / var(--homepage-zoom-compensation, 1));
+    bottom: calc(88px / var(--homepage-zoom-compensation, 1));
+  }
+}
+
+/* The detail page keeps its explicit hero CTA; avoid a second floating launcher there. */
+.motelona-ai-root--detail .motelona-ai-launcher { display:none!important; }
+
+
+/* Touch-first refinements for the floating assistant. */
+.motelona-ai-icon-button { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+.motelona-ai-chip { min-height: 40px; padding: 9px 12px; line-height: 1.35; }
+.motelona-ai-compose { padding-bottom: max(11px, env(safe-area-inset-bottom)); }
+.motelona-ai-send { min-width: 46px; min-height: 46px; flex-basis: 46px; width: 46px; height: 46px; }
+.motelona-ai-input { min-height: 46px; font-size: 16px; }
+.motelona-ai-search__input { min-height: 44px; font-size: 16px; }
+.motelona-ai-footer button { min-height: 36px; padding: 7px 4px; }
+.motelona-ai-consent__actions button { min-height: 42px; }
+.motelona-ai-panel :is(button,input,textarea):focus-visible { outline: 3px solid var(--motelona-accent); outline-offset: 3px; }
+.motelona-ai-launcher { min-height: 58px; }
+@media (max-width: 650px) {
+  .motelona-ai-launcher { right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); min-height: 54px; }
+  .motelona-ai-panel { bottom: calc(max(10px, env(safe-area-inset-bottom)) + 66px); }
+  .motelona-ai-toolsbar { gap: 6px; }
+  .motelona-ai-chip { min-height: 40px; }
+}
+@media (max-width: 350px) {
+  .motelona-ai-icon-button { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+  .motelona-ai-panel { bottom: calc(max(8px, env(safe-area-inset-bottom)) + 62px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motelona-ai-launcher, .motelona-ai-panel, .motelona-ai-root * { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/*
+ * Compact-height layout for the floating assistant.
+ *
+ * At browser zoom 100% on a short viewport, the normal wrapped tool and
+ * suggestion rows consume too much vertical space and can leave the welcome
+ * message clipped inside the scroll area. In this mode the panel uses almost
+ * the full viewport height, while both chip groups become horizontally
+ * scrollable single rows. The message area receives the recovered space.
+ * This is a layout-only change: all controls remain present and operable.
+ */
+@media screen and (max-height: 760px) {
+  .motelona-ai-header {
+    flex: 0 0 auto;
+    gap: 9px;
+    padding: 9px 12px;
+  }
+
+  .motelona-ai-brand {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .motelona-ai-icon-button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .motelona-ai-toolsbar {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 10px;
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+  }
+
+  .motelona-ai-toolsbar .motelona-ai-chip {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 6px 10px;
+    white-space: nowrap;
+    font-size: .68rem;
+  }
+
+  .motelona-ai-search {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 10px;
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+  }
+
+  .motelona-ai-search__input {
+    min-width: 110px;
+    padding: 7px 9px;
+  }
+
+  .motelona-ai-search-results {
+    max-height: 96px;
+  }
+
+  .motelona-ai-status {
+    flex: 0 0 auto;
+    min-height: 22px;
+    padding: 0 10px 5px;
+    font-size: .68rem;
+    line-height: 1.35;
+  }
+
+  .motelona-ai-messages {
+    flex: 1 1 auto;
+    min-height: 96px;
+    padding: 10px;
+    gap: 9px;
+  }
+
+  .motelona-ai-message {
+    max-width: 100%;
+    padding: 10px 11px;
+    font-size: .82rem;
+    line-height: 1.45;
+  }
+
+  .motelona-ai-suggestions {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 10px 8px;
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+  }
+
+  .motelona-ai-suggestions .motelona-ai-chip {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 6px 10px;
+    white-space: nowrap;
+    font-size: .68rem;
+  }
+
+  .motelona-ai-compose {
+    flex: 0 0 auto;
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .motelona-ai-input {
+    min-height: 40px;
+    max-height: 96px;
+    padding: 9px 10px;
+    font-size: 16px;
+  }
+
+  .motelona-ai-send {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+  }
+
+  .motelona-ai-footer {
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 10px 6px;
+    font-size: .62rem;
+  }
+
+  .motelona-ai-footer button {
+    min-height: 28px;
+    padding: 3px 2px;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  .motelona-ai-header {
+    padding-block: 6px;
+  }
+
+  .motelona-ai-brand,
+  .motelona-ai-icon-button {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+  }
+
+  .motelona-ai-messages {
+    min-height: 64px;
+    padding-block: 7px;
+  }
+
+  .motelona-ai-suggestions {
+    padding-bottom: 5px;
+  }
+
+  .motelona-ai-compose {
+    padding-block: 6px;
+  }
+}
+
+/* MoteLona chat — refined visual layer, independent of the portfolio page CSS. */
+.motelona-ai-root {
+  --motelona-radius: 23px;
+  --motelona-bg: #101b16;
+  --motelona-surface: #17251d;
+  --motelona-text: #f1f6f0;
+  --motelona-muted: #a9b8ae;
+  --motelona-border: rgba(229,244,232,.13);
+  color:var(--motelona-text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+.motelona-ai-launcher {
+  min-height:58px;
+  min-width:158px;
+  padding:0 23px;
+  border:1px solid color-mix(in srgb,var(--motelona-accent) 58%,white 15%);
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--motelona-accent),color-mix(in srgb,var(--motelona-accent) 70%,#b8d48c));
+  box-shadow:0 15px 38px color-mix(in srgb,var(--motelona-accent) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.25);
+  letter-spacing:.01em;
+}
+.motelona-ai-launcher::before { width:7px; height:7px; box-shadow:0 0 0 5px rgba(255,255,255,.14),0 0 16px rgba(255,255,255,.65); }
+.motelona-ai-launcher::after { content:"↗"; margin-left:1px; font-size:.96rem; opacity:.82; }
+.motelona-ai-panel {
+  width:min(456px,calc(100vw - 30px));
+  height:min(720px,calc(100dvh - 112px));
+  min-height:min(430px,calc(100dvh - 112px));
+  border:1px solid color-mix(in srgb,var(--motelona-accent) 26%,var(--motelona-border));
+  border-radius:24px;
+  background:var(--motelona-bg);
+  box-shadow:0 30px 100px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.025),inset 0 1px 0 rgba(255,255,255,.055);
+  backdrop-filter:blur(22px);
+}
+.motelona-ai-header {
+  gap:12px;
+  padding:16px 17px;
+  border-bottom-color:var(--motelona-border);
+  background:linear-gradient(120deg,color-mix(in srgb,var(--motelona-accent) 16%,var(--motelona-surface)),var(--motelona-surface));
+}
+.motelona-ai-brand {
+  width:44px;
+  height:44px;
+  flex-basis:44px;
+  border:1px solid rgba(255,255,255,.23);
+  border-radius:15px;
+  background:linear-gradient(145deg,var(--motelona-accent),color-mix(in srgb,var(--motelona-accent) 62%,#d3df9a));
+  box-shadow:0 7px 20px color-mix(in srgb,var(--motelona-accent) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.23);
+  font-size:1.03rem;
+}
+.motelona-ai-title { font-size:1.02rem; letter-spacing:-.025em; }
+.motelona-ai-subtitle { margin-top:3px; color:var(--motelona-muted); font-size:.72rem; }
+.motelona-ai-icon-button { width:38px; height:38px; border-radius:12px; border-color:var(--motelona-border); background:rgba(255,255,255,.035); transition:background .2s,border-color .2s,transform .2s; }
+.motelona-ai-icon-button:hover { border-color:color-mix(in srgb,var(--motelona-accent) 60%,var(--motelona-border)); background:color-mix(in srgb,var(--motelona-accent) 14%,transparent); transform:translateY(-1px); }
+.motelona-ai-toolsbar { flex-wrap:nowrap; gap:6px; padding:10px 12px; overflow-x:auto; border-bottom-color:var(--motelona-border); scrollbar-width:none; }
+.motelona-ai-toolsbar::-webkit-scrollbar { display:none; }
+.motelona-ai-chip { flex:0 0 auto; min-height:34px; padding:7px 10px; border-color:var(--motelona-border); border-radius:999px; color:var(--motelona-muted); background:rgba(255,255,255,.025); font-size:.68rem; font-weight:650; white-space:nowrap; transition:color .2s,border-color .2s,background .2s,transform .2s; }
+.motelona-ai-chip:hover { color:var(--motelona-text); border-color:color-mix(in srgb,var(--motelona-accent) 55%,var(--motelona-border)); background:color-mix(in srgb,var(--motelona-accent) 11%,transparent); }
+.motelona-ai-chip[aria-pressed="true"] { color:var(--motelona-text); border-color:color-mix(in srgb,var(--motelona-accent) 65%,var(--motelona-border)); background:color-mix(in srgb,var(--motelona-accent) 17%,transparent); }
+.motelona-ai-search { padding:10px 13px; border-bottom-color:var(--motelona-border); background:rgba(255,255,255,.018); }
+.motelona-ai-search__input { min-height:40px; border-color:var(--motelona-border); border-radius:11px; color:var(--motelona-text); background:var(--motelona-surface); font-size:16px; }
+.motelona-ai-search-results { border-bottom-color:var(--motelona-border); color:var(--motelona-muted); }
+.motelona-ai-search-result { margin:6px 0; padding:10px 12px; border:1px solid var(--motelona-border); border-left:3px solid var(--motelona-accent); border-radius:10px; background:var(--motelona-surface); }
+.motelona-ai-status { flex:0 0 auto; gap:8px; padding:10px 15px 7px; color:var(--motelona-muted); font-size:.67rem; line-height:1.45; }
+.motelona-ai-status__dot { flex:0 0 7px; box-shadow:0 0 0 4px rgba(217,119,6,.12); }
+.motelona-ai-status[data-state="online"] .motelona-ai-status__dot { box-shadow:0 0 0 4px rgba(22,163,74,.13); }
+.motelona-ai-status[data-state="offline"] .motelona-ai-status__dot { box-shadow:0 0 0 4px rgba(220,38,38,.12); }
+.motelona-ai-messages { gap:13px; padding:15px 14px; background:radial-gradient(ellipse at 10% 0%,color-mix(in srgb,var(--motelona-accent) 7%,transparent),transparent 42%); }
+.motelona-ai-message { max-width:91%; padding:12px 14px; border:1px solid var(--motelona-border); border-radius:17px; font-size:.84rem; line-height:1.68; box-shadow:0 5px 14px rgba(0,0,0,.08); }
+.motelona-ai-message--assistant { border-bottom-left-radius:6px; background:var(--motelona-surface); }
+.motelona-ai-message--user { border-color:transparent; border-bottom-right-radius:6px; color:#fff; background:linear-gradient(135deg,var(--motelona-accent),color-mix(in srgb,var(--motelona-accent) 75%,#8cbf8b)); }
+.motelona-ai-message--error { border-color:rgba(220,38,38,.5); }
+.motelona-ai-message__meta { display:block; margin-top:7px; color:var(--motelona-muted); font-size:.63rem; font-weight:700; letter-spacing:.025em; }
+.motelona-ai-suggestions { gap:7px; padding:0 14px 12px; }
+.motelona-ai-suggestions .motelona-ai-chip { max-width:100%; min-height:36px; overflow:hidden; text-overflow:ellipsis; }
+.motelona-ai-compose { gap:9px; padding:12px 13px; border-top-color:var(--motelona-border); background:var(--motelona-bg); }
+.motelona-ai-input { min-height:47px; max-height:126px; padding:12px 14px; border-color:var(--motelona-border); border-radius:15px; color:var(--motelona-text); background:var(--motelona-surface); font-size:16px; line-height:1.5; }
+.motelona-ai-input::placeholder,.motelona-ai-search__input::placeholder { color:color-mix(in srgb,var(--motelona-muted) 72%,transparent); }
+.motelona-ai-input:focus,.motelona-ai-search__input:focus { border-color:color-mix(in srgb,var(--motelona-accent) 72%,white 12%); outline:none; box-shadow:0 0 0 3px color-mix(in srgb,var(--motelona-accent) 17%,transparent); }
+.motelona-ai-send { flex-basis:47px; width:47px; height:47px; border-radius:15px; background:linear-gradient(140deg,var(--motelona-accent),color-mix(in srgb,var(--motelona-accent) 65%,#b4d48a)); box-shadow:0 8px 20px color-mix(in srgb,var(--motelona-accent) 25%,transparent); transition:transform .2s,filter .2s; }
+.motelona-ai-send:hover:not(:disabled) { transform:translateY(-2px); filter:brightness(1.08); }
+.motelona-ai-footer { align-items:center; padding:0 15px 12px; color:var(--motelona-muted); font-size:.65rem; }
+.motelona-ai-footer button { min-height:34px; text-decoration:none; color:var(--motelona-muted); }
+.motelona-ai-footer button:hover { color:var(--motelona-text); }
+.motelona-ai-consent { padding:23px; background:var(--motelona-bg); }
+.motelona-ai-consent h3 { color:var(--motelona-text); font-size:1.2rem; letter-spacing:-.03em; }
+.motelona-ai-consent p { color:var(--motelona-muted); font-size:.82rem; line-height:1.7; }
+.motelona-ai-consent__row { padding:12px; border:1px solid var(--motelona-border); border-radius:12px; background:rgba(255,255,255,.025); }
+.motelona-ai-consent__row input { width:17px; height:17px; accent-color:var(--motelona-accent); }
+.motelona-ai-consent__actions button { min-height:42px; padding:9px 12px; border:1px solid var(--motelona-border); border-radius:11px; color:var(--motelona-text); background:var(--motelona-surface); }
+.motelona-ai-consent__actions .motelona-ai-primary { border-color:transparent; color:#fff; background:var(--motelona-accent); }
+.motelona-ai-popover { border-color:var(--motelona-border); border-radius:18px; background:var(--motelona-bg); box-shadow:0 24px 70px rgba(0,0,0,.38); }
+.motelona-ai-popover h4 { color:var(--motelona-text); }
+.motelona-ai-popover p { color:var(--motelona-muted); line-height:1.7; }
+.motelona-ai-root :is(button,input,textarea):focus-visible { outline:3px solid color-mix(in srgb,var(--motelona-accent) 68%,white 32%); outline-offset:3px; }
+@media (max-width:650px) {
+  .motelona-ai-launcher { min-width:140px; min-height:54px; padding:0 17px; border-radius:17px; }
+  .motelona-ai-panel { right:8px; bottom:calc(max(10px,env(safe-area-inset-bottom)) + 66px); width:calc(100vw - 16px); height:min(700px,calc(100dvh - 84px)); min-height:min(330px,calc(100dvh - 84px)); border-radius:20px; }
+  .motelona-ai-header { padding:12px; }
+  .motelona-ai-toolsbar { padding:8px 10px; }
+  .motelona-ai-messages { padding:12px 10px; }
+  .motelona-ai-suggestions { padding-inline:10px; }
+  .motelona-ai-compose { padding:9px 10px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .motelona-ai-root *, .motelona-ai-root *::before, .motelona-ai-root *::after { transition-duration:.01ms!important; animation-duration:.01ms!important; animation-iteration-count:1!important; }
+}
+
+
+/* Desktop-style resize grip for the floating MoteLona window. */
+.motelona-ai-panel {
+  box-sizing: border-box;
+  min-width: min(320px, calc(100vw - 16px));
+  min-height: min(360px, calc(100dvh - 84px));
+}
+.motelona-ai-resize-handle {
+  position: absolute;
+  z-index: 5;
+  right: 3px;
+  bottom: 3px;
+  display: block;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  min-height: 25px;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  color: var(--motelona-muted);
+  background: transparent;
+  cursor: nwse-resize;
+  touch-action: none;
+  opacity: .72;
+  transition: opacity .18s ease, background .18s ease, color .18s ease;
+}
+.motelona-ai-resize-handle::before {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 13px;
+  height: 13px;
+  content: "";
+  background: repeating-linear-gradient(135deg, transparent 0 3px, currentColor 3px 4px);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+.motelona-ai-resize-handle:hover,
+.motelona-ai-resize-handle:focus-visible {
+  color: var(--motelona-accent);
+  background: color-mix(in srgb, var(--motelona-accent) 12%, transparent);
+  opacity: 1;
+}
+.motelona-ai-panel.is-resizing,
+.motelona-ai-panel.is-resizing * {
+  cursor: nwse-resize !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.motelona-ai-panel.is-resizing { transition: none !important; }
+.motelona-ai-footer { padding-right: 31px; }
+@media (max-width: 650px) {
+  .motelona-ai-panel { min-width: min(280px, calc(100vw - 16px)); min-height: min(320px, calc(100dvh - 84px)); }
+  .motelona-ai-resize-handle { width: 29px; height: 29px; min-width: 29px; min-height: 29px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motelona-ai-resize-handle { transition: none; }
+}
+
+/* Typography refinement: make the floating MoteLona assistant comfortable to read. */
+.motelona-ai-root { font-size: 15px; }
+.motelona-ai-panel .motelona-ai-title { font-size: 1.08rem; line-height: 1.3; }
+.motelona-ai-panel .motelona-ai-subtitle { font-size: .8rem; line-height: 1.4; }
+.motelona-ai-panel .motelona-ai-chip { font-size: .78rem; line-height: 1.35; }
+.motelona-ai-panel .motelona-ai-status { font-size: .76rem; line-height: 1.45; }
+.motelona-ai-panel .motelona-ai-message { font-size: .95rem; line-height: 1.62; }
+.motelona-ai-panel .motelona-ai-message__meta { font-size: .72rem; line-height: 1.4; }
+.motelona-ai-panel .motelona-ai-search-results { font-size: .9rem; line-height: 1.55; }
+.motelona-ai-panel .motelona-ai-popover h4 { font-size: 1rem; }
+.motelona-ai-panel .motelona-ai-popover p { font-size: .92rem; line-height: 1.62; }
+.motelona-ai-panel .motelona-ai-consent h3 { font-size: 1.15rem; }
+.motelona-ai-panel .motelona-ai-consent p,
+.motelona-ai-panel .motelona-ai-consent__row { font-size: .92rem; line-height: 1.58; }
+.motelona-ai-panel .motelona-ai-footer { font-size: .72rem; }
+.motelona-ai-launcher { font-size: 1rem; }
+.motelona-ai-panel .motelona-ai-input,
+.motelona-ai-panel .motelona-ai-search__input { font-size: 16px; }

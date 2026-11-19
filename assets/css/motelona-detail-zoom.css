@@ -1,0 +1,25 @@
+/* Desktop-only 67% visual scale for the MoteLona project page.
+   The index.html hero, navigation and floating assistant use their own sizing.
+   The wider layout canvas compensates for CSS zoom so content still spans
+   the full viewport instead of leaving an empty strip on the right. */
+@media screen and (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  html {
+    overflow-x: hidden;
+  }
+
+  body {
+    zoom: 0.67;
+    width: 149.253731vw;
+    min-height: 149.253731vh;
+  }
+
+  .motelona-detail-root {
+    min-height: 149.253731vh;
+  }
+
+  /* Keep the sticky navigation aligned with the centered content canvas. */
+  .ml-topbar {
+    padding-left: max(24px, calc(74.626866vw - 600px));
+    padding-right: max(24px, calc(74.626866vw - 600px));
+  }
+}

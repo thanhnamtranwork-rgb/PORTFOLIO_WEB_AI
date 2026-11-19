@@ -1,0 +1,32 @@
+server:
+  address: ${MOTELONA_SERVER_ADDRESS:127.0.0.1}
+  port: ${MOTELONA_PORT:8080}
+  error:
+    include-message: never
+  tomcat:
+    max-http-form-post-size: 64KB
+spring:
+  application:
+    name: motelona-assistant
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:PortfolioAI_DB}?useUnicode=true&characterEncoding=utf8&connectionTimeZone=Asia/Ho_Chi_Minh&createDatabaseIfNotExist=false
+    username: ${MYSQL_USERNAME:portfolio_app}
+    password: ${MYSQL_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 10000
+      validation-timeout: 5000
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+      encoding: UTF-8
+motelona:
+  cors:
+    allowed-origins: ${MOTELONA_CORS_ORIGINS:http://localhost:5500,http://127.0.0.1:5500,http://localhost:8000,http://127.0.0.1:8000}
+logging:
+  level:
+    com.motelona.assistant: INFO
+    org.springframework.jdbc: WARN

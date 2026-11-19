@@ -1,0 +1,94 @@
+/* Portfolio refinement layer — accessibility, responsive rhythm and touch ergonomics. */
+.animfolio-container {
+  --animfolio-accent-text: #86D4A6;
+  --animfolio-focus-ring: color-mix(in srgb, var(--animfolio-accent) 82%, white 18%);
+}
+.animfolio-container[data-animfolio-scheme="light"] { --animfolio-accent-text: #1D6948; }
+.animfolio-container[data-portfolio-theme="peach"][data-animfolio-scheme="light"] { --animfolio-accent-text: #B8426D; }
+.animfolio-container[data-portfolio-theme="apricot"][data-animfolio-scheme="light"] { --animfolio-accent-text: #986005; }
+.animfolio-container[data-portfolio-theme="tree"][data-animfolio-scheme="dark"] { --animfolio-accent-text: #86D4A6; }
+.animfolio-container[data-portfolio-theme="peach"][data-animfolio-scheme="dark"] { --animfolio-accent-text: #F29AB6; }
+.animfolio-container[data-portfolio-theme="apricot"][data-animfolio-scheme="dark"] { --animfolio-accent-text: #E8BC60; }
+.animfolio-container :is(a:not(.animfolio-button):not(.motelona-project-actions a), .animfolio-nav__link--active) { color: var(--animfolio-accent-text, var(--animfolio-accent)); }
+.animfolio-container :is(a,button,input,textarea,select,summary,[tabindex]):focus-visible {
+  outline: 3px solid var(--animfolio-focus-ring, var(--animfolio-accent)) !important;
+  outline-offset: 3px !important;
+}
+.animfolio-section { scroll-margin-top: calc(84px + env(safe-area-inset-top)); }
+.animfolio-nav { padding-left: max(clamp(18px, 4vw, 48px), env(safe-area-inset-left)); padding-right: max(clamp(18px, 4vw, 48px), env(safe-area-inset-right)); }
+.animfolio-nav__link { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+.animfolio-theme-toggle,
+.animfolio-color-picker__trigger { min-width: 42px; min-height: 42px; width: 42px; height: 42px; }
+.animfolio-language-switch__button { min-width: 38px; min-height: 38px; }
+.animfolio-nav__toggle { min-width: 44px; min-height: 44px; }
+.animfolio-nav__logo { max-width: min(32vw, 220px); flex: 0 1 auto; }
+.animfolio-nav__logo-short { display: none; }
+.animfolio-color-picker__option { min-height: 44px; }
+.animfolio-button,
+.motelona-project-actions .animfolio-button { min-height: 46px; }
+.animfolio-contact__form :is(input,textarea,select) { min-height: 48px; font-size: 16px; }
+.animfolio-contact__form textarea { min-height: 132px; }
+.motelona-project-card { isolation: isolate; }
+.motelona-project-card .motelona-project-mark {
+  position: absolute; z-index: 2; top: clamp(22px, 3vw, 32px); right: clamp(22px, 3vw, 32px);
+  width: 54px; height: 54px; margin: 0; border: 1px solid rgba(255,255,255,.2);
+  border-radius: 17px; color: #fff; box-shadow: 0 10px 28px rgba(0,0,0,.22);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--animfolio-accent) 93%, #111 7%), color-mix(in srgb, var(--animfolio-secondary) 76%, #111 24%));
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.motelona-project-card .animfolio-project__title { margin-top: 18px; }
+.portfolio-back-top { bottom: calc(88px + env(safe-area-inset-bottom)); }
+.animfolio-container :is(.animfolio-card--bordered, .animfolio-skills__category, .motelona-project-card) { border-color: color-mix(in srgb, var(--animfolio-accent) 20%, var(--animfolio-border)); }
+.animfolio-container :is(.animfolio-section__title, .animfolio-project__title, .animfolio-skills__category-title) { text-wrap: balance; }
+@media (max-width: 768px) {
+  .animfolio-nav { min-height: 64px; }
+  .animfolio-nav__list { top: 64px; max-height: calc(100dvh - 64px); }
+  .animfolio-section { scroll-margin-top: 78px; }
+  .animfolio-nav__logo { max-width: none; }
+  .animfolio-nav__link { justify-content: flex-start; }
+  .animfolio-theme-toggle, .animfolio-color-picker__trigger { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+  .portfolio-back-top { right: 14px; bottom: calc(82px + env(safe-area-inset-bottom)); width: 44px; height: 44px; }
+}
+@media (max-width: 480px) {
+  .animfolio-nav { padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right)); gap: 7px; }
+  .animfolio-nav__logo { max-width: 70px; margin-inline-end: 0; font-size: .92rem; }
+  .animfolio-nav__logo-full { display: none; }
+  .animfolio-nav__logo-short { display: inline; }
+  .animfolio-nav__toggle { margin-inline-start: auto; }
+  .animfolio-language-switch { gap: 2px; }
+  .animfolio-language-switch__button { min-width: 34px; min-height: 36px; padding-inline: 7px; }
+  .animfolio-theme-toggle, .animfolio-color-picker__trigger { width: 38px; height: 38px; min-width: 38px; min-height: 38px; }
+  .motelona-project-card { padding: 20px; }
+  .motelona-project-card .motelona-project-mark { top: 18px; right: 18px; width: 46px; height: 46px; border-radius: 14px; font-size: 1.65rem; }
+  .portfolio-back-top { right: 12px; bottom: calc(78px + env(safe-area-inset-bottom)); }
+}
+@media (max-width: 340px) {
+  .animfolio-nav { gap: 4px; }
+  .animfolio-nav__logo { max-width: 38px; }
+  .animfolio-language-switch__button { min-width: 31px; padding-inline: 5px; }
+  .animfolio-theme-toggle, .animfolio-color-picker__trigger { width: 35px; height: 35px; min-width: 35px; min-height: 35px; }
+}
+@media (hover: none) and (pointer: coarse) {
+  .animfolio-container :is(a,button,summary,.animfolio-color-picker__option) { -webkit-tap-highlight-color: transparent; }
+  .animfolio-container :is(button,.animfolio-color-picker__option,.animfolio-nav__link) { touch-action: manipulation; }
+  .animfolio-button:active, .motelona-project-actions .animfolio-button:active { transform: scale(.985); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animfolio-container *, .animfolio-container *::before, .animfolio-container *::after { scroll-behavior: auto !important; }
+}
+
+/* Saturated palettes use a slightly deeper CTA shade so white button labels stay clear. */
+.animfolio-container[data-portfolio-theme="peach"] .animfolio-button--primary,
+.animfolio-container[data-portfolio-theme="peach"] a.animfolio-button--primary {
+  color: #fff !important;
+  background: linear-gradient(135deg, #B8426D, #A23860) !important;
+}
+.animfolio-container[data-portfolio-theme="apricot"] .animfolio-button--primary,
+.animfolio-container[data-portfolio-theme="apricot"] a.animfolio-button--primary {
+  color: #fff !important;
+  background: linear-gradient(135deg, #986005, #855000) !important;
+}
+.animfolio-container[data-portfolio-theme="peach"] .animfolio-button--primary:hover,
+.animfolio-container[data-portfolio-theme="peach"] a.animfolio-button--primary:hover { background: linear-gradient(135deg, #A23860, #8D3154) !important; }
+.animfolio-container[data-portfolio-theme="apricot"] .animfolio-button--primary:hover,
+.animfolio-container[data-portfolio-theme="apricot"] a.animfolio-button--primary:hover { background: linear-gradient(135deg, #855000, #714300) !important; }

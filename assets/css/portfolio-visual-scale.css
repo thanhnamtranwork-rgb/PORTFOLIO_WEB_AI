@@ -1,0 +1,17 @@
+/*
+ * 75% visual scale for every portfolio section except the landing hero.
+ * The browser itself remains at 100% zoom. CSS zoom is used instead of
+ * transform:scale() so each section keeps its correct document-flow height.
+ * Expanding the desktop section canvas before zoom keeps its background
+ * full-bleed and preserves the same centered content width as browser zoom.
+ * The nav, #hero and fixed MoteLona assistant are intentionally untouched.
+ */
+@media screen and (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) {
+    zoom: 0.75;
+    width: 133.333333vw;
+    max-width: none;
+    margin-inline: 0;
+    scroll-margin-top: 101.333333px !important;
+  }
+}

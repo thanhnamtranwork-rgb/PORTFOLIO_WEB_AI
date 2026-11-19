@@ -1,0 +1,318 @@
+/* Responsive hardening for Project/1/motelona.html. */
+html,
+body {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+.motelona-detail-root,
+.ml-main,
+.ml-section,
+.ml-footer {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.motelona-detail-root *,
+.motelona-detail-root *::before,
+.motelona-detail-root *::after {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.motelona-detail-root :is(img, svg, video, iframe, canvas) {
+  max-width: 100%;
+}
+
+.motelona-detail-root :is(h1, h2, h3, p, li, a, button, code, small) {
+  overflow-wrap: anywhere;
+}
+
+.ml-main {
+  width: min(1120px, calc(100% - 48px));
+}
+
+.ml-topbar {
+  width: 100%;
+  max-width: 100%;
+  padding-inline: clamp(14px, 4vw, 48px);
+  gap: clamp(8px, 2vw, 18px);
+}
+
+.ml-top-actions {
+  min-width: 0;
+  flex: 0 1 auto;
+  gap: clamp(6px, 1.5vw, 16px);
+}
+
+.ml-brand {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ml-brand > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ml-color-menu {
+  width: min(190px, calc(100vw - 20px));
+  max-width: calc(100vw - 20px);
+}
+
+.ml-endpoints code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.ml-overview-grid,
+.ml-feature-grid,
+.ml-architecture-grid,
+.ml-two-col,
+.ml-boundary-grid {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .ml-main {
+    width: min(100% - 40px, 1120px);
+  }
+
+  .ml-section {
+    padding-block: clamp(48px, 7vw, 64px);
+  }
+
+  .ml-pipeline {
+    flex-wrap: wrap;
+  }
+
+  .ml-pipeline-step {
+    flex: 1 1 28%;
+  }
+}
+
+@media (max-width: 760px) {
+  .ml-topbar {
+    padding-inline: 16px;
+  }
+
+  .ml-top-link,
+  .ml-top-try {
+    display: none;
+  }
+
+  .ml-hero {
+    padding: clamp(60px, 10vw, 76px) 0 50px;
+  }
+
+  .ml-hero h1 {
+    max-width: 100%;
+    font-size: clamp(2rem, 7.5vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -.035em;
+  }
+
+  .ml-lead {
+    font-size: clamp(1rem, 2.5vw, 1.12rem);
+    line-height: 1.7;
+  }
+
+  .ml-overview-grid,
+  .ml-feature-grid,
+  .ml-architecture-grid,
+  .ml-two-col,
+  .ml-boundary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ml-pipeline {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .ml-pipeline-arrow {
+    display: none;
+  }
+
+  .ml-endpoints li {
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .ml-main,
+  .ml-footer {
+    width: calc(100% - 30px);
+  }
+
+  .ml-topbar {
+    padding: 9px 12px;
+    gap: 8px;
+  }
+
+  .ml-brand {
+    gap: 8px;
+    font-size: .88rem;
+  }
+
+  .ml-brand-mark {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+  }
+
+  .ml-top-actions {
+    gap: 6px;
+  }
+
+  .ml-theme-toggle,
+  .ml-color-picker > summary {
+    width: 34px;
+    height: 34px;
+  }
+
+  .ml-language button {
+    padding: 5px 7px;
+    font-size: .72rem;
+  }
+
+  .ml-hero {
+    padding: 56px 0 42px;
+  }
+
+  .ml-kicker {
+    align-items: flex-start;
+    font-size: .65rem;
+    letter-spacing: .1em;
+    line-height: 1.5;
+  }
+
+  .ml-hero h1 {
+    font-size: clamp(1.85rem, 8vw, 2.8rem);
+  }
+
+  .ml-tags {
+    gap: 7px;
+  }
+
+  .ml-tags span {
+    max-width: 100%;
+    padding: 6px 9px;
+    font-size: .74rem;
+  }
+
+  .ml-hero-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .ml-hero-actions .ml-button {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .ml-overview-grid,
+  .ml-feature-grid,
+  .ml-architecture-grid,
+  .ml-two-col,
+  .ml-boundary-grid,
+  .ml-pipeline {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ml-pipeline-arrow {
+    display: block;
+    justify-self: center;
+    transform: rotate(90deg);
+    line-height: 1;
+  }
+
+  .ml-overview-card,
+  .ml-feature,
+  .ml-architecture-grid article,
+  .ml-panel,
+  .ml-boundary-good,
+  .ml-boundary-caution {
+    padding: clamp(16px, 4vw, 22px);
+  }
+
+  .ml-pipeline-step {
+    min-height: 86px;
+  }
+
+  .ml-final-cta {
+    align-items: stretch;
+    flex-direction: column;
+    padding: clamp(18px, 5vw, 26px);
+    margin-bottom: 42px;
+  }
+
+  .ml-final-cta .ml-button {
+    width: 100%;
+  }
+
+  .ml-endpoints li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+    padding: 10px 0;
+  }
+
+  .ml-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .ml-topbar {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 8px 10px;
+  }
+
+  .ml-brand {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .ml-top-actions {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+  }
+
+  .ml-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .ml-section-heading h2 {
+    font-size: 1.55rem;
+  }
+}
+
+@media (max-height: 520px) and (max-width: 760px) {
+  .ml-topbar {
+    position: relative;
+  }
+
+  .ml-hero {
+    padding-block: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .motelona-detail-root *,
+  .motelona-detail-root *::before,
+  .motelona-detail-root *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

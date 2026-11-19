@@ -1,0 +1,103 @@
+/* MoteLona guide refinement layer — accessible controls and comfortable reading. */
+:root { scroll-padding-top: calc(84px + env(safe-area-inset-top)); }
+.ml-skip-link {
+  position: fixed; z-index: 1500; top: 10px; left: 10px; padding: 12px 16px;
+  transform: translateY(-160%); border: 1px solid var(--ml-border); border-radius: 12px;
+  color: var(--ml-text); background: var(--ml-surface); box-shadow: 0 10px 30px rgba(0,0,0,.2);
+}
+.ml-skip-link:focus { transform: translateY(0); outline: 3px solid var(--ml-accent); outline-offset: 3px; }
+.ml-main:focus { outline: none; }
+.ml-topbar { padding-top: max(10px, env(safe-area-inset-top)); padding-left: max(clamp(14px, 3vw, 30px), env(safe-area-inset-left)); padding-right: max(clamp(14px, 3vw, 30px), env(safe-area-inset-right)); }
+.ml-section, .ml-hero { scroll-margin-top: calc(88px + env(safe-area-inset-top)); }
+.ml-top-actions :is(a,button,summary) { min-height: 44px; }
+.ml-theme-toggle, .ml-color-picker > summary { width: 44px; height: 44px; }
+.ml-language button { min-width: 40px; min-height: 38px; padding: 7px 10px; }
+.ml-color-option { min-height: 44px; }
+.ml-section-nav a { min-height: 38px; display: inline-flex; align-items: center; }
+.ml-copy-endpoint, #ml-glossary-clear, .ml-checklist-reset { min-height: 42px; padding: 9px 12px; }
+.ml-release-checklist label { min-height: 48px; padding: 13px 14px; }
+.ml-release-checklist input { width: 20px; height: 20px; margin-top: 1px; }
+.ml-glossary-search-wrap { min-height: 52px; }
+#ml-glossary-search { min-height: 48px; font-size: 16px; }
+.ml-faq-item summary { min-height: 54px; display: flex; align-items: center; }
+.ml-button { min-height: 46px; }
+.ml-back-top { width: 46px; height: 46px; }
+.motelona-detail-root :is(a,button,input,textarea,select,summary,[tabindex]):focus-visible { outline: 3px solid color-mix(in srgb,var(--ml-accent) 68%,white 32%); outline-offset: 3px; }
+/* Keep the peach and apricot controls readable without muting their palette. */
+.motelona-detail-root[data-portfolio-theme="peach"] .ml-button-primary { background: #B8426D; color: #fff; }
+.motelona-detail-root[data-portfolio-theme="apricot"] .ml-button-primary { color: #17120A; }
+.motelona-detail-root[data-portfolio-theme="apricot"] .ml-back-top:hover { color: #17120A; }
+html[data-ml-theme="light"] .motelona-detail-root[data-portfolio-theme="tree"] .ml-hero h1 em { color: #405448; }
+.ml-section-nav { position: relative; }
+.ml-section-nav a[aria-current="location"] { font-weight: 800; }
+.ml-glossary-card { min-width: 0; }
+.ml-glossary-card p, .ml-glossary-card small { text-wrap: pretty; }
+@media (max-width: 640px) {
+  .ml-topbar { min-height: 60px; padding: max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) 8px max(10px, env(safe-area-inset-left)); gap: 7px; }
+  .ml-brand { min-width: 0; gap: 7px; }
+  .ml-brand-mark { width: 36px; height: 36px; flex-basis: 36px; }
+  .ml-top-actions { gap: 5px; }
+  .ml-theme-toggle, .ml-color-picker > summary { width: 40px; height: 40px; }
+  .ml-language button { min-width: 34px; min-height: 38px; padding-inline: 7px; }
+  .ml-section-nav { overflow-x: auto; flex-wrap: nowrap; overscroll-behavior-inline: contain; scrollbar-width: thin; }
+  .ml-section-nav a { flex: 0 0 auto; min-height: 40px; padding: 8px 11px; }
+  .ml-release-checklist label { padding: 12px; }
+  .ml-copy-endpoint { min-width: 42px; min-height: 42px; }
+  .ml-back-top { right: max(12px, env(safe-area-inset-right)); bottom: calc(14px + env(safe-area-inset-bottom)); width: 44px; height: 44px; }
+}
+@media (max-width: 370px) {
+  .ml-topbar { flex-wrap: nowrap; }
+  .ml-brand { flex: 1 1 auto; }
+  .ml-top-actions { flex: 0 0 auto; }
+  .ml-language button { min-width: 31px; padding-inline: 5px; }
+  .ml-theme-toggle, .ml-color-picker > summary { width: 36px; height: 36px; }
+}
+@media (hover: none) and (pointer: coarse) {
+  .motelona-detail-root :is(a,button,summary,label) { -webkit-tap-highlight-color: transparent; }
+  .motelona-detail-root :is(button,summary,.ml-release-checklist label) { touch-action: manipulation; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .motelona-detail-root *, .motelona-detail-root *::before, .motelona-detail-root *::after { scroll-behavior: auto !important; }
+}
+.motelona-detail-root[data-portfolio-theme="apricot"] .ml-button-primary,
+.motelona-detail-root[data-portfolio-theme="apricot"] .ml-back-top:hover { color: #100D06; }
+.motelona-detail-root[data-portfolio-theme="peach"] .ml-brand-mark { background: linear-gradient(135deg, #B8426D, #A23860); }
+.motelona-detail-root[data-portfolio-theme="apricot"] .ml-brand-mark { background: linear-gradient(135deg, #986005, #855000); }
+
+
+/* Final comfort pass: larger thumb targets and a predictable horizontal section rail. */
+.ml-section-nav {
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--ml-accent) 50%, transparent) transparent;
+}
+.ml-section-nav a { min-height: 42px; padding: 8px 12px; scroll-snap-align: start; }
+.ml-language button { min-width: 40px; min-height: 40px; padding: 8px 10px; }
+.ml-color-option { min-height: 46px; }
+.ml-glossary-empty { line-height: 1.65; }
+.ml-copy-endpoint:active, #ml-glossary-clear:active, .ml-checklist-reset:active { transform: scale(.98); }
+.ml-release-checklist label:active { border-color: var(--ml-accent); background: color-mix(in srgb, var(--ml-accent) 7%, var(--ml-bg)); }
+@media (max-width: 640px) {
+  .ml-section-nav a { min-height: 44px; padding: 9px 13px; }
+  .ml-language button { min-width: 38px; min-height: 40px; }
+  .ml-top-actions { gap: 6px; }
+}
+@media (hover: none) and (pointer: coarse) {
+  .ml-section-nav a, .ml-language button, .ml-color-option { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+}
+
+
+/* Brand cleanup: display the full name once; never append the duplicate short label. */
+.ml-brand-name-full { display: inline !important; }
+.ml-brand-name-short { display: none !important; }
+@media (max-width: 640px) {
+  .ml-brand { gap: 7px; font-size: clamp(.68rem, 3.1vw, .88rem); letter-spacing: -.025em; }
+  .ml-brand-name-full { display: inline !important; }
+  .ml-brand-name-short { display: none !important; }
+}
+@media (max-width: 360px) {
+  .ml-brand { gap: 5px; font-size: .68rem; }
+  .ml-brand-mark { width: 34px; height: 34px; flex-basis: 34px; }
+}

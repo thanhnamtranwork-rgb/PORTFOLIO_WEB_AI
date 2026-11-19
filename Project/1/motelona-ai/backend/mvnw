@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+set -eu
+VERSION=3.10.0
+SHA512=22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337
+CACHE="${HOME}/.motelona"
+MAVEN_HOME="${CACHE}/apache-maven-${VERSION}"
+if [ ! -x "${MAVEN_HOME}/bin/mvn" ]; then
+  mkdir -p "${CACHE}"
+  ARCHIVE="${CACHE}/apache-maven-${VERSION}-bin.zip"
+  PART="${ARCHIVE}.part"
+  URL="https://dlcdn.apache.org/maven/maven-3/${VERSION}/binaries/apache-maven-${VERSION}-bin.zip"
+  FALLBACK_URL="https://downloads.apache.org/maven/maven-3/${VERSION}/binaries/apache-maven-${VERSION}-bin.zip"
+  if command -v curl >/dev/null 2>&1; then
+    if ! curl --fail --location --silent --show-error "$URL" -o "$PART"; then
+      curl --fail --location --silent --show-error "$FALLBACK_URL" -o "$PART"
+    fi
+  elif command -v wget >/dev/null 2>&1; then
+    if ! wget -q -O "$PART" "$URL"; then
+      wget -q -O "$PART" "$FALLBACK_URL"
+    fi
+  else
+    echo "Install curl or wget to download the pinned Maven distribution." >&2
+    exit 1
+  fi
+  if command -v sha512sum >/dev/null 2>&1; then
+    printf '%s  %s\n' "$SHA512" "$PART" | sha512sum --check --status || { echo "Maven SHA-512 verification failed; refusing to extract the archive." >&2; rm -f "$PART"; exit 1; }
+  elif command -v shasum >/dev/null 2>&1; then
+    ACTUAL=$(shasum -a 512 "$PART" | awk '{print $1}')
+    [ "$ACTUAL" = "$SHA512" ] || { echo "Maven SHA-512 verification failed; refusing to extract the archive." >&2; rm -f "$PART"; exit 1; }
+  else
+    echo "A SHA-512 utility (sha512sum or shasum) is required to verify Maven safely." >&2
+    rm -f "$PART"
+    exit 1
+  fi
+  mv "$PART" "$ARCHIVE"
+  if ! command -v unzip >/dev/null 2>&1; then echo "Install unzip to extract Maven." >&2; exit 1; fi
+  unzip -oq "$ARCHIVE" -d "$CACHE"
+  [ -x "${MAVEN_HOME}/bin/mvn" ] || { echo "Maven archive did not contain the expected executable." >&2; exit 1; }
+fi
+exec "${MAVEN_HOME}/bin/mvn" "$@"

@@ -1,0 +1,754 @@
+/*
+ * Responsive hardening for the main Portfolio page.
+ * Loaded after the theme styles so layout remains fluid at browser zoom levels.
+ */
+
+html {
+  max-width: 100%;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 76px;
+}
+
+body {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.animfolio-container {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.animfolio-container *,
+.animfolio-container *::before,
+.animfolio-container *::after {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.animfolio-container img,
+.animfolio-container svg,
+.animfolio-container video,
+.animfolio-container iframe,
+.animfolio-container canvas {
+  max-width: 100%;
+}
+
+.animfolio-container :is(p, li, a, button, h1, h2, h3, h4, code, pre) {
+  overflow-wrap: anywhere;
+}
+
+.animfolio-container pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.animfolio-inner {
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: clamp(14px, 3.2vw, 32px);
+}
+
+.animfolio-section:not(.animfolio-section--hero) {
+  scroll-margin-top: 76px;
+}
+
+.animfolio-grid,
+.animfolio-contact__layout,
+.motelona-project-grid {
+  min-width: 0;
+}
+
+.animfolio-contact__layout {
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+}
+
+/* Featured MoteLona card and its illustration */
+.motelona-project-grid {
+  grid-template-columns: minmax(0, 560px);
+  justify-content: center;
+  width: 100%;
+}
+
+.motelona-project-card {
+  width: 100%;
+  max-width: 560px;
+  padding: clamp(16px, 3vw, 34px);
+}
+
+.motelona-project-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 4;
+  object-fit: contain;
+  object-position: center;
+  background: var(--animfolio-bg-secondary, #1a2821);
+}
+
+.motelona-project-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.motelona-project-status > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.motelona-project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
+
+.motelona-project-actions > * {
+  max-width: 100%;
+}
+
+/* Fixed navigation: keep the brand and controls from colliding at zoom. */
+.animfolio-container--format-11 .animfolio-nav {
+  width: 100%;
+  max-width: 100%;
+  padding-inline: clamp(10px, 2.2vw, 32px);
+  gap: clamp(5px, 1vw, 14px);
+}
+
+.animfolio-nav__logo {
+  min-width: 0;
+  max-width: 34vw;
+  font-size: clamp(.8rem, 1.35vw, 1.125rem);
+}
+
+.animfolio-language-switch {
+  flex: 0 0 auto;
+  gap: 1px;
+  margin: 0;
+  padding: 2px;
+}
+
+.animfolio-language-switch__button {
+  min-width: 30px;
+  padding: 5px 6px;
+  font-size: 10px;
+}
+
+.animfolio-nav .animfolio-theme-toggle,
+.animfolio-nav .animfolio-color-picker__trigger {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+}
+
+.animfolio-color-picker__menu {
+  width: min(190px, calc(100vw - 16px));
+  max-width: calc(100vw - 16px);
+}
+
+@media (max-width: 1024px) {
+  .animfolio-inner {
+    padding-inline: clamp(18px, 3vw, 28px);
+  }
+
+  .animfolio-section:not(.animfolio-section--hero) {
+    padding-block: clamp(56px, 7vw, 80px);
+  }
+
+  .animfolio-section__header {
+    margin-bottom: clamp(26px, 4vw, 40px);
+  }
+}
+
+@media (max-width: 768px) {
+  .animfolio-inner {
+    padding-inline: clamp(16px, 4vw, 24px);
+  }
+
+  .animfolio-section:not(.animfolio-section--hero) {
+    padding-block: clamp(48px, 8vw, 68px);
+  }
+
+  .animfolio-section__header {
+    margin-bottom: 28px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero {
+    min-height: 100svh;
+    min-height: 100dvh;
+    padding: clamp(78px, 12vh, 112px) clamp(16px, 5vw, 28px) 52px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__name {
+    max-width: 100%;
+    font-size: clamp(2rem, 8.8vw, 3.8rem);
+    line-height: 1.08;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__title {
+    max-width: 100%;
+    font-size: clamp(1.45rem, 5.8vw, 2.35rem);
+    line-height: 1.18;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__subtitle {
+    max-width: 38rem;
+    font-size: clamp(.98rem, 2.8vw, 1.12rem);
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__ai-art {
+    width: min(82vw, 390px);
+    right: -18vw;
+    opacity: .1;
+  }
+
+  .animfolio-container--format-11.animfolio-container--dark .animfolio-hero__ai-art {
+    opacity: .14;
+  }
+
+  .motelona-project-grid {
+    grid-template-columns: minmax(0, 560px);
+  }
+
+  .motelona-project-card {
+    padding: clamp(16px, 4vw, 26px);
+  }
+
+  .motelona-project-actions {
+    align-items: stretch;
+  }
+
+  .motelona-project-actions .animfolio-button {
+    flex: 1 1 180px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .animfolio-section--contact .animfolio-inner {
+    width: 100%;
+    max-width: 1160px;
+    padding-inline: clamp(14px, 4vw, 24px);
+  }
+
+  .animfolio-contact__layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .animfolio-contact__form-wrapper,
+  .animfolio-contact__aside {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .animfolio-contact__form-wrapper .animfolio-form__input,
+  .animfolio-contact__form-wrapper .animfolio-form__textarea {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px; /* Avoids unwanted iOS input zoom. */
+  }
+}
+
+@media (max-width: 480px) {
+  .animfolio-inner {
+    padding-inline: 16px;
+  }
+
+  .animfolio-section:not(.animfolio-section--hero) {
+    padding-block: 48px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero {
+    min-height: auto;
+    min-height: 100svh;
+    min-height: 100dvh;
+    padding: 84px 16px 46px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__name {
+    font-size: clamp(1.9rem, 9.5vw, 2.8rem);
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__title {
+    font-size: clamp(1.35rem, 7vw, 1.9rem);
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__subtitle {
+    margin-bottom: 24px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__cta {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__cta > .animfolio-button {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .animfolio-project-card {
+    border-radius: 18px;
+  }
+
+  .motelona-project-image {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .motelona-project-actions {
+    flex-direction: column;
+  }
+
+  .motelona-project-actions .animfolio-button {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .animfolio-contact__form-wrapper,
+  .animfolio-contact__aside {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .animfolio-contact__heading {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
+}
+
+@media (max-width: 360px) {
+  /* Two compact rows preserve every navigation control at narrow widths. */
+  .animfolio-container--format-11 .animfolio-nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto auto 44px;
+    grid-template-rows: 38px 34px;
+    align-content: center;
+    align-items: center;
+    column-gap: 5px;
+    row-gap: 2px;
+    height: 86px;
+    min-height: 86px;
+    padding: 5px 10px;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav__logo {
+    grid-column: 1 / 5;
+    grid-row: 1;
+    max-width: none;
+    margin: 0;
+    font-size: .9rem;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav__toggle {
+    grid-column: 5;
+    grid-row: 1;
+    width: 44px;
+    min-width: 44px;
+    height: 38px;
+    min-height: 38px;
+    margin: 0;
+    padding: 6px;
+  }
+
+  .animfolio-container--format-11 .animfolio-language-switch {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+  }
+
+  .animfolio-container--format-11 .animfolio-theme-toggle {
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: end;
+  }
+
+  .animfolio-container--format-11 .animfolio-color-picker {
+    grid-column: 4;
+    grid-row: 2;
+    justify-self: end;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav__list {
+    top: 86px;
+    max-height: calc(100vh - 86px);
+    max-height: calc(100dvh - 86px);
+  }
+
+  .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle,
+  .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .animfolio-container--format-11 .animfolio-language-switch__button {
+    min-width: 27px;
+    padding-inline: 5px;
+  }
+
+  .animfolio-container--format-11 .animfolio-color-picker__menu {
+    right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animfolio-container *,
+  .animfolio-container *::before,
+  .animfolio-container *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* This is a single featured project, so keep it centered and readable on wide screens. */
+.animfolio-container--format-11 .animfolio-grid.motelona-project-grid {
+  width: 100%;
+  grid-template-columns: minmax(0, 560px);
+  justify-content: center;
+}
+
+/* -------------------------------------------------------------------------
+   Desktop browser-zoom resilience (format 11)
+
+   The hero used to sit inside the shared 1200px content container while its
+   decorative SVGs were positioned with viewport-based offsets. At reduced
+   browser zoom, the container became physically narrow but the SVG offsets
+   kept following the larger CSS viewport. Give the hero its own full-width
+   canvas and size the hero artwork/type/navigation from the viewport so the
+   composition keeps its proportions at 100%, 80%, 50% and lower zoom levels.
+   Mobile/tablet breakpoints below remain in control on narrow CSS viewports.
+   ------------------------------------------------------------------------- */
+@media (min-width: 1025px) {
+  /* Full-bleed canvas: do not inherit the site's 1200px reading-column cap. */
+  .animfolio-container--format-11 .animfolio-section--hero > .animfolio-inner {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding: 0;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 4.1vw 0 3.5vw;
+    overflow: hidden;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__content {
+    width: 100%;
+    max-width: none;
+    padding-inline: 12vw;
+    position: relative;
+    z-index: 3;
+  }
+
+  /* Viewport units intentionally have no small desktop max cap: a capped rem
+     value shrinks physically when browser zoom is reduced. */
+  .animfolio-container--format-11 .animfolio-hero__name {
+    font-size: 4.5vw;
+    line-height: 1.08;
+    margin-bottom: .45vw;
+    letter-spacing: -.03em;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__title {
+    font-size: 3.6vw;
+    line-height: 1.14;
+    margin-bottom: .9vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__subtitle {
+    width: min(30vw, 100%);
+    max-width: 30vw;
+    font-size: 1.08vw;
+    line-height: 1.7;
+    margin: 0 auto 1.8vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__cta {
+    gap: .9vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__cta > .animfolio-button,
+  .animfolio-container--format-11 .animfolio-hero__cta > a.animfolio-button {
+    min-height: 3.1vw;
+    padding: .68vw 1.58vw;
+    font-size: .9vw;
+    line-height: 1.2;
+    gap: .45vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__social {
+    margin-top: 1.8vw;
+    gap: .7vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-social-icons--outline a,
+  .animfolio-container--format-11 .animfolio-social-icons--filled a,
+  .animfolio-container--format-11 .animfolio-social-icons--rounded a,
+  .animfolio-container--format-11 .animfolio-social-icons--square a {
+    width: 2.5vw;
+    height: 2.5vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__social svg {
+    width: 1.15vw;
+    height: 1.15vw;
+  }
+
+  /* Keep each illustration anchored to a stable viewport position. */
+  .animfolio-container--format-11 .animfolio-hero__ai-art {
+    top: 50%;
+    right: 16vw;
+    width: 34vw;
+    max-width: none;
+    transform: translateY(-50%);
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__learning-art {
+    top: 35%;
+    left: 13vw;
+    width: 25vw;
+    max-width: none;
+    transform: translateY(-50%);
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__software-art {
+    left: 18vw;
+    bottom: 3.5vh;
+    width: 19vw;
+    max-width: none;
+  }
+
+  /* The fixed header must scale with the same canvas as the hero. */
+  .animfolio-container--format-11 .animfolio-nav {
+    height: 4.1vw;
+    min-height: 4.1vw;
+    padding: 0 2vw;
+    gap: .9vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav__logo {
+    max-width: 25vw;
+    font-size: 1.15vw;
+    padding-inline-start: .12vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav__list {
+    gap: .23vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav__link {
+    padding: .45vw .8vw;
+    font-size: .74vw;
+    line-height: 1.25;
+    border-radius: 999px;
+  }
+
+  .animfolio-container--format-11 .animfolio-language-switch {
+    gap: .06vw;
+    padding: .12vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-language-switch__button {
+    min-width: 1.7vw;
+    padding: .34vw .4vw;
+    font-size: .56vw;
+    line-height: 1.1;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle,
+  .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger {
+    width: 2.15vw;
+    height: 2.15vw;
+    min-width: 2.15vw;
+    min-height: 2.15vw;
+    flex: 0 0 2.15vw;
+    border-radius: .48vw;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle svg,
+  .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger svg {
+    width: 1.08vw;
+    height: 1.08vw;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Keep the desktop landing screen at the same visual size as 125% browser
+   zoom. homepage-zoom.js sets the compensation factor from devicePixelRatio.
+   cqw is based on the compensated box width, so typography and artwork do
+   not drift when Chrome changes its CSS viewport at 100/80/50/25% zoom.
+   Phone/touch layouts are excluded and keep the regular responsive behavior.
+   ------------------------------------------------------------------------- */
+@media (min-width: 1025px) {
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav {
+    zoom: var(--homepage-zoom-compensation, 1);
+    width: calc(100vw / var(--homepage-zoom-compensation, 1));
+    max-width: none;
+    height: calc(4.1vw / var(--homepage-zoom-compensation, 1));
+    min-height: calc(4.1vw / var(--homepage-zoom-compensation, 1));
+    padding: 0 calc(2vw / var(--homepage-zoom-compensation, 1));
+    gap: calc(.9vw / var(--homepage-zoom-compensation, 1));
+    container-type: inline-size;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav__logo {
+    max-width: 25cqw;
+    font-size: 1.15cqw;
+    padding-inline-start: .12cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav__list {
+    gap: .23cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav__link {
+    padding: .45cqw .8cqw;
+    font-size: .74cqw;
+    line-height: 1.25;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-language-switch {
+    gap: .06cqw;
+    padding: .12cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-language-switch__button {
+    min-width: 1.7cqw;
+    padding: .34cqw .4cqw;
+    font-size: .56cqw;
+    line-height: 1.1;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle,
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger {
+    width: 2.15cqw;
+    height: 2.15cqw;
+    min-width: 2.15cqw;
+    min-height: 2.15cqw;
+    flex: 0 0 2.15cqw;
+    border-radius: .48cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle svg,
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger svg {
+    width: 1.08cqw;
+    height: 1.08cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-section--hero {
+    zoom: var(--homepage-zoom-compensation, 1);
+    width: calc(100vw / var(--homepage-zoom-compensation, 1));
+    max-width: none;
+    padding: 0;
+    container-type: inline-size;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-section--hero > .animfolio-inner {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero {
+    width: 100%;
+    min-height: calc(100dvh / var(--homepage-zoom-compensation, 1));
+    padding: 4.1cqw 0 3.5cqw;
+    overflow: hidden;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__content {
+    width: 100%;
+    max-width: none;
+    padding-inline: 12cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__name {
+    font-size: 4.5cqw;
+    line-height: 1.08;
+    margin-bottom: .45cqw;
+    letter-spacing: -.03em;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__title {
+    font-size: 3.6cqw;
+    line-height: 1.14;
+    margin-bottom: .9cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__subtitle {
+    width: min(30cqw, 100%);
+    max-width: 30cqw;
+    font-size: 1.08cqw;
+    line-height: 1.7;
+    margin: 0 auto 1.8cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__cta {
+    gap: .9cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__cta > .animfolio-button,
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__cta > a.animfolio-button {
+    min-height: 3.1cqw;
+    padding: .68cqw 1.58cqw;
+    font-size: .9cqw;
+    line-height: 1.2;
+    gap: .45cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__social {
+    margin-top: 1.8cqw;
+    gap: .7cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-social-icons--outline a,
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-social-icons--filled a,
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-social-icons--rounded a,
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-social-icons--square a {
+    width: 2.5cqw;
+    height: 2.5cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__social svg {
+    width: 1.15cqw;
+    height: 1.15cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__ai-art {
+    top: 50%;
+    right: 16cqw;
+    width: 34cqw;
+    max-width: none;
+    transform: translateY(-50%);
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__learning-art {
+    top: 35%;
+    left: 13cqw;
+    width: 25cqw;
+    max-width: none;
+    transform: translateY(-50%);
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__software-art {
+    left: 18cqw;
+    bottom: 2cqw;
+    width: 19cqw;
+    max-width: none;
+  }
+}

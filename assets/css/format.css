@@ -1,0 +1,714 @@
+/**
+ * AnimFolio — Format 11: Student Fresh
+ * Cây Xanh, Cây Đào, and Cây Mai palettes with coordinated light and dark surfaces.
+ */
+
+.animfolio-container--format-11 {
+	--af11-accent-rgb: 35, 118, 75;
+	--af11-secondary-rgb: 219, 39, 119;
+	--animfolio-font-heading: 'Nunito', sans-serif;
+	--animfolio-font-body: 'Nunito', sans-serif;
+	font-family: 'Nunito', sans-serif;
+	background: var(--af11-bg);
+	color: var(--af11-text);
+}
+
+/* Light surfaces use deep accent text; dark surfaces soften the same hues for contrast. */
+.animfolio-container--format-11,
+.animfolio-container--format-11.animfolio-container--light {
+	--af11-accent: var(--animfolio-accent, #3F7465);
+	--af11-secondary: var(--animfolio-secondary, #8F614B);
+	--af11-bg: #F6F7F5;
+	--af11-bg-secondary: #EEF2EF;
+	--af11-text: #1C2823;
+	--af11-text-muted: #68766F;
+	--af11-border: rgba(28, 40, 35, 0.1);
+	--af11-surface: #FFFFFF;
+	--af11-link: var(--animfolio-accent-text, var(--animfolio-accent, #3F7465));
+	--af11-link-hover: color-mix(in srgb, var(--animfolio-accent, #3F7465) 78%, black);
+	--af11-badge-accent-text: var(--animfolio-accent-text, var(--animfolio-accent, #3F7465));
+	--af11-badge-secondary-text: var(--animfolio-secondary-text, var(--animfolio-secondary, #8F614B));
+	--af11-secondary-text: var(--animfolio-secondary-text, var(--animfolio-secondary, #8F614B));
+	--af11-on-accent: var(--animfolio-on-accent, #FFFFFF);
+	--af11-on-secondary: var(--animfolio-on-secondary, #FFFFFF);
+	--animfolio-accent-text: var(--animfolio-accent, #3F7465);
+	--animfolio-secondary-text: var(--animfolio-secondary, #8F614B);
+	--animfolio-bg: #F6F7F5;
+	--animfolio-bg-secondary: #EEF2EF;
+	--animfolio-bg-tertiary: #E4EAE6;
+	--animfolio-text: #1C2823;
+	--animfolio-text-secondary: #47564F;
+	--animfolio-text-muted: #68766F;
+	--animfolio-border: rgba(28, 40, 35, 0.1);
+}
+
+.animfolio-container--format-11.animfolio-container--dark {
+	--af11-accent: var(--animfolio-accent, #3F7465);
+	--af11-secondary: var(--animfolio-secondary, #8F614B);
+	--af11-bg: #121B17;
+	--af11-bg-secondary: #1A2821;
+	--af11-text: #EDF3EF;
+	--af11-text-muted: #9BAEA3;
+	--af11-border: color-mix(in srgb, var(--animfolio-accent, #3F7465) 22%, transparent);
+	--af11-surface: #1A2821;
+	--af11-link: color-mix(in srgb, var(--animfolio-accent, #3F7465) 48%, white);
+	--af11-link-hover: color-mix(in srgb, var(--animfolio-accent, #3F7465) 38%, white);
+	--af11-badge-accent-text: color-mix(in srgb, var(--animfolio-accent, #3F7465) 48%, white);
+	--af11-badge-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 48%, white);
+	--af11-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 48%, white);
+	--af11-on-accent: var(--animfolio-on-accent, #FFFFFF);
+	--af11-on-secondary: var(--animfolio-on-secondary, #FFFFFF);
+	--animfolio-accent-text: color-mix(in srgb, var(--animfolio-accent, #3F7465) 48%, white);
+	--animfolio-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 48%, white);
+	--animfolio-bg: #121B17;
+	--animfolio-bg-secondary: #1A2821;
+	--animfolio-bg-tertiary: #24352C;
+	--animfolio-text: #EDF3EF;
+	--animfolio-text-secondary: #B6C4BC;
+	--animfolio-text-muted: #9BAEA3;
+	--animfolio-border: color-mix(in srgb, var(--animfolio-accent, #3F7465) 22%, transparent);
+}
+/* ── Nav: Oval palette buttons ── */
+
+.animfolio-container--format-11 .animfolio-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	background: color-mix(in srgb, var(--af11-bg) 92%, transparent);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	border-bottom: 1px solid var(--af11-border);
+	padding: 0 2rem;
+}
+
+.animfolio-container--format-11 .animfolio-nav__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: var(--animfolio-container, 1200px);
+	margin: 0 auto;
+	height: 60px;
+}
+
+.animfolio-container--format-11 .animfolio-nav__logo {
+	font-family: 'Nunito', sans-serif;
+	font-size: 1.125rem;
+	font-weight: 800;
+	color: var(--af11-text);
+	text-decoration: none;
+}
+
+.animfolio-container--format-11 .animfolio-nav__logo span {
+	background: linear-gradient(135deg, var(--af11-accent), var(--af11-secondary));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.animfolio-container--format-11 .animfolio-nav__links {
+	display: flex;
+	gap: 8px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.animfolio-container--format-11 .animfolio-nav__link {
+	font-size: 0.875rem;
+	font-weight: 700;
+	color: var(--af11-text);
+	text-decoration: none;
+	padding: 6px 16px;
+	border-radius: 999px;
+	transition: all 0.2s ease;
+	background: color-mix(in srgb, var(--af11-accent) 7%, var(--af11-bg-secondary));
+}
+
+.animfolio-container--format-11 .animfolio-nav__link:hover {
+	color: var(--af11-text);
+	border-color: var(--af11-accent);
+	background: color-mix(in srgb, var(--af11-accent) 15%, var(--af11-bg-secondary));
+}
+
+.animfolio-container--format-11 .animfolio-nav__link--active {
+	/* White text remains legible across the palette accent gradient. */
+	color: var(--af11-on-accent);
+	background: linear-gradient(135deg, var(--af11-accent), var(--af11-secondary));
+	border-color: transparent;
+	box-shadow: 0 2px 8px color-mix(in srgb, var(--animfolio-accent, #3F7465) 30%, transparent);
+}
+
+/* ── Hero: Friendly and inviting ── */
+
+.animfolio-container--format-11 .animfolio-hero {
+	box-sizing: border-box;
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 72px 20px 64px;
+	position: relative;
+	overflow: hidden;
+}
+
+.animfolio-container--format-11 .animfolio-hero::before {
+	display: none;
+}
+
+.animfolio-container--format-11 .animfolio-hero::after {
+	display: none;
+}
+
+/* Adaptive AI artwork behind the hero copy. SVG colors come from the active
+   palette variables, while opacity follows the current light/dark scheme. */
+.animfolio-container--format-11 .animfolio-hero__ai-art {
+	position: absolute;
+	z-index: 1;
+	top: 50%;
+	right: max(-170px, calc((100vw - 1200px) / 2 - 100px));
+	width: min(54vw, 600px);
+	height: auto;
+	transform: translateY(-50%);
+	opacity: 0.18;
+	pointer-events: none;
+	filter: drop-shadow(0 16px 42px color-mix(in srgb, var(--animfolio-accent) 14%, transparent));
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__ai-art {
+	opacity: 0.13;
+}
+
+.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__ai-art {
+	opacity: 0.23;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-orbit {
+	fill: none;
+	stroke: var(--animfolio-accent);
+	stroke-width: 1.5;
+	stroke-dasharray: 5 10;
+	opacity: 0.38;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-orbit--secondary {
+	stroke: var(--animfolio-secondary);
+	stroke-dasharray: none;
+	opacity: 0.3;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-brain {
+	fill: color-mix(in srgb, var(--animfolio-accent) 7%, var(--animfolio-bg));
+	stroke: var(--animfolio-accent);
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	opacity: 0.9;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-circuit {
+	fill: none;
+	stroke: var(--animfolio-secondary);
+	stroke-width: 2.4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	opacity: 0.72;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-node {
+	fill: var(--animfolio-accent);
+	stroke: var(--animfolio-bg);
+	stroke-width: 3;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-chip {
+	fill: var(--animfolio-bg);
+	stroke: var(--animfolio-secondary);
+	stroke-width: 3;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-label {
+	fill: var(--animfolio-accent);
+	font: 800 26px/1 'Nunito', sans-serif;
+	letter-spacing: 1px;
+}
+
+/* A companion open-book circuit illustration balances the AI brain on the left. */
+.animfolio-container--format-11 .animfolio-hero__learning-art {
+	position: absolute;
+	z-index: 1;
+	top: 35%;
+	left: max(-230px, calc((100vw - 1200px) / 2 - 230px));
+	width: min(38vw, 420px);
+	height: auto;
+	transform: translateY(-50%);
+	opacity: 0.14;
+	pointer-events: none;
+	filter: drop-shadow(0 12px 34px color-mix(in srgb, var(--animfolio-secondary) 13%, transparent));
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__learning-art {
+	opacity: 0.1;
+}
+
+.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__learning-art {
+	opacity: 0.19;
+}
+
+.animfolio-container--format-11 .animfolio-hero__learning-orbit {
+	fill: none;
+	stroke: var(--animfolio-secondary);
+	stroke-width: 1.6;
+	stroke-dasharray: 3 9;
+	opacity: 0.42;
+}
+
+.animfolio-container--format-11 .animfolio-hero__learning-book {
+	fill: color-mix(in srgb, var(--animfolio-secondary) 7%, var(--animfolio-bg));
+	stroke: var(--animfolio-secondary);
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.animfolio-container--format-11 .animfolio-hero__learning-circuit {
+	fill: none;
+	stroke: var(--animfolio-accent);
+	stroke-width: 2.5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	opacity: 0.78;
+}
+
+.animfolio-container--format-11 .animfolio-hero__learning-node {
+	fill: var(--animfolio-accent);
+	stroke: var(--animfolio-bg);
+	stroke-width: 3;
+}
+
+/* Software terminal detail in the lower-left balances the two upper artworks. */
+.animfolio-container--format-11 .animfolio-hero__software-art {
+	position: absolute;
+	z-index: 1;
+	left: max(20px, calc((100vw - 1200px) / 2 + 10px));
+	bottom: 52px;
+	width: min(26vw, 340px);
+	height: auto;
+	opacity: 0.13;
+	pointer-events: none;
+	filter: drop-shadow(0 12px 32px color-mix(in srgb, var(--animfolio-accent) 13%, transparent));
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__software-art {
+	opacity: 0.09;
+}
+
+.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__software-art {
+	opacity: 0.18;
+}
+
+.animfolio-container--format-11 .animfolio-hero__software-window {
+	fill: color-mix(in srgb, var(--animfolio-accent) 5%, var(--animfolio-bg));
+	stroke: var(--animfolio-accent);
+	stroke-width: 2.5;
+}
+
+.animfolio-container--format-11 .animfolio-hero__software-header {
+	fill: color-mix(in srgb, var(--animfolio-secondary) 12%, var(--animfolio-bg));
+	stroke: var(--animfolio-secondary);
+	stroke-width: 1.5;
+}
+
+.animfolio-container--format-11 .animfolio-hero__software-code {
+	fill: var(--animfolio-secondary);
+	font: 800 24px/1 var(--animfolio-font-mono, monospace);
+}
+
+.animfolio-container--format-11 .animfolio-hero__software-lines {
+	fill: none;
+	stroke: var(--animfolio-accent);
+	stroke-width: 3;
+	stroke-linecap: round;
+	opacity: 0.72;
+}
+
+.animfolio-container--format-11 .animfolio-hero__software-node {
+	fill: var(--animfolio-secondary);
+	stroke: var(--animfolio-bg);
+	stroke-width: 2.5;
+}
+
+.animfolio-container--format-11 .animfolio-hero__wave {
+	font-size: 3rem;
+	margin-bottom: 16px;
+}
+
+.animfolio-container--format-11 .animfolio-hero__title {
+	font-size: clamp(2.5rem, 6vw, 4rem);
+	font-weight: 800;
+	line-height: 1.2;
+	margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+	.animfolio-container--format-11 .animfolio-hero__ai-art {
+		top: 56%;
+		right: -190px;
+		width: min(86vw, 430px);
+		opacity: 0.1;
+	}
+
+	.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__ai-art {
+		opacity: 0.16;
+	}
+
+	.animfolio-container--format-11 .animfolio-hero__learning-art {
+		top: 36%;
+		left: -240px;
+		width: min(76vw, 360px);
+		opacity: 0.06;
+	}
+
+	.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__learning-art {
+		opacity: 0.1;
+	}
+
+	.animfolio-container--format-11 .animfolio-hero__software-art {
+		left: -95px;
+		bottom: 32px;
+		width: min(75vw, 300px);
+		opacity: 0.045;
+	}
+
+	.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__software-art {
+		opacity: 0.075;
+	}
+}
+
+.animfolio-container--format-11 .animfolio-hero__title span {
+	background: linear-gradient(135deg, var(--af11-accent), var(--af11-secondary));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.animfolio-container--format-11 .animfolio-hero__subtitle {
+	font-size: 1.2rem;
+	color: var(--af11-text-muted);
+	max-width: 500px;
+	line-height: 1.7;
+	margin-bottom: 32px;
+}
+
+/* ── Colorful CTA buttons ── */
+
+.animfolio-container--format-11 .animfolio-cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 14px 28px;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 1rem;
+	text-decoration: none;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	white-space: nowrap;
+}
+
+.animfolio-container--format-11 .animfolio-cta:hover {
+	transform: translateY(-3px) scale(1.02);
+	opacity: 1;
+}
+
+.animfolio-container--format-11 .animfolio-cta--primary {
+	background: var(--af11-accent);
+	color: var(--af11-on-accent);
+	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-accent, #3F7465) 35%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-cta--secondary {
+	background: var(--af11-secondary);
+	color: var(--af11-on-secondary);
+	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-secondary, #8F614B) 30%, transparent);
+}
+
+/* ── Section alternating backgrounds ── */
+
+.animfolio-container--format-11 .animfolio-section:nth-child(even) {
+	background: var(--af11-bg-secondary);
+}
+
+/* ── Base button override: high-contrast text on the accent fill ── */
+
+.animfolio-container--format-11 .animfolio-button--primary,
+.animfolio-container--format-11 a.animfolio-button--primary {
+	background: var(--af11-accent);
+	color: var(--af11-on-accent);
+	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-accent, #3F7465) 30%, transparent);
+	border-radius: 999px;
+	padding: 12px 28px;
+	font-weight: 700;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.animfolio-container--format-11 .animfolio-button--primary:hover,
+.animfolio-container--format-11 a.animfolio-button--primary:hover {
+	color: var(--af11-on-accent);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px color-mix(in srgb, var(--animfolio-accent, #3F7465) 40%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-button--secondary,
+.animfolio-container--format-11 a.animfolio-button--secondary {
+	color: var(--af11-text);
+	border: 2px solid var(--af11-border);
+	border-radius: 999px;
+	padding: 12px 28px;
+	font-weight: 700;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background: transparent;
+	transition: border-color 0.2s ease, background 0.2s ease;
+	white-space: nowrap;
+}
+
+.animfolio-container--format-11 .animfolio-button--secondary:hover,
+.animfolio-container--format-11 a.animfolio-button--secondary:hover {
+	border-color: var(--af11-accent);
+	background: color-mix(in srgb, var(--animfolio-accent, #3F7465) 6%, transparent);
+	color: var(--af11-text);
+}
+
+/* ── Links: scheme-aware accent text ── */
+
+.animfolio-container--format-11 a {
+	color: var(--af11-link);
+}
+
+.animfolio-container--format-11 a:hover {
+	color: var(--af11-link-hover);
+}
+
+/* ── Section titles: Playful underline ── */
+
+.animfolio-container--format-11 .animfolio-section {
+	padding: 80px 0;
+}
+
+.animfolio-container--format-11 .animfolio-section__title {
+	font-size: 2rem;
+	font-weight: 800;
+	text-align: center;
+	margin-bottom: 8px;
+}
+
+.animfolio-container--format-11 .animfolio-section__subtitle {
+	text-align: center;
+	color: var(--af11-text-muted);
+	margin-top: 8px;
+	margin-bottom: 48px;
+}
+
+/* ── Colorful cards ── */
+
+.animfolio-container--format-11 .animfolio-card {
+	background: var(--af11-surface);
+	border: 2px solid var(--af11-border);
+	border-radius: 20px;
+	padding: 28px;
+	overflow: hidden;
+	transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+	/* prevent double border when base styles add one */
+	box-sizing: border-box;
+}
+
+.animfolio-container--format-11 .animfolio-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+	border-color: var(--af11-accent);
+}
+
+.animfolio-container--format-11 .animfolio-card__icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, color-mix(in srgb, var(--animfolio-accent, #3F7465) 15%, transparent), color-mix(in srgb, var(--animfolio-secondary, #8F614B) 10%, transparent));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.3rem;
+	margin-bottom: 16px;
+	flex-shrink: 0;
+}
+
+.animfolio-container--format-11 .animfolio-card__title {
+	font-size: 1.15rem;
+	font-weight: 700;
+	margin-bottom: 8px;
+	word-break: break-word;
+	overflow-wrap: break-word;
+}
+
+.animfolio-container--format-11 .animfolio-card__meta {
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var(--af11-secondary-text);
+	margin-bottom: 12px;
+	word-break: break-word;
+}
+
+.animfolio-container--format-11 .animfolio-card__description {
+	color: var(--af11-text-muted);
+	font-size: 0.95rem;
+	line-height: 1.7;
+	word-break: break-word;
+	overflow-wrap: break-word;
+}
+
+/* ── GPA badge ── */
+
+.animfolio-container--format-11 .animfolio-gpa-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 20px;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--af11-accent), var(--af11-secondary));
+	/* White text remains legible across the palette accent gradient. */
+	color: var(--af11-on-accent);
+	font-weight: 700;
+	font-size: 0.9rem;
+}
+
+/* ── Extracurricular badges ── */
+
+.animfolio-container--format-11 .animfolio-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 16px;
+	border-radius: 12px;
+	font-size: 0.8rem;
+	font-weight: 700;
+	background: color-mix(in srgb, var(--animfolio-accent, #3F7465) 12%, transparent);
+	color: var(--af11-badge-accent-text);
+}
+
+.animfolio-container--format-11 .animfolio-badge--secondary {
+	background: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 12%, transparent);
+	color: var(--af11-badge-secondary-text);
+}
+
+/* ── Fun grid layout ── */
+
+.animfolio-container--format-11 .animfolio-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 20px;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 1024px) {
+	.animfolio-container--format-11 .animfolio-nav__links {
+		gap: 4px;
+	}
+
+	.animfolio-container--format-11 .animfolio-nav__link {
+		padding: 6px 12px;
+		font-size: 0.8125rem;
+	}
+
+	.animfolio-container--format-11 .animfolio-grid {
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	}
+}
+
+@media (max-width: 768px) {
+	.animfolio-container--format-11 .animfolio-nav__links {
+		display: none;
+	}
+
+	.animfolio-container--format-11 .animfolio-hero {
+		padding: 80px 16px 60px;
+	}
+
+	.animfolio-container--format-11 .animfolio-hero__title {
+		word-break: break-word;
+		overflow-wrap: break-word;
+	}
+
+	.animfolio-container--format-11 .animfolio-hero__subtitle {
+		font-size: 1rem;
+	}
+
+	.animfolio-container--format-11 .animfolio-section {
+		padding: 60px 0;
+	}
+
+	.animfolio-container--format-11 .animfolio-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.animfolio-container--format-11 .animfolio-gpa-badge {
+		font-size: 0.8rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.animfolio-container--format-11 .animfolio-hero {
+		padding: 72px 12px 48px;
+	}
+
+	.animfolio-container--format-11 .animfolio-hero__wave {
+		font-size: 2rem;
+	}
+
+	.animfolio-container--format-11 .animfolio-hero__title {
+		font-size: clamp(1.75rem, 8vw, 2.5rem);
+	}
+
+	.animfolio-container--format-11 .animfolio-cta,
+	.animfolio-container--format-11 .animfolio-button--primary,
+	.animfolio-container--format-11 .animfolio-button--secondary {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.animfolio-container--format-11 .animfolio-section__title {
+		font-size: 1.5rem;
+	}
+
+	.animfolio-container--format-11 .animfolio-card {
+		padding: 20px;
+	}
+}
+
+/* Hero is one full viewport: the inner .animfolio-hero owns the 100vh + its own
+   nav-clearance padding, so the hero SECTION must not add the standard section
+   spacing on top (that pushed the hero past one screen and the content low).
+   Higher specificity (.animfolio-section.animfolio-section--hero) beats the
+   format's own .animfolio-section padding at every breakpoint. */
+.animfolio-container--format-11 .animfolio-section.animfolio-section--hero {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+
+
+
+
+
+

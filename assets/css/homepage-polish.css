@@ -1,0 +1,673 @@
+/*
+ * Homepage visual polish
+ * Refines only the landing hero: layered atmosphere, clearer visual hierarchy,
+ * balanced illustration placement and a compact technology-focus rail.
+ * The existing desktop zoom compensation and mobile responsive rules remain
+ * responsible for their respective viewport behaviors.
+ */
+
+.animfolio-container--format-11 #hero.animfolio-section--hero {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 34% 46% at 50% 45%, color-mix(in srgb, var(--animfolio-accent) 12%, transparent), transparent 74%),
+    radial-gradient(ellipse 25% 38% at 14% 40%, color-mix(in srgb, var(--animfolio-secondary) 9%, transparent), transparent 72%),
+    radial-gradient(ellipse 28% 42% at 88% 58%, color-mix(in srgb, var(--animfolio-accent) 10%, transparent), transparent 72%),
+    var(--af11-bg) !important;
+}
+
+.animfolio-container--format-11 .animfolio-hero {
+  isolation: isolate;
+  padding-top: clamp(104px, 8.5vh, 142px);
+  padding-bottom: clamp(76px, 8vh, 108px);
+}
+
+/* Fine grid and soft corner framing add structure without competing with text. */
+.animfolio-container--format-11 .animfolio-hero::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 0;
+  inset: 18px clamp(14px, 2vw, 36px) 18px;
+  border: 1px solid color-mix(in srgb, var(--animfolio-accent) 23%, transparent);
+  border-radius: clamp(18px, 2vw, 32px);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--animfolio-secondary) 30%, transparent) 1px, transparent 1.7px) 0 0 / 26px 26px,
+    linear-gradient(90deg, transparent 0 49.94%, color-mix(in srgb, var(--animfolio-accent) 5%, transparent) 50%, transparent 50.06%) 0 0 / 100% 100%,
+    linear-gradient(180deg, color-mix(in srgb, var(--animfolio-accent) 3%, transparent), transparent 34%);
+  opacity: .42;
+  pointer-events: none;
+  mask-image: linear-gradient(180deg, transparent 0, #000 8%, #000 90%, transparent 100%);
+}
+
+/* A broad orbit behind the three existing vector illustrations. */
+.animfolio-container--format-11 .animfolio-hero::after {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 0;
+  width: min(66vw, 940px);
+  aspect-ratio: 1;
+  left: 50%;
+  top: 49%;
+  border: 1px dashed color-mix(in srgb, var(--animfolio-secondary) 22%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 0 22px color-mix(in srgb, var(--animfolio-accent) 2.5%, transparent),
+    inset 0 0 90px color-mix(in srgb, var(--animfolio-accent) 4%, transparent);
+  opacity: .5;
+  pointer-events: none;
+}
+
+.animfolio-container--format-11 .animfolio-hero__ai-art {
+  opacity: .30;
+  filter:
+    drop-shadow(0 18px 48px color-mix(in srgb, var(--animfolio-accent) 22%, transparent))
+    saturate(1.15);
+  animation: homepage-art-float 16s ease-in-out infinite;
+}
+
+.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__ai-art {
+  opacity: .34;
+}
+
+.animfolio-container--format-11 .animfolio-hero__learning-art {
+  opacity: .25;
+  filter: drop-shadow(0 14px 38px color-mix(in srgb, var(--animfolio-secondary) 20%, transparent));
+  animation: homepage-art-float 19s ease-in-out -4s infinite;
+}
+
+.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__learning-art {
+  opacity: .28;
+}
+
+.animfolio-container--format-11 .animfolio-hero__software-art {
+  opacity: .22;
+  filter: drop-shadow(0 14px 36px color-mix(in srgb, var(--animfolio-accent) 20%, transparent));
+  animation: homepage-art-float 21s ease-in-out -8s infinite;
+}
+
+.animfolio-container--format-11.animfolio-container--dark .animfolio-hero__software-art {
+  opacity: .25;
+}
+
+@keyframes homepage-art-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+.animfolio-container--format-11 .animfolio-hero__content {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 1040px);
+  margin-inline: auto;
+  padding-inline: clamp(18px, 4vw, 72px);
+}
+
+.animfolio-container--format-11 .animfolio-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto clamp(18px, 2.1vh, 26px);
+  padding: 9px 16px;
+  border: 1px solid color-mix(in srgb, var(--animfolio-secondary) 38%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--af11-bg-secondary) 76%, transparent);
+  color: var(--af11-text-muted);
+  font-size: clamp(10px, .72vw, 13px);
+  font-weight: 800;
+  letter-spacing: .15em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  box-shadow: 0 8px 28px color-mix(in srgb, #000 12%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.animfolio-container--format-11 .animfolio-hero__eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: var(--animfolio-secondary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--animfolio-secondary) 15%, transparent),
+              0 0 16px color-mix(in srgb, var(--animfolio-secondary) 55%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-hero__name {
+  letter-spacing: -.055em;
+  text-shadow: 0 10px 36px color-mix(in srgb, #000 22%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-hero__title {
+  margin-top: .06em;
+  letter-spacing: -.045em;
+  text-shadow: 0 12px 38px color-mix(in srgb, #000 20%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-hero__title span {
+  background: linear-gradient(115deg, var(--animfolio-text) 3%, color-mix(in srgb, var(--animfolio-accent) 58%, white) 47%, var(--animfolio-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.animfolio-container--format-11 .animfolio-hero__subtitle {
+  max-width: 620px;
+  margin-inline: auto;
+  text-wrap: balance;
+}
+
+.animfolio-container--format-11 .animfolio-hero__tech-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: clamp(18px, 2.2vh, 28px) auto clamp(26px, 3vh, 38px);
+  max-width: 760px;
+}
+
+.animfolio-container--format-11 .animfolio-hero__tech-label {
+  margin-inline-end: 5px;
+  color: var(--af11-text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.animfolio-container--format-11 .animfolio-hero__tech-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--animfolio-accent) 27%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--af11-bg-secondary) 72%, transparent);
+  color: var(--af11-text-secondary);
+  font-size: clamp(10px, .72vw, 12px);
+  font-weight: 800;
+  letter-spacing: .025em;
+  box-shadow: 0 5px 18px color-mix(in srgb, #000 9%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.animfolio-container--format-11 .animfolio-hero__tech-chip::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--animfolio-secondary);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--animfolio-secondary) 55%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-hero__tech-chip:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--animfolio-secondary) 65%, transparent);
+  color: var(--af11-text);
+}
+
+.animfolio-container--format-11 .animfolio-hero__cta {
+  justify-content: center;
+  gap: clamp(12px, 1vw, 18px);
+}
+
+.animfolio-container--format-11 .animfolio-hero__cta .animfolio-button {
+  min-width: 168px;
+  min-height: 54px;
+  justify-content: center;
+  box-shadow: 0 12px 32px color-mix(in srgb, #000 18%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-hero__cta .animfolio-button--primary {
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--animfolio-accent) 28%, transparent);
+}
+
+.animfolio-container--format-11 .animfolio-hero__social {
+  margin-top: clamp(22px, 2.7vh, 34px);
+}
+
+.animfolio-container--format-11 .animfolio-hero__social a {
+  border-color: color-mix(in srgb, var(--animfolio-secondary) 38%, transparent);
+  background: color-mix(in srgb, var(--af11-bg-secondary) 58%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Small labels annotate the two illustration clusters without adding clutter. */
+.animfolio-container--format-11 .animfolio-hero__side-note {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  gap: 4px;
+  width: clamp(138px, 12vw, 190px);
+  padding: 12px 15px;
+  border: 1px solid color-mix(in srgb, var(--animfolio-accent) 27%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--af11-bg-secondary) 72%, transparent);
+  box-shadow: 0 12px 34px color-mix(in srgb, #000 16%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+.animfolio-container--format-11 .animfolio-hero__side-note--left {
+  left: clamp(28px, 4.5vw, 82px);
+  top: 57%;
+}
+
+.animfolio-container--format-11 .animfolio-hero__side-note--right {
+  right: clamp(28px, 4.5vw, 82px);
+  top: 27%;
+}
+
+.animfolio-container--format-11 .animfolio-hero__side-note strong {
+  color: var(--af11-text);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .13em;
+}
+
+.animfolio-container--format-11 .animfolio-hero__side-note span {
+  color: var(--af11-text-muted);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.animfolio-container--format-11 .animfolio-hero__side-index {
+  color: var(--animfolio-secondary) !important;
+  font-family: var(--animfolio-font-mono);
+  font-size: 9px !important;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.animfolio-container--format-11 .animfolio-hero__scroll-cue {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 13px;
+  border: 1px solid color-mix(in srgb, var(--animfolio-accent) 24%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--af11-bg-secondary) 64%, transparent);
+  color: var(--af11-text-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .18em;
+  text-decoration: none;
+  transform: translateX(-50%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: color .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.animfolio-container--format-11 .animfolio-hero__scroll-cue:hover {
+  color: var(--af11-text);
+  border-color: var(--animfolio-secondary);
+  transform: translate(-50%, -3px);
+}
+
+.animfolio-container--format-11 .animfolio-hero__scroll-cue svg {
+  width: 13px;
+  height: 13px;
+  stroke: var(--animfolio-secondary);
+  animation: homepage-scroll-nudge 1.8s ease-in-out infinite;
+}
+
+@keyframes homepage-scroll-nudge {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(3px); }
+}
+
+/* Keep zoom compensation in sync with the new eyebrow, chips and side notes. */
+@media (min-width: 1025px) {
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero::before {
+    inset: 1.2cqw 2cqw 1.2cqw;
+    border-radius: 1.8cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__content {
+    max-width: none;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__eyebrow {
+    margin-bottom: 1.15cqw;
+    padding: .5cqw .9cqw;
+    gap: .55cqw;
+    font-size: .68cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__eyebrow-dot {
+    width: .42cqw;
+    height: .42cqw;
+    flex-basis: .42cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__tech-rail {
+    gap: .42cqw;
+    margin: 1.25cqw auto 1.7cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__tech-label {
+    font-size: .55cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__tech-chip {
+    min-height: 1.72cqw;
+    padding: .32cqw .68cqw;
+    gap: .36cqw;
+    font-size: .62cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__tech-chip::before {
+    width: .28cqw;
+    height: .28cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note {
+    width: 10.2cqw;
+    padding: .68cqw .82cqw;
+    gap: .22cqw;
+    border-radius: .78cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note strong {
+    font-size: .66cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note span {
+    font-size: .55cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note--left {
+    left: 4.5cqw;
+    top: 57%;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note--right {
+    right: 4.5cqw;
+    top: 27%;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__scroll-cue {
+    bottom: 1.1cqw;
+    gap: .55cqw;
+    padding: .42cqw .68cqw;
+    font-size: .5cqw;
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__scroll-cue svg {
+    width: .7cqw;
+    height: .7cqw;
+  }
+}
+
+@media (max-width: 1024px) {
+  .animfolio-container--format-11 .animfolio-hero::before {
+    inset: 10px 10px 12px;
+    opacity: .25;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero::after {
+    width: 92vw;
+    opacity: .26;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__side-note {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .animfolio-container--format-11 #hero.animfolio-section--hero {
+    background:
+      radial-gradient(ellipse 72% 42% at 50% 35%, color-mix(in srgb, var(--animfolio-accent) 11%, transparent), transparent 76%),
+      var(--af11-bg) !important;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero {
+    padding-top: 96px;
+    padding-bottom: 78px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__eyebrow {
+    max-width: min(100%, 340px);
+    padding: 8px 12px;
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-align: center;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__tech-rail {
+    max-width: 370px;
+    margin: 18px auto 24px;
+    gap: 7px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__tech-label {
+    flex-basis: 100%;
+    margin: 0 0 2px;
+    text-align: center;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__tech-chip {
+    min-height: 28px;
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__cta .animfolio-button {
+    min-width: 148px;
+    min-height: 48px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__scroll-cue {
+    bottom: 12px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .animfolio-container--format-11 .animfolio-hero::before {
+    border-radius: 18px;
+    background-size: 22px 22px, 100% 100%, 100% 100%;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__tech-rail {
+    max-width: 310px;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__cta .animfolio-button {
+    width: 100%;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__scroll-cue {
+    display: none;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__ai-art {
+    opacity: .15;
+  }
+
+  .animfolio-container--format-11 .animfolio-hero__learning-art,
+  .animfolio-container--format-11 .animfolio-hero__software-art {
+    opacity: .1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animfolio-container--format-11 .animfolio-hero__ai-art,
+  .animfolio-container--format-11 .animfolio-hero__learning-art,
+  .animfolio-container--format-11 .animfolio-hero__software-art,
+  .animfolio-container--format-11 .animfolio-hero__scroll-cue svg {
+    animation: none !important;
+  }
+}
+
+
+/* Third hero note: AI tools, stacked below the 02 / CREATE note on the right. */
+.animfolio-container--format-11 .animfolio-hero__side-note--third {
+  right: clamp(28px, 4.5vw, 82px);
+  top: 55%;
+  border-color: color-mix(in srgb, var(--animfolio-secondary) 34%, transparent);
+}
+.animfolio-container--format-11 .animfolio-hero__side-note--third .animfolio-hero__side-index {
+  color: var(--animfolio-accent) !important;
+}
+@media (min-width: 1025px) {
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note--third {
+    right: 4.5cqw;
+    top: 55%;
+    width: 10.2cqw;
+    padding: .68cqw .82cqw;
+    gap: .22cqw;
+    border-radius: .78cqw;
+  }
+}
+
+
+/* Theme-aware MoteLona entry point inside the featured project card. */
+.animfolio-container--format-11 .motelona-project-actions [data-motelona-open] {
+  border: 1px solid color-mix(in srgb, var(--animfolio-accent) 55%, transparent);
+  background: linear-gradient(125deg, var(--animfolio-accent), color-mix(in srgb, var(--animfolio-accent) 72%, var(--animfolio-secondary) 28%));
+  color: var(--animfolio-on-accent, #fff);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--animfolio-accent) 22%, transparent);
+}
+.animfolio-container--format-11 .motelona-project-actions [data-motelona-open]:hover {
+  filter: brightness(1.07) saturate(1.06);
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------------------------------------------
+   Readability refinement — desktop navigation and light-mode artwork.
+   The navigation's fixed height is intentionally left unchanged: only the
+   text, horizontal hit area and icon artwork are enlarged.
+   ------------------------------------------------------------------------- */
+@media (min-width: 1025px) {
+  .animfolio-container--format-11 .animfolio-nav__link {
+    padding: .45vw clamp(11px, .95vw, 18px);
+    font-size: clamp(12px, .88vw, 16px);
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: .005em;
+  }
+
+  .animfolio-container--format-11 .animfolio-language-switch__button {
+    min-width: clamp(28px, 1.9vw, 36px);
+    padding: .34vw clamp(6px, .5vw, 10px);
+    font-size: clamp(10px, .68vw, 13px);
+  }
+
+  .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle svg,
+  .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger svg {
+    width: clamp(15px, 1.22vw, 20px);
+    height: clamp(15px, 1.22vw, 20px);
+  }
+}
+
+/* Zoom compensation uses the nav as a container, so use cqw to keep the
+   larger controls visually consistent at every desktop browser zoom level. */
+@media (min-width: 1025px) {
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav__link {
+    padding: .45cqw clamp(11px, .95cqw, 18px);
+    font-size: clamp(12px, .88cqw, 16px);
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-language-switch__button {
+    min-width: clamp(28px, 1.9cqw, 36px);
+    padding: .34cqw clamp(6px, .5cqw, 10px);
+    font-size: clamp(10px, .68cqw, 13px);
+  }
+
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle svg,
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger svg {
+    width: clamp(15px, 1.22cqw, 20px);
+    height: clamp(15px, 1.22cqw, 20px);
+  }
+}
+
+/* Light theme: bring the fine grid, dotted texture and vector illustrations
+   forward without changing the hero's dimensions or interfering with text. */
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero::before {
+  border-color: color-mix(in srgb, var(--animfolio-accent) 31%, transparent);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--animfolio-secondary) 43%, transparent) 1.15px, transparent 1.8px) 0 0 / 26px 26px,
+    linear-gradient(90deg, transparent 0 49.92%, color-mix(in srgb, var(--animfolio-accent) 8%, transparent) 50%, transparent 50.08%) 0 0 / 100% 100%,
+    linear-gradient(180deg, color-mix(in srgb, var(--animfolio-accent) 5%, transparent), transparent 36%);
+  opacity: .66;
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero::after {
+  border-color: color-mix(in srgb, var(--animfolio-secondary) 34%, transparent);
+  box-shadow:
+    0 0 0 22px color-mix(in srgb, var(--animfolio-accent) 4%, transparent),
+    inset 0 0 90px color-mix(in srgb, var(--animfolio-accent) 6%, transparent);
+  opacity: .64;
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__ai-art {
+  opacity: .25;
+  filter:
+    drop-shadow(0 18px 42px color-mix(in srgb, var(--animfolio-accent) 25%, transparent))
+    saturate(1.22) contrast(1.04);
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__learning-art {
+  opacity: .22;
+  filter:
+    drop-shadow(0 14px 36px color-mix(in srgb, var(--animfolio-secondary) 24%, transparent))
+    saturate(1.2) contrast(1.04);
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__software-art {
+  opacity: .20;
+  filter:
+    drop-shadow(0 12px 34px color-mix(in srgb, var(--animfolio-accent) 23%, transparent))
+    saturate(1.2) contrast(1.05);
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__ai-orbit,
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__learning-orbit {
+  opacity: .55;
+}
+
+.animfolio-container--format-11.animfolio-container--light .animfolio-hero__ai-orbit--secondary {
+  opacity: .43;
+}
+
+/* The reference screenshot is a compact desktop/tablet viewport. Keep its
+   header at the original height while improving text and icon legibility. */
+@media (min-width: 761px) and (max-width: 1024px) {
+  .animfolio-container--format-11 .animfolio-nav__link {
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  .animfolio-container--format-11 .animfolio-language-switch__button {
+    min-width: 32px;
+    padding: 5px 7px;
+    font-size: 11px;
+  }
+
+  .animfolio-container--format-11 .animfolio-nav .animfolio-theme-toggle svg,
+  .animfolio-container--format-11 .animfolio-nav .animfolio-color-picker__trigger svg {
+    width: 21px;
+    height: 21px;
+  }
+}

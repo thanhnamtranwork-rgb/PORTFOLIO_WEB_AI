@@ -1,0 +1,138 @@
+/* One-page theme switcher: the three former HTML variants now live here. */
+.animfolio-container[data-portfolio-theme="tree"] {
+  --animfolio-accent: #247A53 !important;
+  --animfolio-accent-hover: #1D6948 !important;
+  --animfolio-accent-light: rgba(36,122,83,.12) !important;
+  --animfolio-accent-subtle: rgba(36,122,83,.16) !important;
+  --animfolio-accent-shadow: rgba(36,122,83,.32) !important;
+  --animfolio-accent-glow: rgba(36,122,83,.46) !important;
+  --animfolio-secondary: #91B96A !important;
+  --animfolio-secondary-hover: #7FA957 !important;
+  --animfolio-secondary-light: rgba(145,185,106,.18) !important;
+  --animfolio-accent-rgb: 36,122,83;
+  --animfolio-secondary-rgb: 145,185,106;
+  --animfolio-secondary-text: #263C22;
+  --animfolio-gradient: linear-gradient(120deg,#247A53 0%,#91B96A 100%);
+  --animfolio-on-secondary: #263C22 !important;
+}
+.animfolio-container[data-portfolio-theme="peach"] {
+  --animfolio-accent: #C94F7B !important;
+  --animfolio-accent-hover: #B8426D !important;
+  --animfolio-accent-light: rgba(201,79,123,.12) !important;
+  --animfolio-accent-subtle: rgba(201,79,123,.16) !important;
+  --animfolio-accent-shadow: rgba(201,79,123,.32) !important;
+  --animfolio-accent-glow: rgba(201,79,123,.46) !important;
+  --animfolio-secondary: #F0A2B2 !important;
+  --animfolio-secondary-hover: #E68EA2 !important;
+  --animfolio-secondary-light: rgba(240,162,178,.18) !important;
+  --animfolio-accent-rgb: 201,79,123;
+  --animfolio-secondary-rgb: 240,162,178;
+  --animfolio-secondary-text: #512437;
+  --animfolio-gradient: linear-gradient(120deg,#C94F7B 0%,#F0A2B2 100%);
+  --animfolio-on-secondary: #512437 !important;
+}
+.animfolio-container[data-portfolio-theme="apricot"] {
+  --animfolio-accent: #B8790E !important;
+  --animfolio-accent-hover: #A66A08 !important;
+  --animfolio-accent-light: rgba(184,121,14,.12) !important;
+  --animfolio-accent-subtle: rgba(184,121,14,.16) !important;
+  --animfolio-accent-shadow: rgba(184,121,14,.32) !important;
+  --animfolio-accent-glow: rgba(184,121,14,.46) !important;
+  --animfolio-secondary: #EBC45D !important;
+  --animfolio-secondary-hover: #DDB44A !important;
+  --animfolio-secondary-light: rgba(235,196,93,.18) !important;
+  --animfolio-accent-rgb: 184,121,14;
+  --animfolio-secondary-rgb: 235,196,93;
+  --animfolio-secondary-text: #49330A;
+  --animfolio-gradient: linear-gradient(120deg,#B8790E 0%,#EBC45D 100%);
+  --animfolio-on-secondary: #49330A !important;
+}
+/* Preserve each palette's contrast in light mode too. */
+.animfolio-container[data-portfolio-theme="tree"].animfolio-container--light,
+.animfolio-container[data-portfolio-theme="tree"][data-animfolio-scheme="light"] {
+  --animfolio-accent-light: rgba(36,122,83,.08) !important;
+  --animfolio-accent-subtle: rgba(36,122,83,.06) !important;
+  --animfolio-accent-shadow: rgba(36,122,83,.22) !important;
+  --animfolio-accent-glow: rgba(36,122,83,.17) !important;
+}
+.animfolio-container[data-portfolio-theme="peach"].animfolio-container--light,
+.animfolio-container[data-portfolio-theme="peach"][data-animfolio-scheme="light"] {
+  --animfolio-accent-light: rgba(195,71,120,.08) !important;
+  --animfolio-accent-subtle: rgba(195,71,120,.05) !important;
+  --animfolio-accent-shadow: rgba(195,71,120,.2) !important;
+  --animfolio-accent-glow: rgba(195,71,120,.15) !important;
+}
+.animfolio-container[data-portfolio-theme="apricot"].animfolio-container--light,
+.animfolio-container[data-portfolio-theme="apricot"][data-animfolio-scheme="light"] {
+  --animfolio-accent-light: rgba(163,106,0,.08) !important;
+  --animfolio-accent-subtle: rgba(163,106,0,.05) !important;
+  --animfolio-accent-shadow: rgba(163,106,0,.2) !important;
+  --animfolio-accent-glow: rgba(163,106,0,.15) !important;
+}
+.animfolio-color-picker__option {
+  width: 100%;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.animfolio-color-picker__option[aria-pressed="true"] {
+  border-color: var(--animfolio-accent);
+  background: var(--animfolio-accent-light);
+  color: var(--animfolio-accent);
+  font-weight: 700;
+}
+
+
+/* Static palette changes use a quick crossfade. Rainbow itself is updated by
+   JavaScript once per display frame, so those live color properties must not
+   also be queued behind a CSS transition. */
+.animfolio-container.theme-transitioning,
+.animfolio-container.theme-transitioning *,
+.animfolio-container.theme-transitioning *::before,
+.animfolio-container.theme-transitioning *::after {
+  transition-property: color, background-color, border-color, outline-color, box-shadow, fill, stroke;
+  transition-duration: 260ms;
+  transition-timing-function: cubic-bezier(.2, .7, .25, 1);
+}
+.animfolio-container.theme-rainbow-active,
+.animfolio-container.theme-rainbow-active *,
+.animfolio-container.theme-rainbow-active *::before,
+.animfolio-container.theme-rainbow-active *::after {
+  transition-duration: 0ms !important;
+}
+.animfolio-color-picker__trigger {
+  transition: background-color 100ms ease-out, border-color 100ms ease-out,
+              color 100ms ease-out, box-shadow 100ms ease-out;
+}
+.animfolio-color-picker__option {
+  transition: background-color 90ms ease-out, border-color 90ms ease-out,
+              color 90ms ease-out, transform 90ms ease-out;
+}
+.animfolio-color-picker__option:hover { transform: translateX(2px); }
+.animfolio-color-picker__swatch--rainbow {
+  background: conic-gradient(#f44336, #ff9800, #ffeb3b, #4caf50, #03a9f4, #673ab7, #e91e63, #f44336);
+  animation: animfolio-rainbow-spin 2.8s linear infinite;
+}
+@keyframes animfolio-rainbow-spin { to { transform: rotate(360deg); } }
+
+/* Preserve the fast hover feedback of the picker while rainbow updates run. */
+.animfolio-container.theme-rainbow-active .animfolio-color-picker__trigger {
+  transition: background-color 100ms ease-out, border-color 100ms ease-out,
+              color 100ms ease-out, box-shadow 100ms ease-out !important;
+}
+.animfolio-container.theme-rainbow-active .animfolio-color-picker__option {
+  transition: background-color 90ms ease-out, border-color 90ms ease-out,
+              color 90ms ease-out, transform 90ms ease-out !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animfolio-container.theme-transitioning *,
+  .animfolio-container.theme-rainbow-active *,
+  .animfolio-container.theme-rainbow-active .animfolio-color-picker__trigger,
+  .animfolio-container.theme-rainbow-active .animfolio-color-picker__option,
+  .animfolio-color-picker__swatch--rainbow {
+    transition: none !important;
+    animation: none !important;
+  }
+}

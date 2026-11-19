@@ -1,0 +1,196 @@
+/*
+ * Unified typography refinement for the Portfolio and MoteLona detail page.
+ * The desktop portfolio sections intentionally use a 0.75 visual scale;
+ * these rules compensate for that scale without changing layout dimensions.
+ */
+
+/* Main portfolio: keep text comfortable at the 75% desktop section scale. */
+@media screen and (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) :is(p, li) {
+    font-size: 1.35rem !important;
+    line-height: 1.68;
+  }
+
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-about__bio,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-timeline__description,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-project__description,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-contact__description,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-contact__aside-description {
+    font-size: 1.35rem !important;
+    line-height: 1.72;
+  }
+
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-timeline__role,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-timeline__company,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-skills__category-title {
+    font-size: 1.38rem !important;
+    line-height: 1.35;
+  }
+
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-project__title,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-card__title {
+    font-size: 1.58rem !important;
+    line-height: 1.3;
+  }
+
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) :is(
+    .animfolio-timeline__date,
+    .animfolio-skills__label,
+    .animfolio-skills__value,
+    .animfolio-card__meta,
+    .animfolio-card__tag,
+    .animfolio-project__stack,
+    .motelona-project-kicker,
+    .motelona-project-status,
+    .animfolio-contact__eyebrow,
+    .animfolio-contact__kicker,
+    .animfolio-contact__step-number,
+    .animfolio-contact__aside-note,
+    .animfolio-contact__email-link,
+    .animfolio-form__label,
+    .animfolio-form__error,
+    .animfolio-contact__note-mark
+  ) {
+    font-size: 1.12rem !important;
+    line-height: 1.45;
+  }
+
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-button,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .motelona-project-actions button {
+    font-size: 1.22rem !important;
+  }
+
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-form__input,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-form__textarea,
+  .animfolio-container--format-11 > .animfolio-section:not(.animfolio-section--hero) .animfolio-form__select {
+    font-size: 1.2rem !important;
+  }
+}
+
+/* Homepage hero: keep supporting labels comfortably readable at every zoom. */
+.animfolio-container--format-11 .animfolio-hero__eyebrow {
+  font-size: clamp(12px, .82vw, 14px) !important;
+}
+.animfolio-container--format-11 .animfolio-hero__tech-label {
+  font-size: 12px !important;
+}
+.animfolio-container--format-11 .animfolio-hero__tech-chip {
+  font-size: clamp(12px, .8vw, 13px) !important;
+}
+.animfolio-container--format-11 .animfolio-hero__side-note strong {
+  font-size: 13px !important;
+}
+.animfolio-container--format-11 .animfolio-hero__side-note span {
+  font-size: 12px !important;
+}
+.animfolio-container--format-11 .animfolio-hero__side-index {
+  font-size: 11px !important;
+}
+.animfolio-container--format-11 .animfolio-hero__scroll-cue {
+  font-size: 11px !important;
+}
+
+@media (min-width: 1025px) {
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__eyebrow {
+    font-size: max(12px, .68cqw) !important;
+  }
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__tech-label {
+    font-size: max(12px, .55cqw) !important;
+  }
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__tech-chip {
+    font-size: max(12px, .62cqw) !important;
+  }
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note strong {
+    font-size: max(12px, .66cqw) !important;
+  }
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-note span {
+    font-size: max(12px, .55cqw) !important;
+  }
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__side-index {
+    font-size: max(11px, .52cqw) !important;
+  }
+  html[data-homepage-zoom-fixed="true"] .animfolio-container--format-11 .animfolio-hero__scroll-cue {
+    font-size: max(11px, .5cqw) !important;
+  }
+}
+
+/* MoteLona detail page: 16px body rhythm, readable technical notes and controls. */
+.motelona-detail-root {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.motelona-detail-root .ml-brand { font-size: .96rem; }
+.motelona-detail-root .ml-top-link,
+.motelona-detail-root .ml-color-option { font-size: .88rem; }
+.motelona-detail-root .ml-language button { font-size: .78rem; }
+.motelona-detail-root .ml-color-heading,
+.motelona-detail-root .ml-section-heading > span,
+.motelona-detail-root .ml-example-label { font-size: .76rem; }
+.motelona-detail-root .ml-kicker { font-size: .76rem; }
+.motelona-detail-root .ml-lead,
+.motelona-detail-root .ml-section-intro { font-size: 1.04rem; line-height: 1.78; }
+.motelona-detail-root .ml-tags span { font-size: .78rem; }
+.motelona-detail-root .ml-button { font-size: .9rem; }
+.motelona-detail-root .ml-note { font-size: .86rem; line-height: 1.6; }
+.motelona-detail-root .ml-snapshot-top,
+.motelona-detail-root .ml-snapshot-foot,
+.motelona-detail-root .ml-section-nav > span:first-child,
+.motelona-detail-root .ml-reading-meta { font-size: .76rem; }
+.motelona-detail-root .ml-snapshot-main small,
+.motelona-detail-root .ml-snapshot-list span,
+.motelona-detail-root .ml-snapshot-list strong { font-size: .84rem; }
+.motelona-detail-root .ml-section-nav a { font-size: .82rem; }
+.motelona-detail-root .ml-overview-card p,
+.motelona-detail-root .ml-feature p,
+.motelona-detail-root .ml-architecture-grid p,
+.motelona-detail-root .ml-quality-card p,
+.motelona-detail-root .ml-glossary-card p,
+.motelona-detail-root .ml-example-copy p,
+.motelona-detail-root .ml-faq-item p,
+.motelona-detail-root .ml-roadmap-step p,
+.motelona-detail-root .ml-career-note p,
+.motelona-detail-root .ml-checklist-heading p { font-size: .98rem; line-height: 1.72; }
+.motelona-detail-root .ml-overview-card h3,
+.motelona-detail-root .ml-feature h3,
+.motelona-detail-root .ml-architecture-grid h3,
+.motelona-detail-root .ml-panel h3,
+.motelona-detail-root .ml-boundary-good h3,
+.motelona-detail-root .ml-boundary-caution h3,
+.motelona-detail-root .ml-quality-card h3,
+.motelona-detail-root .ml-glossary-card h3 { font-size: 1.08rem; line-height: 1.35; }
+.motelona-detail-root .ml-architecture-grid h3 { font-size: .94rem; }
+.motelona-detail-root .ml-pipeline-step > span,
+.motelona-detail-root .ml-pipeline-step small,
+.motelona-detail-root .ml-example-flow span,
+.motelona-detail-root .ml-example-flow code { font-size: .82rem; }
+.motelona-detail-root .ml-pipeline-step strong,
+.motelona-detail-root .ml-faq-item summary,
+.motelona-detail-root .ml-release-checklist label { font-size: .94rem; line-height: 1.55; }
+.motelona-detail-root .ml-panel ul,
+.motelona-detail-root .ml-boundary-good ul,
+.motelona-detail-root .ml-boundary-caution ul { font-size: .98rem; line-height: 1.72; }
+.motelona-detail-root .ml-endpoints code,
+.motelona-detail-root .ml-endpoints li > span,
+.motelona-detail-root .ml-formula,
+.motelona-detail-root .ml-glossary-count,
+.motelona-detail-root .ml-copy-endpoint,
+.motelona-detail-root .ml-glossary-clear,
+.motelona-detail-root .ml-checklist-reset,
+.motelona-detail-root .ml-career-note strong,
+.motelona-detail-root .ml-footer { font-size: .82rem; }
+
+@media (max-width: 560px) {
+  .motelona-detail-root { font-size: 16px; }
+  .motelona-detail-root .ml-brand { font-size: .88rem; }
+  .motelona-detail-root .ml-kicker { font-size: .76rem; }
+  .motelona-detail-root .ml-lead,
+  .motelona-detail-root .ml-section-intro { font-size: 1rem; }
+  .motelona-detail-root .ml-tags span { font-size: .74rem; }
+  .motelona-detail-root .ml-button { font-size: .86rem; }
+  .motelona-detail-root .ml-section-nav a { font-size: .78rem; }
+  .motelona-detail-root .ml-section-nav > span:first-child,
+  .motelona-detail-root .ml-snapshot-top,
+  .motelona-detail-root .ml-snapshot-foot { font-size: .72rem; }
+  .motelona-detail-root .ml-footer { font-size: .78rem; }
+}
