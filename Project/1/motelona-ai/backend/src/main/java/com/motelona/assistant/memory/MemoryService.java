@@ -1,15 +1,23 @@
 package com.motelona.assistant.memory;
 
 import com.motelona.assistant.dto.MemoryItem;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MemoryService {
-    private final JdbcTemplate jdbc;
-    public MemoryService(JdbcTemplate jdbc) { this.jdbc = jdbc; }
+    private static final String COLLECTION = "user_memories";
+    private final MongoTemplate mongo;
+
+    public MemoryService(MongoTemplate mongo) { this.mongo = mongo; }
 
     public MemoryItem saveExplicitly(String sessionId, String content) {
         String owner = validateSession(sessionId);
@@ -20,40 +28,46 @@ public class MemoryService {
         if (lower.matches(".*(password|mật khẩu|api[ _-]?key|secret|access token|private key).*")) {
             throw new IllegalArgumentException("For safety, passwords, API keys, and secrets cannot be saved as long-term memory.");
         }
-        jdbc.update("INSERT INTO user_memories(session_id, content) VALUES (?, ?)", owner, safe);
-        List<MemoryItem> saved = jdbc.query("SELECT id, content, created_at FROM user_memories WHERE session_id = ? ORDER BY id DESC LIMIT 1",
-                (rs, row) -> new MemoryItem(rs.getLong("id"),rs.getString("content"),rs.getString("created_at")), owner);
-        return saved.isEmpty() ? null : saved.get(0);
+        ObjectId id = new ObjectId();
+        Date createdAt = new Date();
+        mongo.insert(new Document("_id", id).append("sessionId", owner).append("content", safe).append("createdAt", createdAt), COLLECTION);
+        return new MemoryItem(id.toHexString(), safe, createdAt.toInstant().toString());
     }
 
     public List<MemoryItem> list(String sessionId) {
         String owner = validateSession(sessionId);
-        return jdbc.query("SELECT id, content, created_at FROM user_memories WHERE session_id = ? ORDER BY id DESC LIMIT 100",
-                (rs, row) -> new MemoryItem(rs.getLong("id"), rs.getString("content"), rs.getString("created_at")), owner);
+        Query query = Query.query(Criteria.where("sessionId").is(owner))
+                .with(Sort.by(Sort.Direction.DESC, "createdAt")).limit(100);
+        return mongo.find(query, Document.class, COLLECTION).stream().map(document -> new MemoryItem(
+                document.getObjectId("_id").toHexString(), document.getString("content"),
+                document.getDate("createdAt").toInstant().toString())).toList();
     }
 
-    public void delete(String sessionId, long id) {
-        jdbc.update("DELETE FROM user_memories WHERE session_id = ? AND id = ?", validateSession(sessionId), id);
+    public void delete(String sessionId, String id) {
+        String owner = validateSession(sessionId);
+        if (id == null || !ObjectId.isValid(id)) return;
+        mongo.remove(Query.query(Criteria.where("sessionId").is(owner).and("_id").is(new ObjectId(id))), COLLECTION);
     }
 
     public void deleteAll(String sessionId) {
-        jdbc.update("DELETE FROM user_memories WHERE session_id = ?", validateSession(sessionId));
+        mongo.remove(Query.query(Criteria.where("sessionId").is(validateSession(sessionId))), COLLECTION);
     }
 
     public int forgetMatching(String sessionId, String phrase) {
         String owner = validateSession(sessionId);
         String p = normalize(phrase).toLowerCase(Locale.ROOT);
         if (p.isBlank() || p.matches("(all|everything|tất cả|mọi thứ|toàn bộ)")) {
-            Integer count = jdbc.queryForObject("SELECT COUNT(*) FROM user_memories WHERE session_id = ?", Integer.class, owner);
+            long count = mongo.count(Query.query(Criteria.where("sessionId").is(owner)), COLLECTION);
             deleteAll(owner);
-            return count == null ? 0 : count;
+            return (int) Math.min(Integer.MAX_VALUE, count);
         }
-        List<Long> ids = jdbc.query("SELECT id, content FROM user_memories WHERE session_id = ?", (rs, row) -> {
-            String content = rs.getString("content").toLowerCase(Locale.ROOT);
-            return content.contains(p) || p.contains(content) ? rs.getLong("id") : null;
-        }, owner).stream().filter(id -> id != null).toList();
-        ids.forEach(id -> delete(owner, id));
-        return ids.size();
+        List<Document> matches = mongo.find(Query.query(Criteria.where("sessionId").is(owner)), Document.class, COLLECTION)
+                .stream().filter(document -> {
+                    String content = document.getString("content").toLowerCase(Locale.ROOT);
+                    return content.contains(p) || p.contains(content);
+                }).toList();
+        matches.forEach(document -> delete(owner, document.getObjectId("_id").toHexString()));
+        return matches.size();
     }
 
     public List<String> memoryText(String sessionId, boolean enabled) {

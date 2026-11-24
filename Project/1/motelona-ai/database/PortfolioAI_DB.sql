@@ -1,3 +1,0 @@
--- SQL Server version retired for this project.
--- The backend now uses MySQL 8.0.36+ / MySQL 8.4 LTS.
--- Import ../database/PortfolioAI_MySQL.sql in MySQL Workbench instead.

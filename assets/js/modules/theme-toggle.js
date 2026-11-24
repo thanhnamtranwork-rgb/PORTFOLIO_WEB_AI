@@ -40,7 +40,7 @@
 			button.setAttribute('title', label);
 			button.setAttribute('aria-pressed', dark ? 'true' : 'false');
 		}
-		if (meta) meta.setAttribute('content', dark ? '#121B17' : '#F6F7F5');
+		if (meta) meta.setAttribute('content', dark ? '#0B1020' : '#F6F7FC');
 	}
 
 	function setScheme(container, scheme) {

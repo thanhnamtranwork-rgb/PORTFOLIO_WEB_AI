@@ -1,0 +1,114 @@
+{
+  "profile": {
+    "fullName": "Trần Thành Nam",
+    "headline": "Sinh viên Công nghệ thông tin",
+    "careerObjective": "",
+    "aboutMe": "",
+    "email": "thanhnamtran.work@gmail.com",
+    "location": "",
+    "avatarUrl": "",
+    "cvUrl": "",
+    "githubUrl": "",
+    "linkedInUrl": "",
+    "websiteUrl": ""
+  },
+  "education": [
+    {
+      "_id": "hubt-information-technology",
+      "schoolName": "Hanoi University of Business and Technology (HUBT)",
+      "major": "Information Technology",
+      "majorVi": "Công nghệ thông tin",
+      "degree": "",
+      "degreeVi": "",
+      "startDate": "",
+      "endDate": "",
+      "description": "Studying Information Technology at HUBT, class K30 · TH30.03, with foundational topics in programming, software development, databases, and system analysis. Builds self-learning habits, explores unfamiliar topics, connects knowledge across courses, and applies learning in assignments and projects. Current direction: Full Stack development, Java, MongoDB, and responsible use of AI in software development.",
+      "descriptionVi": "Đang theo học ngành Công nghệ thông tin tại HUBT, lớp K30 · TH30.03. Chương trình giúp xây dựng kiến thức nền tảng về lập trình, phát triển phần mềm, cơ sở dữ liệu và phân tích hệ thống. Chủ động tự học, tìm hiểu chủ đề mới, kết nối kiến thức giữa các môn học và áp dụng vào bài tập, dự án. Định hướng hiện tại là phát triển Full Stack, Java, MongoDB và ứng dụng AI có trách nhiệm trong phát triển phần mềm.",
+      "displayOrder": 1,
+      "isVisible": true
+    }
+  ],
+  "experience": [
+    {
+      "_id": "self-directed-full-stack",
+      "organizationName": "Personal Projects and Self-learning",
+      "position": "Self-directed Full-Stack Development",
+      "experienceType": "ACTIVITY",
+      "startDate": "",
+      "endDate": "",
+      "description": "Personal learning and project activity, not paid employment. Building Full Stack skills across frontend, backend, and databases; exploring Java, MongoDB, and responsible AI use; applying new knowledge in coursework and personal projects.",
+      "displayOrder": 1,
+      "isVisible": true
+    }
+  ],
+  "skillCategories": [
+    {
+      "_id": "technical",
+      "categoryName": "Technical",
+      "categoryNameVi": "Kỹ thuật",
+      "displayOrder": 1,
+      "skills": [
+        { "skillName": "Python", "skillNameVi": "Python", "proficiencyLevel": 80, "yearsOfExperience": null, "displayOrder": 1, "isVisible": true },
+        { "skillName": "JavaScript / HTML / CSS", "skillNameVi": "JavaScript / HTML / CSS", "proficiencyLevel": 80, "yearsOfExperience": null, "displayOrder": 2, "isVisible": true },
+        { "skillName": "Java", "skillNameVi": "Java", "proficiencyLevel": 70, "yearsOfExperience": null, "displayOrder": 3, "isVisible": true },
+        { "skillName": "MongoDB", "skillNameVi": "MongoDB", "proficiencyLevel": 70, "yearsOfExperience": null, "displayOrder": 4, "isVisible": true }
+      ]
+    },
+    {
+      "_id": "learning-research",
+      "categoryName": "Learning & Research",
+      "categoryNameVi": "Học tập & nghiên cứu",
+      "displayOrder": 2,
+      "skills": [
+        { "skillName": "Self-directed Learning", "skillNameVi": "Tự học chủ động", "proficiencyLevel": 78, "yearsOfExperience": null, "displayOrder": 1, "isVisible": true },
+        { "skillName": "Research & Information Literacy", "skillNameVi": "Tìm kiếm và đánh giá thông tin", "proficiencyLevel": 72, "yearsOfExperience": null, "displayOrder": 2, "isVisible": true },
+        { "skillName": "Critical Thinking & AI Verification", "skillNameVi": "Tư duy phản biện và kiểm chứng AI", "proficiencyLevel": 70, "yearsOfExperience": null, "displayOrder": 3, "isVisible": true },
+        { "skillName": "Idea Development", "skillNameVi": "Phát triển ý tưởng", "proficiencyLevel": 75, "yearsOfExperience": null, "displayOrder": 4, "isVisible": true },
+        { "skillName": "Problem Analysis", "skillNameVi": "Phân tích vấn đề", "proficiencyLevel": 72, "yearsOfExperience": null, "displayOrder": 5, "isVisible": true },
+        { "skillName": "Technical Presentation", "skillNameVi": "Thuyết trình và truyền đạt kỹ thuật", "proficiencyLevel": 68, "yearsOfExperience": null, "displayOrder": 6, "isVisible": true }
+      ]
+    },
+    {
+      "_id": "soft-skills",
+      "categoryName": "Soft Skills",
+      "categoryNameVi": "Kỹ năng mềm",
+      "displayOrder": 3,
+      "skills": [
+        { "skillName": "Teamwork", "skillNameVi": "Làm việc nhóm", "proficiencyLevel": 90, "yearsOfExperience": null, "displayOrder": 1, "isVisible": true },
+        { "skillName": "Problem Solving", "skillNameVi": "Giải quyết vấn đề", "proficiencyLevel": 85, "yearsOfExperience": null, "displayOrder": 2, "isVisible": true },
+        { "skillName": "Time Management", "skillNameVi": "Quản lý thời gian", "proficiencyLevel": 80, "yearsOfExperience": null, "displayOrder": 3, "isVisible": true }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "_id": "motelona-ai-website-assistant",
+      "title": "MoteLona — AI Website Assistant",
+      "titleVi": "MoteLona — Trợ lý AI cho website",
+      "slug": "motelona-ai-website-assistant",
+      "shortDescription": "A Java and Spring Boot Portfolio assistant that answers common questions from local FAQs and MongoDB data, limits hosted model calls to a shared 12-second budget, and supports optional web research and guided page navigation.",
+      "shortDescriptionVi": "Trợ lý Portfolio dùng Java và Spring Boot, trả lời câu hỏi thường gặp từ FAQ cục bộ và dữ liệu MongoDB, giới hạn tổng thời gian gọi model trong 12 giây, đồng thời hỗ trợ tìm web tùy chọn và điều hướng nội dung.",
+      "fullDescription": "MoteLona is a bilingual assistant for this Portfolio website. It uses current page context, published Portfolio records from MongoDB, and passages from approved project files. Supported FAQs and evidence-backed Portfolio questions use a local answer path first, so routine requests avoid hosted model calls. Questions that need synthesis are routed to configured Gemini, Groq, and OpenRouter services in priority order, within a 12-second total provider budget and at most 7 seconds per provider attempt; if models fail or time out, the assistant uses a local answer when available or asks the visitor to retry. Public web research runs only when requested. The widget supports selected-text explanations, bilingual prompt suggestions, optional consent-based chat history and memory, and navigation to approved pages or sections with passage highlighting. Local retrieval uses intent rules, token normalization, TF-IDF, cosine similarity, and term overlap; it does not use neural embeddings or a vector database. Provider availability and free quotas vary by account, and a timeout does not guarantee a provider did not count the request.",
+      "fullDescriptionVi": "MoteLona là trợ lý song ngữ dành cho website Portfolio này. Trợ lý dùng ngữ cảnh trang hiện tại, dữ liệu Portfolio công khai trong MongoDB và đoạn trích từ file dự án được cho phép. FAQ được hỗ trợ và câu hỏi Portfolio có đủ bằng chứng được xử lý cục bộ trước, giúp câu hỏi thường gặp không cần gọi model bên ngoài. Câu cần tổng hợp được điều phối tới Gemini, Groq và OpenRouter đã cấu hình theo thứ tự ưu tiên, trong ngân sách provider tổng 12 giây và tối đa 7 giây mỗi lần thử; nếu model lỗi hoặc hết thời gian, trợ lý dùng câu trả lời cục bộ khi có hoặc đề nghị thử lại. Tìm web công khai chỉ chạy khi người dùng yêu cầu. Widget hỗ trợ giải thích đoạn được chọn, gợi ý câu hỏi song ngữ, lịch sử chat và bộ nhớ tùy chọn theo sự đồng ý, cùng điều hướng tới trang hoặc mục được phép và tô sáng đoạn liên quan. Truy xuất cục bộ dùng luật nhận diện ý định, chuẩn hóa token, TF-IDF, cosine similarity và độ trùng từ; chưa sử dụng embedding mạng nơ-ron hoặc vector database. Khả năng truy cập provider và hạn mức miễn phí tùy tài khoản; timeout không đảm bảo nhà cung cấp không tính lượt gọi đó vào quota.",
+      "thumbnailUrl": "./assets/images/narrow-ai.jpg",
+      "demoUrl": "./Project/1/motelona.html",
+      "sourceCodeUrl": "",
+      "startDate": "",
+      "endDate": "",
+      "projectStatus": "IN_PROGRESS",
+      "isFeatured": true,
+      "isPublished": true,
+      "displayOrder": 1,
+      "createdAt": "2026-11-23T00:00:00Z",
+      "technologies": [
+        { "technologyName": "Java 21", "technologyType": "Language" },
+        { "technologyName": "Spring Boot", "technologyType": "Framework" },
+        { "technologyName": "Gemini · Groq · OpenRouter", "technologyType": "AI service" },
+        { "technologyName": "TF-IDF · Cosine Similarity", "technologyType": "Information retrieval" },
+        { "technologyName": "MongoDB", "technologyType": "Database" },
+        { "technologyName": "HTML · CSS · JavaScript", "technologyType": "Frontend" }
+      ]
+    }
+  ],
+  "knowledge": []
+}

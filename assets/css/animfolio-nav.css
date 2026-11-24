@@ -166,13 +166,13 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 38px;
-	height: 38px;
-	background: none;
+	width: 42px;
+	height: 42px;
+	background: var(--animfolio-surface);
 	border: 1px solid var(--animfolio-border);
-	border-radius: 8px;
+	border-radius: 50%;
 	cursor: pointer;
-	color: var(--animfolio-text-secondary);
+	color: var(--animfolio-text);
 	transition: all 0.2s ease;
 	flex-shrink: 0;
 }
@@ -201,17 +201,18 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 7px;
-	min-width: 38px;
-	height: 38px;
-	padding: 0 10px;
+	width: 42px;
+	min-width: 42px;
+	height: 42px;
+	padding: 0;
 	list-style: none;
 	border: 1px solid var(--animfolio-border);
-	border-radius: 8px;
-	color: var(--animfolio-text-secondary);
+	border-radius: 50%;
+	background: var(--animfolio-surface);
+	color: var(--animfolio-text);
 	cursor: pointer;
 	font: inherit;
-	font-size: 0.8125rem;
+	font-size: 1.1rem;
 	font-weight: 600;
 	transition: all 0.2s ease;
 }
@@ -219,6 +220,7 @@
 .animfolio-color-picker__trigger::-webkit-details-marker { display: none; }
 .animfolio-color-picker__trigger::marker { content: ""; }
 .animfolio-color-picker__trigger svg { flex: 0 0 auto; }
+.animfolio-color-picker__trigger span { line-height: 1; }
 
 .animfolio-color-picker__trigger:hover,
 .animfolio-color-picker[open] .animfolio-color-picker__trigger {

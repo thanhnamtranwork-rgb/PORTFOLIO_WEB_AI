@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-/** Retrieves grounded passages from page text and the MySQL portfolio knowledge base. */
+/** Retrieves grounded passages from page text and the MongoDB Portfolio knowledge base. */
 public class KnowledgeRetrievalService {
     public record Passage(String text, double score) { }
 
@@ -15,10 +15,13 @@ public class KnowledgeRetrievalService {
         List<String> chunks = split(context);
         if (chunks.isEmpty()) return List.of();
         String expandedQuery = query + " " + intentTerms(intent);
+        List<Double> similarities = TextVectorizer.similarities(expandedQuery, chunks);
+        List<String> queryTokens = TextVectorizer.tokens(expandedQuery);
         List<Passage> matches = new ArrayList<>();
-        for (String chunk : chunks) {
-            double tfidf = TextVectorizer.similarity(expandedQuery, chunk, chunks);
-            double overlap = TextVectorizer.overlap(expandedQuery, chunk);
+        for (int i = 0; i < chunks.size(); i++) {
+            String chunk = chunks.get(i);
+            double tfidf = similarities.get(i);
+            double overlap = TextVectorizer.overlap(queryTokens, TextVectorizer.tokens(chunk));
             double score = (tfidf * 0.72) + (overlap * 0.28) + sectionBoost(chunk, intent);
             if (score > 0.035) matches.add(new Passage(chunk, score));
         }

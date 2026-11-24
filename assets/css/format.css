@@ -1,14 +1,14 @@
 /**
  * AnimFolio — Format 11: Student Fresh
- * Cây Xanh, Cây Đào, and Cây Mai palettes with coordinated light and dark surfaces.
+ * Midnight Indigo default with palette-aware accents and neutral light/dark surfaces.
  */
 
 .animfolio-container--format-11 {
-	--af11-accent-rgb: 35, 118, 75;
-	--af11-secondary-rgb: 219, 39, 119;
-	--animfolio-font-heading: 'Nunito', sans-serif;
-	--animfolio-font-body: 'Nunito', sans-serif;
-	font-family: 'Nunito', sans-serif;
+	--af11-accent-rgb: var(--animfolio-accent-rgb, 86, 101, 216);
+	--af11-secondary-rgb: var(--animfolio-secondary-rgb, 169, 183, 255);
+	--animfolio-font-heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--animfolio-font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	background: var(--af11-bg);
 	color: var(--af11-text);
 }
@@ -16,57 +16,57 @@
 /* Light surfaces use deep accent text; dark surfaces soften the same hues for contrast. */
 .animfolio-container--format-11,
 .animfolio-container--format-11.animfolio-container--light {
-	--af11-accent: var(--animfolio-accent, #3F7465);
-	--af11-secondary: var(--animfolio-secondary, #8F614B);
-	--af11-bg: #F6F7F5;
-	--af11-bg-secondary: #EEF2EF;
-	--af11-text: #1C2823;
-	--af11-text-muted: #68766F;
-	--af11-border: rgba(28, 40, 35, 0.1);
+	--af11-accent: var(--animfolio-accent, #5665D8);
+	--af11-secondary: var(--animfolio-secondary, #A9B7FF);
+	--af11-bg: #F6F7FC;
+	--af11-bg-secondary: #EEF0F8;
+	--af11-text: #1B2240;
+	--af11-text-muted: #63708D;
+	--af11-border: rgba(27, 34, 64, 0.1);
 	--af11-surface: #FFFFFF;
-	--af11-link: var(--animfolio-accent-text, var(--animfolio-accent, #3F7465));
-	--af11-link-hover: color-mix(in srgb, var(--animfolio-accent, #3F7465) 78%, black);
-	--af11-badge-accent-text: var(--animfolio-accent-text, var(--animfolio-accent, #3F7465));
-	--af11-badge-secondary-text: var(--animfolio-secondary-text, var(--animfolio-secondary, #8F614B));
-	--af11-secondary-text: var(--animfolio-secondary-text, var(--animfolio-secondary, #8F614B));
+	--af11-link: var(--animfolio-accent-text, var(--animfolio-accent, #5665D8));
+	--af11-link-hover: color-mix(in srgb, var(--animfolio-accent, #5665D8) 78%, black);
+	--af11-badge-accent-text: var(--animfolio-accent-text, var(--animfolio-accent, #5665D8));
+	--af11-badge-secondary-text: var(--animfolio-secondary-text, var(--animfolio-secondary, #A9B7FF));
+	--af11-secondary-text: var(--animfolio-secondary-text, var(--animfolio-secondary, #A9B7FF));
 	--af11-on-accent: var(--animfolio-on-accent, #FFFFFF);
 	--af11-on-secondary: var(--animfolio-on-secondary, #FFFFFF);
-	--animfolio-accent-text: var(--animfolio-accent, #3F7465);
-	--animfolio-secondary-text: var(--animfolio-secondary, #8F614B);
-	--animfolio-bg: #F6F7F5;
-	--animfolio-bg-secondary: #EEF2EF;
-	--animfolio-bg-tertiary: #E4EAE6;
-	--animfolio-text: #1C2823;
-	--animfolio-text-secondary: #47564F;
-	--animfolio-text-muted: #68766F;
-	--animfolio-border: rgba(28, 40, 35, 0.1);
+	--animfolio-accent-text: var(--animfolio-accent, #5665D8);
+	--animfolio-secondary-text: var(--animfolio-secondary, #A9B7FF);
+	--animfolio-bg: #F6F7FC;
+	--animfolio-bg-secondary: #EEF0F8;
+	--animfolio-bg-tertiary: #E5E8F3;
+	--animfolio-text: #1B2240;
+	--animfolio-text-secondary: #48506B;
+	--animfolio-text-muted: #63708D;
+	--animfolio-border: rgba(27, 34, 64, 0.1);
 }
 
 .animfolio-container--format-11.animfolio-container--dark {
-	--af11-accent: var(--animfolio-accent, #3F7465);
-	--af11-secondary: var(--animfolio-secondary, #8F614B);
-	--af11-bg: #121B17;
-	--af11-bg-secondary: #1A2821;
-	--af11-text: #EDF3EF;
-	--af11-text-muted: #9BAEA3;
-	--af11-border: color-mix(in srgb, var(--animfolio-accent, #3F7465) 22%, transparent);
-	--af11-surface: #1A2821;
-	--af11-link: color-mix(in srgb, var(--animfolio-accent, #3F7465) 48%, white);
-	--af11-link-hover: color-mix(in srgb, var(--animfolio-accent, #3F7465) 38%, white);
-	--af11-badge-accent-text: color-mix(in srgb, var(--animfolio-accent, #3F7465) 48%, white);
-	--af11-badge-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 48%, white);
-	--af11-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 48%, white);
+	--af11-accent: var(--animfolio-accent, #5665D8);
+	--af11-secondary: var(--animfolio-secondary, #A9B7FF);
+	--af11-bg: #0B1020;
+	--af11-bg-secondary: #111A2E;
+	--af11-text: #F4F6FF;
+	--af11-text-muted: #9AA8C4;
+	--af11-border: color-mix(in srgb, var(--animfolio-accent, #5665D8) 22%, transparent);
+	--af11-surface: #111A2E;
+	--af11-link: color-mix(in srgb, var(--animfolio-accent, #5665D8) 48%, white);
+	--af11-link-hover: color-mix(in srgb, var(--animfolio-accent, #5665D8) 38%, white);
+	--af11-badge-accent-text: color-mix(in srgb, var(--animfolio-accent, #5665D8) 48%, white);
+	--af11-badge-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #A9B7FF) 48%, white);
+	--af11-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #A9B7FF) 48%, white);
 	--af11-on-accent: var(--animfolio-on-accent, #FFFFFF);
 	--af11-on-secondary: var(--animfolio-on-secondary, #FFFFFF);
-	--animfolio-accent-text: color-mix(in srgb, var(--animfolio-accent, #3F7465) 48%, white);
-	--animfolio-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 48%, white);
-	--animfolio-bg: #121B17;
-	--animfolio-bg-secondary: #1A2821;
-	--animfolio-bg-tertiary: #24352C;
-	--animfolio-text: #EDF3EF;
-	--animfolio-text-secondary: #B6C4BC;
-	--animfolio-text-muted: #9BAEA3;
-	--animfolio-border: color-mix(in srgb, var(--animfolio-accent, #3F7465) 22%, transparent);
+	--animfolio-accent-text: color-mix(in srgb, var(--animfolio-accent, #5665D8) 48%, white);
+	--animfolio-secondary-text: color-mix(in srgb, var(--animfolio-secondary, #A9B7FF) 48%, white);
+	--animfolio-bg: #0B1020;
+	--animfolio-bg-secondary: #111A2E;
+	--animfolio-bg-tertiary: #1A2740;
+	--animfolio-text: #F4F6FF;
+	--animfolio-text-secondary: #B3C0D8;
+	--animfolio-text-muted: #9AA8C4;
+	--animfolio-border: color-mix(in srgb, var(--animfolio-accent, #5665D8) 22%, transparent);
 }
 /* ── Nav: Oval palette buttons ── */
 
@@ -93,7 +93,7 @@
 }
 
 .animfolio-container--format-11 .animfolio-nav__logo {
-	font-family: 'Nunito', sans-serif;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	font-size: 1.125rem;
 	font-weight: 800;
 	color: var(--af11-text);
@@ -137,7 +137,7 @@
 	color: var(--af11-on-accent);
 	background: linear-gradient(135deg, var(--af11-accent), var(--af11-secondary));
 	border-color: transparent;
-	box-shadow: 0 2px 8px color-mix(in srgb, var(--animfolio-accent, #3F7465) 30%, transparent);
+	box-shadow: 0 2px 8px color-mix(in srgb, var(--animfolio-accent, #5665D8) 30%, transparent);
 }
 
 /* ── Hero: Friendly and inviting ── */
@@ -233,7 +233,7 @@
 
 .animfolio-container--format-11 .animfolio-hero__ai-label {
 	fill: var(--animfolio-accent);
-	font: 800 26px/1 'Nunito', sans-serif;
+	font: 800 26px/1 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	letter-spacing: 1px;
 }
 
@@ -427,13 +427,13 @@
 .animfolio-container--format-11 .animfolio-cta--primary {
 	background: var(--af11-accent);
 	color: var(--af11-on-accent);
-	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-accent, #3F7465) 35%, transparent);
+	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-accent, #5665D8) 35%, transparent);
 }
 
 .animfolio-container--format-11 .animfolio-cta--secondary {
 	background: var(--af11-secondary);
 	color: var(--af11-on-secondary);
-	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-secondary, #8F614B) 30%, transparent);
+	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-secondary, #A9B7FF) 30%, transparent);
 }
 
 /* ── Section alternating backgrounds ── */
@@ -448,7 +448,7 @@
 .animfolio-container--format-11 a.animfolio-button--primary {
 	background: var(--af11-accent);
 	color: var(--af11-on-accent);
-	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-accent, #3F7465) 30%, transparent);
+	box-shadow: 0 4px 16px color-mix(in srgb, var(--animfolio-accent, #5665D8) 30%, transparent);
 	border-radius: 999px;
 	padding: 12px 28px;
 	font-weight: 700;
@@ -465,7 +465,7 @@
 .animfolio-container--format-11 a.animfolio-button--primary:hover {
 	color: var(--af11-on-accent);
 	transform: translateY(-2px);
-	box-shadow: 0 8px 24px color-mix(in srgb, var(--animfolio-accent, #3F7465) 40%, transparent);
+	box-shadow: 0 8px 24px color-mix(in srgb, var(--animfolio-accent, #5665D8) 40%, transparent);
 }
 
 .animfolio-container--format-11 .animfolio-button--secondary,
@@ -487,7 +487,7 @@
 .animfolio-container--format-11 .animfolio-button--secondary:hover,
 .animfolio-container--format-11 a.animfolio-button--secondary:hover {
 	border-color: var(--af11-accent);
-	background: color-mix(in srgb, var(--animfolio-accent, #3F7465) 6%, transparent);
+	background: color-mix(in srgb, var(--animfolio-accent, #5665D8) 6%, transparent);
 	color: var(--af11-text);
 }
 
@@ -544,7 +544,7 @@
 	width: 48px;
 	height: 48px;
 	border-radius: 14px;
-	background: linear-gradient(135deg, color-mix(in srgb, var(--animfolio-accent, #3F7465) 15%, transparent), color-mix(in srgb, var(--animfolio-secondary, #8F614B) 10%, transparent));
+	background: linear-gradient(135deg, color-mix(in srgb, var(--animfolio-accent, #5665D8) 15%, transparent), color-mix(in srgb, var(--animfolio-secondary, #A9B7FF) 10%, transparent));
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -602,12 +602,12 @@
 	border-radius: 12px;
 	font-size: 0.8rem;
 	font-weight: 700;
-	background: color-mix(in srgb, var(--animfolio-accent, #3F7465) 12%, transparent);
+	background: color-mix(in srgb, var(--animfolio-accent, #5665D8) 12%, transparent);
 	color: var(--af11-badge-accent-text);
 }
 
 .animfolio-container--format-11 .animfolio-badge--secondary {
-	background: color-mix(in srgb, var(--animfolio-secondary, #8F614B) 12%, transparent);
+	background: color-mix(in srgb, var(--animfolio-secondary, #A9B7FF) 12%, transparent);
 	color: var(--af11-badge-secondary-text);
 }
 

@@ -1,6 +1,5 @@
 package com.motelona.assistant.controller;
 
-import com.motelona.assistant.ai.LocalAiEngine;
 import com.motelona.assistant.dto.ChatRequest;
 import com.motelona.assistant.dto.ChatResponse;
 import com.motelona.assistant.dto.ExplainRequest;
@@ -30,17 +29,25 @@ public class AiController {
 
     @GetMapping("/health")
     public Map<String, Object> health() {
+        boolean modelConfigured = aiChatService.isAiConfigured();
+        String configuredProviders = String.join(", ", aiChatService.configuredProviders());
         return Map.ofEntries(
                 Map.entry("backend", "up"),
-                Map.entry("model", "ready"),
-                Map.entry("provider", "java-local"),
-                Map.entry("engine", "self-built-nlp"),
-                Map.entry("engineVersion", LocalAiEngine.ENGINE_VERSION),
+                Map.entry("model", aiChatService.modelName()),
+                Map.entry("provider", aiChatService.activeProvider()),
+                Map.entry("engine", "model-provider-chain"),
+                Map.entry("engineVersion", "Scope guard + Gemini/Groq/OpenRouter failover + local knowledge fallback"),
                 Map.entry("apiKeyRequired", false),
-                Map.entry("apiKeyConfigured", false),
-                Map.entry("message", "MoteLona uses local Java NLP without an external AI API key. Explicit web searches use DuckDuckGo's public HTML results page and require outbound server Internet access."),
-                Map.entry("internetSearchEnabled", searchProvider.isEnabled()),
-                Map.entry("internetSearchProvider", "DuckDuckGo HTML (no API key)"));
+                Map.entry("apiKeyConfigured", modelConfigured),
+                Map.entry("modelConfigured", modelConfigured),
+                Map.entry("configuredProviders", aiChatService.configuredProviders()),
+                Map.entry("chatReady", aiChatService.isChatReady()),
+                Map.entry("fallbackEnabled", true),
+                Map.entry("message", modelConfigured
+                        ? "Configured providers: " + configuredProviders + ". Portfolio scope checks run before model requests; provider access is checked on the first request."
+                        : "No hosted model provider is configured. Portfolio answers remain available through the local knowledge fallback."),
+                Map.entry("internetSearchEnabled", aiChatService.isInternetSearchEnabled()),
+                Map.entry("internetSearchProvider", aiChatService.webSearchProvider()));
     }
 
     @PostMapping("/chat")

@@ -35,7 +35,7 @@ public class PortfolioController {
         rateLimit.check("portfolio-contact-minute", http.getRemoteAddr(), 4, Duration.ofMinutes(15));
         if (request == null) throw new IllegalArgumentException("Request body is required.");
         if (request.honeypot() != null && !request.honeypot().isBlank()) return ResponseEntity.ok(Map.of("received", true));
-        long id = portfolio.saveContact(request.name(), request.email(), request.subject(), request.message());
+        String id = portfolio.saveContact(request.name(), request.email(), request.subject(), request.message());
         return ResponseEntity.ok(Map.of("received", true, "messageId", id));
     }
 }

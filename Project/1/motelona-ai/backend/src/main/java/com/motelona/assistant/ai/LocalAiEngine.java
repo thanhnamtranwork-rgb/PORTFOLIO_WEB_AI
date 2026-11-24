@@ -3,20 +3,65 @@ package com.motelona.assistant.ai;
 import com.motelona.assistant.ai.IntentClassifier.Classification;
 import com.motelona.assistant.ai.IntentClassifier.Intent;
 import com.motelona.assistant.service.GlossaryService;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
-/** Self-built, API-free assistant engine: intent classification, TF-IDF retrieval and deterministic response composition. */
+/** Provides deterministic, Portfolio-grounded replies while the hosted model is not configured. */
 @Service
 public class LocalAiEngine {
-    public static final String ENGINE_VERSION = "MoteLona Local NLP Engine 1.1";
+    public static final String ENGINE_VERSION = "MoteLona local knowledge fallback 1.1";
     private final IntentClassifier classifier = new IntentClassifier();
     private final KnowledgeRetrievalService retriever = new KnowledgeRetrievalService();
     private final GlossaryService glossary;
 
     public LocalAiEngine(GlossaryService glossary) { this.glossary = glossary; }
+
+    /**
+     * Returns a quick, evidence-backed answer for FAQs that do not need a hosted model.
+     * A null result means the request needs model synthesis or stronger evidence.
+     */
+    public String quickAnswer(String message, String language, String websiteContext, String memoryContext) {
+        if (message == null || message.isBlank()) return null;
+        boolean vi = "vi".equalsIgnoreCase(language);
+        String productAnswer = productHelpAnswer(message, vi, websiteContext);
+        if (productAnswer != null) return productAnswer;
+        Classification classification = classifier.classify(message);
+        Intent intent = classification.intent();
+        if (isFollowUp(message)) return null;
+
+        if (intent == Intent.CAPABILITIES) return capabilitiesAnswer(vi);
+
+        if (intent == Intent.GENERAL && asksForDefinition(message)) {
+            GlossaryService.Definition definition = glossary.find(message);
+            if (definition != null) return definitionText(definition, vi, "basic");
+        }
+
+        if (classification.confidence() < 0.20) return null;
+        boolean portfolioFaq = switch (intent) {
+            case PROFILE, SKILLS, PROJECTS, EDUCATION, EXPERIENCE, CONTACT, CV -> true;
+            default -> false;
+        };
+        if (!portfolioFaq && intent != Intent.GENERAL) return null;
+
+        String combinedContext = websiteContext == null ? "" : websiteContext.trim();
+        String safeMemory = memoryContext == null ? "" : memoryContext.trim();
+        if (!safeMemory.isBlank()) combinedContext += "\nUser-authorized memory reference: " + safeMemory;
+        List<KnowledgeRetrievalService.Passage> passages = retriever.retrieve(message, combinedContext, intent, 4);
+        double threshold = portfolioFaq ? 0.045 : 0.075;
+        List<KnowledgeRetrievalService.Passage> relevant = passages.stream().filter(p -> p.score() >= threshold).toList();
+        if (relevant.isEmpty()) {
+            if (intent == Intent.GENERAL) {
+                GlossaryService.Definition mentioned = glossary.findMentioned(message).stream().findFirst().orElse(null);
+                if (mentioned != null) return definitionText(mentioned, vi, "basic");
+            }
+            return null;
+        }
+        return groundedAnswer(relevant, intent, vi);
+    }
 
     public String chat(String message, String language, String websiteContext, String memoryContext) {
         return chat(message, language, websiteContext, memoryContext, "");
@@ -24,6 +69,8 @@ public class LocalAiEngine {
 
     public String chat(String message, String language, String websiteContext, String memoryContext, String history) {
         boolean vi = "vi".equalsIgnoreCase(language);
+        String productAnswer = productHelpAnswer(message, vi, websiteContext);
+        if (productAnswer != null) return productAnswer;
         String retrievalQuestion = message;
         Classification classification = classifier.classify(message);
         if (classification.intent() == Intent.GENERAL && isFollowUp(message)) {
@@ -35,12 +82,10 @@ public class LocalAiEngine {
         }
         Intent intent = classification.intent();
         if (intent == Intent.GREETING) return vi
-                ? "Xin chào! Mình là MoteLona, trợ lý Java chạy bằng thuật toán xử lý ngôn ngữ cục bộ. Bạn có thể hỏi về hồ sơ, kỹ năng, học vấn, kinh nghiệm, dự án hoặc yêu cầu giải thích thuật ngữ."
-                : "Hello! I’m MoteLona, a Java assistant powered by local language-processing algorithms. Ask about the portfolio, skills, education, experience, projects, or a technical term.";
+                ? "Chào bạn! Mình là MoteLona. Bạn muốn trò chuyện hay tìm hiểu điều gì?"
+                : "Hi! I’m MoteLona. What would you like to talk about or find out?";
         if (intent == Intent.THANKS) return vi ? "Rất vui được hỗ trợ bạn! Bạn có thể hỏi tiếp về nội dung Portfolio." : "You’re welcome! Feel free to ask another question about the portfolio.";
-        if (intent == Intent.CAPABILITIES) return vi
-                ? "Mình có thể tra cứu nội dung Portfolio/MySQL, tìm đoạn phù hợp, giải thích thuật ngữ, đưa bạn đến trang hoặc mục liên quan và tô vàng cụm cần xem. Khi bạn chủ động bật Tìm web hoặc yêu cầu ‘Tìm trên Internet: …’, mình truy vấn trang HTML công khai của DuckDuckGo rồi hiển thị tiêu đề, trích đoạn và liên kết nguồn. Phần AI chạy bằng Java cục bộ, không cần khóa API AI."
-                : "I can search Portfolio/MySQL content, find relevant passages, explain technical terms, navigate to related pages or sections, and highlight the phrase to review. When you enable Search web or ask ‘Search the web for …’, I query DuckDuckGo's public HTML results page and show titles, snippets, and source links. The assistant logic runs locally in Java; no AI API key is required.";
+        if (intent == Intent.CAPABILITIES) return capabilitiesAnswer(vi);
 
         if (asksForDefinition(message)) {
             GlossaryService.Definition definition = glossary.find(message);
@@ -56,17 +101,106 @@ public class LocalAiEngine {
 
         if (!relevant.isEmpty()) return groundedAnswer(relevant, intent, vi);
         if (intent == Intent.CV || intent == Intent.CONTACT) return vi
-                ? "Mình chưa tìm thấy đường dẫn hoặc thông tin liên hệ tương ứng trong dữ liệu Portfolio hiện có. Bạn có thể kiểm tra trực tiếp mục Liên hệ hoặc CV trên trang."
-                : "I could not find the requested contact or CV link in the available Portfolio data. Please check the Contact or CV section on the page.";
+                ? "Mình chưa tìm thấy thông tin này trong dữ liệu Portfolio hiện có. Bạn có thể bật Tìm web để kiểm tra thêm nguồn công khai hoặc mở mục Liên hệ/CV trên trang."
+                : "I could not find this in the current Portfolio data. Turn on Web search for public sources or open the Contact/CV section.";
         if (intent != Intent.GENERAL) return vi
-                ? "Mình nhận diện câu hỏi đang hỏi về " + intentLabel(intent, true) + ", nhưng dữ liệu được cung cấp chưa có nội dung đủ liên quan để trả lời chính xác. Bạn có thể bổ sung dữ liệu trong Portfolio/MySQL rồi hỏi lại."
-                : "I recognized a question about " + intentLabel(intent, false) + ", but the supplied data does not contain enough relevant information to answer accurately. Add the missing information to the Portfolio/MySQL data and ask again.";
+                ? "Mình chưa tìm thấy thông tin về " + intentLabel(intent, true) + " trong dữ liệu Portfolio hiện có. Bạn có thể bật Tìm web để kiểm tra thêm nguồn công khai."
+                : "I could not find information about " + intentLabel(intent, false) + " in the current Portfolio data. Turn on Web search to check public sources.";
 
         GlossaryService.Definition mentioned = glossary.findMentioned(message).stream().findFirst().orElse(null);
         if (mentioned != null) return definitionText(mentioned, vi, "basic");
         return vi
-                ? "Mình chưa có đủ nguồn đáng tin cậy để trả lời câu này, nên sẽ không đoán. Bạn có thể bật nút Tìm web hoặc yêu cầu ‘Tìm trên Internet: [câu hỏi]’ để xem các nguồn công khai. Lưu ý: MoteLona truy xuất tiêu đề/trích đoạn từ công cụ tìm kiếm, không phải LLM tổng quát và không tự xác minh toàn bộ nội dung của trang ngoài."
-                : "I do not have enough reliable evidence to answer, so I will not guess. Enable Search web or ask ‘Search the web for [question]’ to review public sources. MoteLona retrieves search titles and snippets; it is not a general-purpose LLM and does not independently verify every external page.";
+                ? "Mình chưa tìm thấy đoạn liên quan trên Portfolio. Bạn có thể hỏi rộng hơn hoặc bật Tìm web nếu câu hỏi cần nguồn mới."
+                : "I could not find a related passage on the Portfolio. Try rephrasing, or turn on Web search if the question needs fresh sources.";
+    }
+
+    private String productHelpAnswer(String message, boolean vi, String websiteContext) {
+        if (message == null || message.isBlank()) return null;
+        String q = TextVectorizer.normalize(message);
+        if (containsAny(q, "cach su dung motelona", "huong dan su dung", "goi y cau hoi", "nen hoi gi",
+                "motelona co the giup gi", "what can i ask", "what can motelona help me with",
+                "how do i use", "how to use", "what should i ask")) {
+            return vi
+                    ? "Bạn có thể hỏi về hồ sơ, kỹ năng, dự án, học vấn, kinh nghiệm hoặc liên hệ. Hãy thử “Có những dự án nào?” hay “MoteLona làm được gì?”. Muốn giải thích thuật ngữ, bôi đen đoạn văn rồi chọn Giải thích; chỉ bật Tìm web khi cần nguồn mới."
+                    : "Ask about the profile, skills, projects, education, experience, or contact details. Try “Which projects are listed?” or “What can MoteLona do?”. To explain a term, select it on the page and choose Explain; enable Web search only when you need current public sources.";
+        }
+        if (containsAny(q, "quyen rieng tu cua chat", "du lieu chat", "luu lich su chat", "luu tin nhan",
+                "motelona co luu tin nhan", "motelona co luu lich su", "motelona xu ly du lieu chat",
+                "does motelona save my chat", "how does motelona handle chat data", "data privacy",
+                "do you store my chat", "do you store my messages", "is my chat saved", "are my messages saved",
+                "where does my message go", "who can see my chat", "is my data sent")) {
+            return vi
+                    ? "Lịch sử chat và bộ nhớ dài hạn có lựa chọn riêng trong Quyền riêng tư & bộ nhớ. Lịch sử chỉ được lưu khi bạn bật; bộ nhớ chỉ lưu khi bạn bật và chủ động yêu cầu ghi nhớ. Nếu có API model, câu hỏi cùng phần trang/tài liệu liên quan có thể được gửi tới provider để tạo câu trả lời. Đừng gửi mật khẩu hoặc khóa API."
+                    : "Chat history and long-term memory have separate controls under Privacy & memory. History is saved only when enabled; memory is saved only when enabled and you explicitly ask MoteLona to remember something. If a model API is configured, your question and relevant page/project evidence may be sent to that provider. Do not share passwords or API keys.";
+        }
+        if (containsAny(q, "du lieu trong database", "database portfolio co gi", "database portfolio co nhung du lieu nao",
+                "database portfolio hien co nhung du lieu gi", "database co nhung gi", "du lieu mongodb", "du lieu trong mongo",
+                "mongodb dang luu gi", "portfolio database", "du lieu portfolio", "what data is in the database",
+                "what data is in the portfolio database", "what is in the database", "what does the database contain",
+                "what is stored in mongodb", "what data is in mongodb", "what data does motelona use",
+                "what portfolio data is stored", "what does motelona store")) {
+            return portfolioDatabaseAnswer(websiteContext, vi);
+        }
+        if (containsAny(q, "api free", "free api", "api mien phi", "het quota", "he quota",
+                "provider loi", "model loi", "api cham", "api slow", "quota limit")) {
+            return vi
+                    ? "MoteLona tìm câu trả lời trong Portfolio và tài liệu cục bộ trước; câu FAQ có căn cứ không cần gọi model. Câu cần tổng hợp mới dùng provider đã cấu hình, với giới hạn thời gian chung cho cả lượt gọi. Nếu provider lỗi hoặc hết thời gian, MoteLona dùng câu trả lời cục bộ khi có hoặc báo bạn thử lại. Hạn mức free tùy provider và tài khoản."
+                    : "MoteLona checks the Portfolio and local project files first, so supported FAQs do not need a model call. Questions that need synthesis use a configured provider under a shared time budget. If providers fail or run out of time, MoteLona uses a local answer when available or asks you to try again. Free limits depend on the provider and account.";
+        }
+        return null;
+    }
+
+    private String portfolioDatabaseAnswer(String websiteContext, boolean vi) {
+        Map<String, Integer> counts = new HashMap<>();
+        if (websiteContext != null) {
+            for (String line : websiteContext.split("\\R")) {
+                String prefix = "PORTFOLIO_COUNTS:";
+                if (!line.startsWith(prefix)) continue;
+                for (String pair : line.substring(prefix.length()).split(";")) {
+                    String[] fields = pair.trim().split("=", 2);
+                    if (fields.length != 2) continue;
+                    try { counts.put(fields[0].trim().toLowerCase(Locale.ROOT), Integer.parseInt(fields[1].trim())); }
+                    catch (NumberFormatException ignored) { /* Ignore malformed count fields. */ }
+                }
+                break;
+            }
+        }
+        String currentCounts = counts.containsKey("profile")
+                ? (vi
+                    ? " Số liệu công khai hiện có: " + number(counts, "profile", "hồ sơ", "hồ sơ") + ", "
+                        + number(counts, "education", "bản ghi học vấn", "bản ghi học vấn") + ", "
+                        + number(counts, "experience", "hoạt động/kinh nghiệm", "hoạt động/kinh nghiệm") + ", "
+                        + number(counts, "skills", "kỹ năng", "kỹ năng") + ", "
+                        + number(counts, "projects", "dự án công khai", "dự án công khai") + " và "
+                        + number(counts, "activeknowledge", "mục tri thức AI hoạt động", "mục tri thức AI hoạt động") + "."
+                    : " Current public data: " + number(counts, "profile", "profile", "profiles") + ", "
+                        + number(counts, "education", "education record", "education records") + ", "
+                        + number(counts, "experience", "activity/experience record", "activity/experience records") + ", "
+                        + number(counts, "skills", "skill", "skills") + ", "
+                        + number(counts, "projects", "published project", "published projects") + ", and "
+                        + number(counts, "activeknowledge", "active AI-knowledge item", "active AI-knowledge items") + ".")
+                : "";
+        return vi
+                ? "MoteLona đọc dữ liệu Portfolio công khai trong MongoDB: hồ sơ, học vấn, hoạt động/kinh nghiệm, kỹ năng và dự án đã đăng. Các FAQ không cần thiết gửi dữ liệu này tới model bên ngoài." + currentCounts
+                    + " Lịch sử chat và bộ nhớ dài hạn là tính năng riêng, chỉ được lưu khi bạn bật."
+                : "MoteLona reads public Portfolio records from MongoDB: profile, education, activity/experience, skills, and published projects. Common FAQs can use this local data without sending it to a hosted model." + currentCounts
+                    + " Chat history and long-term memory are separate features and are saved only when enabled.";
+    }
+
+    private String number(Map<String, Integer> counts, String key, String singular, String plural) {
+        int value = counts.getOrDefault(key, 0);
+        return value + " " + (value == 1 ? singular : plural);
+    }
+
+    private String capabilitiesAnswer(boolean vi) {
+        return vi
+                ? "MoteLona trả lời về hồ sơ, kỹ năng, dự án, học vấn, kinh nghiệm và liên hệ từ Portfolio/tài liệu dự án. Trợ lý cũng giải thích đoạn bạn chọn, tìm nguồn web khi bật, rồi đưa bạn tới mục phù hợp và tô sáng nội dung. FAQ có căn cứ được trả lời cục bộ; câu cần tổng hợp mới gọi model nếu có provider. Thử hỏi “Có những dự án nào?” hoặc bôi đen thuật ngữ rồi chọn Giải thích."
+                : "MoteLona answers questions about the profile, skills, projects, education, experience, and contact details using the Portfolio and project files. It can explain selected text, search public sources when enabled, and navigate to a relevant section while highlighting content. FAQs with evidence are answered locally; questions needing synthesis use a model when a provider is configured. Try “Which projects are listed?” or select a term and choose Explain.";
+    }
+
+    private boolean containsAny(String text, String... phrases) {
+        for (String phrase : phrases) if (text.contains(phrase)) return true;
+        return false;
     }
 
     public String explain(String selectedText, String level, String language, String websiteContext) {
@@ -93,11 +227,11 @@ public class LocalAiEngine {
         }
         List<KnowledgeRetrievalService.Passage> matches = retriever.retrieve(text, websiteContext, Intent.GENERAL, 3);
         if (!matches.isEmpty()) return vi
-                ? "Mình tìm thấy ngữ cảnh liên quan trên website:\n" + matches.stream().map(p -> "• " + p.text()).collect(Collectors.joining("\n")) + "\n\nMình có thể chỉ ra nội dung liên quan, nhưng từ điển hiện chưa có định nghĩa chuyên ngành đủ chắc chắn cho đoạn này."
-                : "I found related website context:\n" + matches.stream().map(p -> "• " + p.text()).collect(Collectors.joining("\n")) + "\n\nI can identify relevant content, but the built-in glossary does not yet contain a reliable technical definition for this passage.";
+                ? "Mình tìm thấy ngữ cảnh liên quan trên website:\n" + matches.stream().map(p -> "• " + p.text()).collect(Collectors.joining("\n")) + "\n\nTừ điển hiện chưa có định nghĩa đủ chắc chắn cho đoạn này. Hãy bật nút Tìm web rồi gửi lại đoạn chữ để xem nguồn Internet."
+                : "I found related website context:\n" + matches.stream().map(p -> "• " + p.text()).collect(Collectors.joining("\n")) + "\n\nThe built-in glossary does not yet have a reliable definition for this passage. Enable Search web and send the text again to review Internet sources.";
         return vi
-                ? "Từ điển cục bộ chưa có thuật ngữ phù hợp với đoạn bạn chọn. Hãy thử chọn một thuật ngữ cụ thể hoặc bổ sung định nghĩa vào GlossaryService.java."
-                : "The local glossary has no matching term for this selection. Select a specific term or add a definition to GlossaryService.java.";
+                ? "Mình chưa tìm thấy ngữ cảnh đủ phù hợp để giải thích đoạn này. Bạn có thể hỏi thêm chi tiết hoặc bật Tìm web để tham khảo nguồn công khai."
+                : "I could not find enough context to explain this selection. Ask a follow-up question or turn on Web search to check public sources.";
     }
 
     private String groundedAnswer(List<KnowledgeRetrievalService.Passage> passages, Intent intent, boolean vi) {

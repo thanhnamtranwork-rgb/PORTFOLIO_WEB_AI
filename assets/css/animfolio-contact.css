@@ -324,7 +324,7 @@
 .animfolio-contact__form-wrapper {
   max-width: none;
   padding: clamp(24px, 4vw, 42px);
-  background: linear-gradient(155deg, var(--animfolio-surface, #1a2821), var(--animfolio-bg-secondary, #1a2821));
+  background: linear-gradient(155deg, var(--animfolio-surface, #111A2E), var(--animfolio-bg-secondary, #111A2E));
   text-align: left;
 }
 

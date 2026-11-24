@@ -1,4 +1,4 @@
-/* One-page theme switcher: the three former HTML variants now live here. */
+/* Static palettes for the one-page theme switcher. */
 .animfolio-container[data-portfolio-theme="tree"] {
   --animfolio-accent: #247A53 !important;
   --animfolio-accent-hover: #1D6948 !important;
@@ -16,40 +16,63 @@
   --animfolio-on-secondary: #263C22 !important;
 }
 .animfolio-container[data-portfolio-theme="peach"] {
-  --animfolio-accent: #C94F7B !important;
-  --animfolio-accent-hover: #B8426D !important;
-  --animfolio-accent-light: rgba(201,79,123,.12) !important;
-  --animfolio-accent-subtle: rgba(201,79,123,.16) !important;
-  --animfolio-accent-shadow: rgba(201,79,123,.32) !important;
-  --animfolio-accent-glow: rgba(201,79,123,.46) !important;
+  --animfolio-accent: #B8426D !important;
+  --animfolio-accent-hover: #A23860 !important;
+  --animfolio-accent-light: rgba(184,66,109,.12) !important;
+  --animfolio-accent-subtle: rgba(184,66,109,.16) !important;
+  --animfolio-accent-shadow: rgba(184,66,109,.32) !important;
+  --animfolio-accent-glow: rgba(184,66,109,.46) !important;
   --animfolio-secondary: #F0A2B2 !important;
   --animfolio-secondary-hover: #E68EA2 !important;
   --animfolio-secondary-light: rgba(240,162,178,.18) !important;
-  --animfolio-accent-rgb: 201,79,123;
+  --animfolio-accent-rgb: 184,66,109;
   --animfolio-secondary-rgb: 240,162,178;
   --animfolio-secondary-text: #512437;
-  --animfolio-gradient: linear-gradient(120deg,#C94F7B 0%,#F0A2B2 100%);
+  --animfolio-gradient: linear-gradient(120deg,#B8426D 0%,#F0A2B2 100%);
   --animfolio-on-secondary: #512437 !important;
 }
 .animfolio-container[data-portfolio-theme="apricot"] {
-  --animfolio-accent: #B8790E !important;
-  --animfolio-accent-hover: #A66A08 !important;
-  --animfolio-accent-light: rgba(184,121,14,.12) !important;
-  --animfolio-accent-subtle: rgba(184,121,14,.16) !important;
-  --animfolio-accent-shadow: rgba(184,121,14,.32) !important;
-  --animfolio-accent-glow: rgba(184,121,14,.46) !important;
+  --animfolio-accent: #986005 !important;
+  --animfolio-accent-hover: #855000 !important;
+  --animfolio-accent-light: rgba(152,96,5,.12) !important;
+  --animfolio-accent-subtle: rgba(152,96,5,.16) !important;
+  --animfolio-accent-shadow: rgba(152,96,5,.32) !important;
+  --animfolio-accent-glow: rgba(152,96,5,.46) !important;
   --animfolio-secondary: #EBC45D !important;
   --animfolio-secondary-hover: #DDB44A !important;
   --animfolio-secondary-light: rgba(235,196,93,.18) !important;
-  --animfolio-accent-rgb: 184,121,14;
+  --animfolio-accent-rgb: 152,96,5;
   --animfolio-secondary-rgb: 235,196,93;
   --animfolio-secondary-text: #49330A;
-  --animfolio-gradient: linear-gradient(120deg,#B8790E 0%,#EBC45D 100%);
+  --animfolio-gradient: linear-gradient(120deg,#986005 0%,#EBC45D 100%);
   --animfolio-on-secondary: #49330A !important;
+}
+/* New default palette: neutral midnight surfaces with restrained indigo accents. */
+.animfolio-container[data-portfolio-theme="midnight"] {
+  --animfolio-accent: #5665D8 !important;
+  --animfolio-accent-hover: #4F5DC7 !important;
+  --animfolio-accent-light: rgba(86,101,216,.14) !important;
+  --animfolio-accent-subtle: rgba(86,101,216,.18) !important;
+  --animfolio-accent-shadow: rgba(86,101,216,.32) !important;
+  --animfolio-accent-glow: rgba(86,101,216,.42) !important;
+  --animfolio-secondary: #A9B7FF !important;
+  --animfolio-secondary-hover: #95A6FA !important;
+  --animfolio-secondary-light: rgba(169,183,255,.16) !important;
+  --animfolio-accent-rgb: 86,101,216;
+  --animfolio-secondary-rgb: 169,183,255;
+  --animfolio-accent-text: #A9B7FF !important;
+  --animfolio-secondary-text: #151B35;
+  --animfolio-gradient: linear-gradient(120deg,#5665D8 0%,#A9B7FF 100%);
+  --animfolio-on-secondary: #151B35 !important;
 }
 /* Preserve each palette's contrast in light mode too. */
 .animfolio-container[data-portfolio-theme="tree"].animfolio-container--light,
 .animfolio-container[data-portfolio-theme="tree"][data-animfolio-scheme="light"] {
+  --animfolio-secondary: #4D6E30 !important;
+  --animfolio-secondary-hover: #405D28 !important;
+  --animfolio-secondary-rgb: 77,110,48;
+  --animfolio-secondary-text: #FFFFFF;
+  --animfolio-on-secondary: #FFFFFF !important;
   --animfolio-accent-light: rgba(36,122,83,.08) !important;
   --animfolio-accent-subtle: rgba(36,122,83,.06) !important;
   --animfolio-accent-shadow: rgba(36,122,83,.22) !important;
@@ -57,17 +80,48 @@
 }
 .animfolio-container[data-portfolio-theme="peach"].animfolio-container--light,
 .animfolio-container[data-portfolio-theme="peach"][data-animfolio-scheme="light"] {
-  --animfolio-accent-light: rgba(195,71,120,.08) !important;
-  --animfolio-accent-subtle: rgba(195,71,120,.05) !important;
-  --animfolio-accent-shadow: rgba(195,71,120,.2) !important;
-  --animfolio-accent-glow: rgba(195,71,120,.15) !important;
+  --animfolio-accent: #B8426D !important;
+  --animfolio-accent-hover: #A23860 !important;
+  --animfolio-secondary: #A54764 !important;
+  --animfolio-secondary-hover: #913653 !important;
+  --animfolio-secondary-rgb: 165,71,100;
+  --animfolio-secondary-text: #FFFFFF;
+  --animfolio-on-secondary: #FFFFFF !important;
+  --animfolio-accent-light: rgba(184,66,109,.08) !important;
+  --animfolio-accent-subtle: rgba(184,66,109,.05) !important;
+  --animfolio-accent-shadow: rgba(184,66,109,.2) !important;
+  --animfolio-accent-glow: rgba(184,66,109,.15) !important;
 }
 .animfolio-container[data-portfolio-theme="apricot"].animfolio-container--light,
 .animfolio-container[data-portfolio-theme="apricot"][data-animfolio-scheme="light"] {
-  --animfolio-accent-light: rgba(163,106,0,.08) !important;
-  --animfolio-accent-subtle: rgba(163,106,0,.05) !important;
-  --animfolio-accent-shadow: rgba(163,106,0,.2) !important;
-  --animfolio-accent-glow: rgba(163,106,0,.15) !important;
+  --animfolio-accent: #986005 !important;
+  --animfolio-accent-hover: #855000 !important;
+  --animfolio-secondary: #855000 !important;
+  --animfolio-secondary-hover: #714300 !important;
+  --animfolio-secondary-rgb: 133,80,0;
+  --animfolio-secondary-text: #FFFFFF;
+  --animfolio-on-secondary: #FFFFFF !important;
+  --animfolio-accent-light: rgba(152,96,5,.08) !important;
+  --animfolio-accent-subtle: rgba(152,96,5,.05) !important;
+  --animfolio-accent-shadow: rgba(152,96,5,.2) !important;
+  --animfolio-accent-glow: rgba(152,96,5,.15) !important;
+}
+.animfolio-container[data-portfolio-theme="midnight"].animfolio-container--light,
+.animfolio-container[data-portfolio-theme="midnight"][data-animfolio-scheme="light"] {
+  --animfolio-accent: #4957C8 !important;
+  --animfolio-accent-hover: #3F4BB4 !important;
+  --animfolio-secondary: #5368B4 !important;
+  --animfolio-secondary-hover: #455AA3 !important;
+  --animfolio-accent-rgb: 73,87,200;
+  --animfolio-secondary-rgb: 83,104,180;
+  --animfolio-accent-light: rgba(73,87,200,.09) !important;
+  --animfolio-accent-subtle: rgba(73,87,200,.06) !important;
+  --animfolio-accent-shadow: rgba(73,87,200,.20) !important;
+  --animfolio-accent-glow: rgba(73,87,200,.15) !important;
+  --animfolio-accent-text: #4957C8 !important;
+  --animfolio-secondary-text: #FFFFFF !important;
+  --animfolio-on-secondary: #FFFFFF !important;
+  --animfolio-gradient: linear-gradient(120deg,#4957C8 0%,#7889D8 100%);
 }
 .animfolio-color-picker__option {
   width: 100%;

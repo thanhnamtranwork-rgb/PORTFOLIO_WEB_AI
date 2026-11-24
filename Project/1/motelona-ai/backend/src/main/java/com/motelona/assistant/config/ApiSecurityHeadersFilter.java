@@ -17,20 +17,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class ApiSecurityHeadersFilter extends OncePerRequestFilter {
-    private static final int MAX_API_BODY_BYTES = 64 * 1024;
-
+    private static final long MAX_DECLARED_API_BODY_BYTES = 64L * 1024L;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         if (request.getRequestURI().startsWith(request.getContextPath() + "/api/")) {
-            long contentLength = request.getContentLengthLong();
-            if (contentLength > MAX_API_BODY_BYTES) {
+            if (request.getContentLengthLong() > MAX_DECLARED_API_BODY_BYTES) {
                 response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, "API request body exceeds 64 KB.");
                 return;
             }
-            if (contentLength < 0) {
-                byte[] body = request.getInputStream().readNBytes(MAX_API_BODY_BYTES + 1);
-                if (body.length > MAX_API_BODY_BYTES) {
+            if (request.getContentLengthLong() < 0) {
+                byte[] body = request.getInputStream().readNBytes((int) MAX_DECLARED_API_BODY_BYTES + 1);
+                if (body.length > MAX_DECLARED_API_BODY_BYTES) {
                     response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, "API request body exceeds 64 KB.");
                     return;
                 }

@@ -6,5 +6,6 @@ public record ExplainRequest(
         String selectedText,
         String level,
         String language,
-        String websiteContext
+        String websiteContext,
+        Boolean searchWeb
 ) { }

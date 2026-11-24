@@ -15,7 +15,12 @@ public class IntentClassifier {
     public IntentClassifier() {
         add(Intent.GREETING, "xin chao", "chao ban", "hello", "hi there", "good morning", "ban khoe khong");
         add(Intent.THANKS, "cam on", "cam on ban", "thank you", "thanks a lot");
-        add(Intent.CAPABILITIES, "ban co the lam gi", "ban biet lam gi", "what can you do", "how can you help me", "chuc nang cua tro ly");
+        add(Intent.CAPABILITIES, "ban co the lam gi", "ban biet lam gi", "what can you do", "how can you help me",
+                "chuc nang cua tro ly", "motelona co the lam gi", "mote lona lam gi", "what does motelona do",
+                "what can motelona do", "what is motelona", "motelona features", "motelona capabilities",
+                "what features does motelona have", "motelona co nhung chuc nang gi", "cac chuc nang cua motelona",
+                "motelona ho tro gi", "how does motelona work", "motelona hoat dong nhu the nao",
+                "does motelona browse the web", "does motelona search the internet", "ban co tim web khong");
         add(Intent.PROFILE, "gioi thieu ve ban than", "chu nhan website la ai", "who owns this portfolio", "tell me about the portfolio owner", "ten cua toi la gi");
         add(Intent.SKILLS, "ky nang cua toi", "cac ky nang va cong nghe", "what skills do you have", "which technologies are listed", "technology stack", "programming languages");
         add(Intent.PROJECTS, "cac du an cua toi", "du an nao co tren trang", "ke ve project", "what projects are shown", "show me the projects", "project portfolio");
@@ -31,9 +36,11 @@ public class IntentClassifier {
         if (rule != null) return new Classification(rule, 1.0);
         Intent bestIntent = Intent.GENERAL;
         double best = 0.0;
+        List<Double> scores = TextVectorizer.similarities(text, corpus);
+        int sampleIndex = 0;
         for (Map.Entry<Intent, List<String>> entry : examples.entrySet()) {
-            for (String sample : entry.getValue()) {
-                double score = TextVectorizer.similarity(text, sample, corpus);
+            for (String ignored : entry.getValue()) {
+                double score = scores.get(sampleIndex++);
                 if (score > best) { best = score; bestIntent = entry.getKey(); }
             }
         }
@@ -43,7 +50,13 @@ public class IntentClassifier {
     private Intent explicitIntent(String q) {
         if (contains(q, "xin chao", "chao ban", "hello", "hi ", "good morning", "good evening")) return Intent.GREETING;
         if (contains(q, "cam on", "thank you", "thanks")) return Intent.THANKS;
-        if (contains(q, "ban co the lam gi", "ban biet lam gi", "chuc nang cua ban", "what can you do", "how can you help")) return Intent.CAPABILITIES;
+        if (contains(q, "ban co the lam gi", "ban biet lam gi", "chuc nang cua ban", "chuc nang cua motelona",
+                "motelona co the lam gi", "motelona lam gi", "mote lona lam gi", "what can you do",
+                "what does motelona do", "what can motelona do", "what is motelona", "motelona features",
+                "motelona capabilities", "what features does motelona have", "motelona co nhung chuc nang gi",
+                "cac chuc nang cua motelona", "motelona ho tro gi", "how does motelona work",
+                "motelona hoat dong nhu the nao", "does motelona browse the web",
+                "does motelona search the internet", "ban co tim web khong", "how can you help")) return Intent.CAPABILITIES;
         if (contains(q, "ky nang", "skills", "cong nghe su dung", "technology stack", "programming language")) return Intent.SKILLS;
         if (contains(q, "du an", "projects", "project nao", "san pham da lam")) return Intent.PROJECTS;
         if (contains(q, "hoc van", "hoc tap", "education", "truong dai hoc", "hoc o truong", "hoc truong", "hoc nganh", "major")) return Intent.EDUCATION;

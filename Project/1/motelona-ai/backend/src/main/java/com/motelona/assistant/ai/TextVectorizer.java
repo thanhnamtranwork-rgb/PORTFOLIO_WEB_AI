@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 /** Small, dependency-free TF-IDF and cosine-similarity implementation for local retrieval. */
 public final class TextVectorizer {
     private static final Pattern WORDS = Pattern.compile("[^a-z0-9]+", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MARKS = Pattern.compile("\\p{M}+");
+    private static final Pattern SEPARATORS = Pattern.compile("[^\\p{L}\\p{N}]+");
     private static final Set<String> STOP_WORDS = Set.of(
             "va", "la", "cua", "toi", "minh", "ban", "anh", "chi", "em", "co", "cac", "nhung",
             "nao", "gi", "the", "nay", "do", "kia", "mot", "nhieu", "hay", "hoac", "voi", "cho",
@@ -27,9 +29,8 @@ public final class TextVectorizer {
     public static String normalize(String input) {
         if (input == null) return "";
         String lower = input.toLowerCase(Locale.ROOT).replace('đ', 'd');
-        return Normalizer.normalize(lower, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}+", "")
-                .replaceAll("[^\\p{L}\\p{N}]+", " ")
+        String decomposed = Normalizer.normalize(lower, Normalizer.Form.NFD);
+        return SEPARATORS.matcher(MARKS.matcher(decomposed).replaceAll("")).replaceAll(" ")
                 .trim();
     }
 
@@ -49,24 +50,44 @@ public final class TextVectorizer {
         List<String> queryTokens = tokens(query);
         List<String> documentTokens = tokens(document);
         if (queryTokens.isEmpty() || documentTokens.isEmpty()) return 0.0;
+        List<List<String>> corpusTokens = new ArrayList<>();
+        for (String item : corpus == null ? List.<String>of() : corpus) corpusTokens.add(tokens(item));
+        Map<String, Integer> documentFrequency = documentFrequencies(corpusTokens);
+        int documentCount = Math.max(1, corpusTokens.size());
+        return cosine(tfIdf(queryTokens, documentFrequency, documentCount),
+                tfIdf(documentTokens, documentFrequency, documentCount));
+    }
 
+    /** Computes all cosine scores after tokenizing and indexing the corpus only once. */
+    public static List<Double> similarities(String query, List<String> documents) {
+        List<String> queryTokens = tokens(query);
+        if (queryTokens.isEmpty() || documents == null || documents.isEmpty()) return List.of();
+        List<List<String>> documentTokens = documents.stream().map(TextVectorizer::tokens).toList();
+        Map<String, Integer> documentFrequency = documentFrequencies(documentTokens);
+        int count = Math.max(1, documentTokens.size());
+        Map<String, Double> queryVector = tfIdf(queryTokens, documentFrequency, count);
+        return documentTokens.stream().map(item -> cosine(queryVector, tfIdf(item, documentFrequency, count))).toList();
+    }
+
+    private static Map<String, Integer> documentFrequencies(List<List<String>> documents) {
         Map<String, Integer> documentFrequency = new HashMap<>();
-        for (String item : corpus == null ? List.<String>of() : corpus) {
-            Set<String> unique = new HashSet<>(tokens(item));
+        for (List<String> item : documents) {
+            Set<String> unique = new HashSet<>(item);
             unique.forEach(token -> documentFrequency.merge(token, 1, Integer::sum));
         }
-        int documentCount = Math.max(1, corpus == null ? 1 : corpus.size());
-        Map<String, Double> queryVector = tfIdf(queryTokens, documentFrequency, documentCount);
-        Map<String, Double> documentVector = tfIdf(documentTokens, documentFrequency, documentCount);
-        return cosine(queryVector, documentVector);
+        return documentFrequency;
     }
 
     public static double overlap(String query, String document) {
-        Set<String> q = new HashSet<>(tokens(query));
-        Set<String> d = new HashSet<>(tokens(document));
+        return overlap(tokens(query), tokens(document));
+    }
+
+    public static double overlap(List<String> queryTokens, List<String> documentTokens) {
+        Set<String> q = new HashSet<>(queryTokens);
+        Set<String> d = new HashSet<>(documentTokens);
         if (q.isEmpty() || d.isEmpty()) return 0.0;
         q.retainAll(d);
-        return (double) q.size() / Math.sqrt(tokens(query).size() * (double) tokens(document).size());
+        return (double) q.size() / Math.sqrt(queryTokens.size() * (double) documentTokens.size());
     }
 
     private static Map<String, Double> tfIdf(List<String> tokens, Map<String, Integer> df, int n) {

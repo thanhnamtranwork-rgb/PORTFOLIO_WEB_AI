@@ -21,7 +21,7 @@ public class ActionRouter {
     private static final Pattern SECTION = Pattern.compile("(?m)^SECTION #([A-Za-z0-9-]+):\\s*(.*?)(?=\\R\\RSECTION #|\\z)", Pattern.DOTALL);
     private static final Map<String, String[]> SECTION_TERMS = Map.ofEntries(
         Map.entry("hero", new String[]{"home", "portfolio", "trang chu", "dau trang", "trang chinh"}),
-        // Avoid matching the ordinary preposition "about" in requests like "the paragraph about MySQL".
+        // Avoid matching the ordinary preposition "about" in requests like "the paragraph about MongoDB".
         Map.entry("about", new String[]{"about me", "about section", "about myself", "gioi thieu", "ban than", "ve toi"}),
         Map.entry("education", new String[]{"education", "hoc van", "truong hoc"}),
         Map.entry("skills", new String[]{"skills", "skill", "ky nang", "cong nghe"}),
@@ -33,7 +33,7 @@ public class ActionRouter {
         Map.entry("features", new String[]{"features", "capabilities", "main functions", "chuc nang", "kha nang"}),
         Map.entry("architecture", new String[]{"architecture", "system architecture", "java architecture", "kien truc", "so do kien truc"}),
         Map.entry("knowledge", new String[]{"glossary", "nlp basics", "concepts", "thuat ngu", "tu dien", "kien thuc nlp"}),
-        Map.entry("database", new String[]{"database", "data and api", "mysql", "co so du lieu", "du lieu va api", "sql schema"}),
+        Map.entry("database", new String[]{"database", "data and api", "mongodb", "mongo db", "co so du lieu", "du lieu va api"}),
         Map.entry("quality", new String[]{"quality", "engineering quality", "testing", "kiem thu", "chat luong"}),
         Map.entry("scope", new String[]{"scope", "limitations", "current scope", "pham vi", "gioi han", "han che"}),
         Map.entry("roadmap", new String[]{"roadmap", "next steps", "learning path", "development roadmap", "lo trinh", "buoc tiep theo"})
@@ -97,9 +97,16 @@ public class ActionRouter {
         Matcher matcher = SECTION.matcher(context);
         while (matcher.find()) sections.add(matcher.group(1) + "\n" + matcher.group(2));
         if (sections.isEmpty()) return null;
-        return sections.stream()
-                .map(section -> new ScoredSection(section.substring(0, section.indexOf('\n')),
-                        0.72 * TextVectorizer.similarity(topic, section, sections) + 0.28 * TextVectorizer.overlap(topic, section)))
+        List<Double> similarities = TextVectorizer.similarities(topic, sections);
+        List<String> queryTokens = TextVectorizer.tokens(topic);
+        List<ScoredSection> scored = new ArrayList<>();
+        for (int i = 0; i < sections.size(); i++) {
+            String section = sections.get(i);
+            double score = 0.72 * similarities.get(i)
+                    + 0.28 * TextVectorizer.overlap(queryTokens, TextVectorizer.tokens(section));
+            scored.add(new ScoredSection(section.substring(0, section.indexOf('\n')), score));
+        }
+        return scored.stream()
                 .filter(section -> section.score() >= 0.10)
                 .max(Comparator.comparingDouble(ScoredSection::score))
                 .map(ScoredSection::id)

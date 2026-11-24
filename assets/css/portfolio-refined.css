@@ -1,9 +1,9 @@
 /* Portfolio refinement layer — accessibility, responsive rhythm and touch ergonomics. */
 .animfolio-container {
-  --animfolio-accent-text: #86D4A6;
+  --animfolio-accent-text: #A9B7FF;
   --animfolio-focus-ring: color-mix(in srgb, var(--animfolio-accent) 82%, white 18%);
 }
-.animfolio-container[data-animfolio-scheme="light"] { --animfolio-accent-text: #1D6948; }
+.animfolio-container[data-animfolio-scheme="light"] { --animfolio-accent-text: #4957C8; }
 .animfolio-container[data-portfolio-theme="peach"][data-animfolio-scheme="light"] { --animfolio-accent-text: #B8426D; }
 .animfolio-container[data-portfolio-theme="apricot"][data-animfolio-scheme="light"] { --animfolio-accent-text: #986005; }
 .animfolio-container[data-portfolio-theme="tree"][data-animfolio-scheme="dark"] { --animfolio-accent-text: #86D4A6; }

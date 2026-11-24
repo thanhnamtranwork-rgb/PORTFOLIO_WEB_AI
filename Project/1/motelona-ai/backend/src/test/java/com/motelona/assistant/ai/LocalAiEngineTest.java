@@ -11,7 +11,8 @@ class LocalAiEngineTest {
     void greetsInVietnameseWithoutExternalModel() {
         String answer = engine.chat("Xin chào", "vi", "", "");
         assertTrue(answer.contains("MoteLona"));
-        assertTrue(answer.contains("Java"));
+        assertTrue(answer.contains("trò chuyện"));
+        assertFalse(answer.contains("Java"), "A greeting should not inject an unrelated project pitch.");
     }
 
     @Test
@@ -40,7 +41,8 @@ class LocalAiEngineTest {
     @Test
     void clearlyDisclosesUnknownGeneralQuestionLimits() {
         String answer = engine.chat("Ai sẽ vô địch giải đấu năm tới?", "vi", "", "");
-        assertTrue(answer.contains("không đoán"));
-        assertTrue(answer.contains("Tìm trên Internet"));
+        assertTrue(answer.contains("chưa tìm thấy"));
+        assertTrue(answer.contains("Tìm web"));
+        assertFalse(answer.contains("đội tuyển sẽ vô địch"), "An unknown future result must not be invented.");
     }
 }

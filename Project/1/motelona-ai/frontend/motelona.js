@@ -5,11 +5,14 @@
 
   const API_BASE = String(window.MOTELONA_API_BASE || "").trim().replace(/\/$/, "");
   const API_CONFIGURED = API_BASE.length > 0;
+  const FILE_ORIGIN = window.location.protocol === "file:";
+  let healthRetryTimer = null;
+  let healthRetryDelay = 2000;
   const scriptUrl = document.currentScript && document.currentScript.src ? document.currentScript.src : "";
   const root = document.querySelector("[data-motelona-ai-root]");
   if (!root) return;
   // Inject the new stylesheet into <head>; the only HTML source change remains inside Featured Projects.
-  const styleHref = scriptUrl ? new URL("motelona.css?v=20261118-agent", scriptUrl).href : "./motelona-ai/frontend/motelona.css?v=20261118-agent";
+  const styleHref = scriptUrl ? new URL("motelona.css?v=20261124-advanced-explain", scriptUrl).href : "./motelona-ai/frontend/motelona.css?v=20261124-advanced-explain";
   if (!document.querySelector('link[data-motelona-stylesheet="true"]')) {
     const stylesheet = document.createElement("link"); stylesheet.rel = "stylesheet"; stylesheet.href = styleHref; stylesheet.dataset.motelonaStylesheet = "true"; document.head.appendChild(stylesheet);
   }
@@ -44,12 +47,12 @@
         if (value) root.style.setProperty(target, value);
       });
       root.style.setProperty("--animfolio-on-accent", "#ffffff");
-      root.style.setProperty("--animfolio-bg", computed.getPropertyValue("--ml-bg").trim() || "#121b17");
-      root.style.setProperty("--animfolio-bg-secondary", computed.getPropertyValue("--ml-surface").trim() || "#1a2821");
-      root.style.setProperty("--animfolio-surface", computed.getPropertyValue("--ml-surface").trim() || "#1a2821");
-      root.style.setProperty("--animfolio-text", computed.getPropertyValue("--ml-text").trim() || "#edf3ef");
-      root.style.setProperty("--animfolio-text-secondary", computed.getPropertyValue("--ml-muted").trim() || "#b6c4bc");
-      root.style.setProperty("--animfolio-border", computed.getPropertyValue("--ml-border").trim() || "rgba(237,243,239,.12)");
+      root.style.setProperty("--animfolio-bg", computed.getPropertyValue("--ml-bg").trim() || "#0B1020");
+      root.style.setProperty("--animfolio-bg-secondary", computed.getPropertyValue("--ml-surface").trim() || "#111A2E");
+      root.style.setProperty("--animfolio-surface", computed.getPropertyValue("--ml-surface").trim() || "#111A2E");
+      root.style.setProperty("--animfolio-text", computed.getPropertyValue("--ml-text").trim() || "#F4F6FF");
+      root.style.setProperty("--animfolio-text-secondary", computed.getPropertyValue("--ml-muted").trim() || "#B3C0D8");
+      root.style.setProperty("--animfolio-border", computed.getPropertyValue("--ml-border").trim() || "rgba(244,246,255,.11)");
     }
   }
   if (themeContainer) {
@@ -60,33 +63,43 @@
   const dict = {
     en: {
       openAssistant:"MoteLona", openAssistantLabel:"Open MoteLona assistant", close:"Close assistant", title:"MoteLona", subtitle:"AI website assistant", resizePanel:"Drag the corner to resize",
-      statusChecking:"Checking Java backend…", statusOnline:"Backend reachable · self-built local NLP engine ready", statusOffline:"Backend unreachable · check the Java service", statusConfigure:"Public backend URL is not configured for this hosted website", backendNotConfigured:"The chat interface is ready, but no Java backend URL is configured. Set window.MOTELONA_API_BASE to your deployed HTTPS backend URL to enable real replies.",
-      welcome:"Hi! I’m MoteLona. Ask about this portfolio, request an explanation, or ask me to open the relevant page and highlight a passage. For other topics, turn on Web search or ask “Search the web for …” to review public sources.",
+      statusChecking:"Connecting to the MoteLona backend…", statusOnline:"Ready · local FAQ first · model calls capped at 12 seconds", statusOffline:"Backend unreachable · check the Java service", statusFileOrigin:"This page was opened as a local file. Open http://127.0.0.1:5500/ to connect to the backend.", statusConfigure:"The AI backend URL is not configured for this hosted website", backendNotConfigured:"The chat interface is ready, but no AI backend URL is configured. Set window.MOTELONA_API_BASE to your deployed HTTPS backend URL.",
+      welcome:"Hello, I am MoteLona. Ask about this website, the Portfolio, MoteLona, its technologies, or project files. Common questions about profile, skills, projects, education, experience, and contact are answered from available Portfolio data. Turn on Web search only when you need public sources. You can also ask me to explain selected text.",
       placeholder:"Ask a question…", send:"Send message", explainSelection:"Explain selected text", settings:"Privacy & memory", clear:"Clear this chat", closePanel:"Close", settingsTitle:"Privacy controls",
-      settingsDescription:"Choose what this assistant may save in MySQL. Chat history and long-term memory are separate and off by default. MoteLona processes chat with local Java algorithms and uses no AI API. If you ask for a web search or turn on Web search, your query is sent to DuckDuckGo to retrieve public sources.",
-      historyLabel:"Save chat history to the MySQL database", memoryLabel:"Allow long-term memory only when I explicitly ask to remember something", onlineLabel:"Search terms are sent to DuckDuckGo only when you ask or turn on Web search. No AI API key is used.", saveSettings:"Save choices", cancel:"Cancel", historyOn:"History: on", historyOff:"History: off", memoryOn:"Memory: on", memoryOff:"Memory: off",
-      emptySelection:"Select some text on the page first, then choose “Explain selected text”.", working:"Thinking…", retry:"Try again", requestFailed:"Could not get a MoteLona response. Check the Java backend and MySQL connection. No external AI API key or quota is needed.",
-      greetingTip:"Try asking about this website", sampleProjects:"What projects are on this page?", sampleSkills:"Take me to the skills section", sampleApi:"Explain REST API in simple terms", webDisabled:"Internet search is unavailable right now.",
-      stackAria:"Technology stack", previewAria:"MoteLona capabilities", projectKicker:"JAVA WEBSITE AGENT · LOCAL READY", projectTitle:"MoteLona — AI Website Assistant", projectDescription:"A Java website assistant that answers from Portfolio and MySQL data, explains technical terms, opens relevant pages and highlights passages in yellow. Visitors can request web search and review DuckDuckGo sources; no AI API key is required.", projectStatus:"Runs locally with Java and MySQL. Web search requires an Internet connection from the backend. Database and deployment checks depend on the hosting environment.", learnMore:"View project details", projectAria:"Explore the MoteLona project overview",
-      navDone:"Taking you to the requested section.", navMissing:"I could not find that section on this version of the page.", localAI:"Java · local NLP assistant (no API)", actionDone:"Action completed", sourceWebsite:"Website context", sourceGlossary:"Built-in glossary", sourceModel:"Local processing engine", saved:"Memory saved.", forgotten:"Matching memory items were deleted.", memoryOffNotice:"Long-term memory is off. Open Privacy & memory to enable it before asking me to remember something.",
-      termLevels:"Explanation level", basic:"Basic", technical:"Technical", deep:"In depth", explain:"Explain", exportData:"Export saved data", deleteHistory:"Delete saved history", deleteMemories:"Delete all saved memories", confirmDeleteHistory:"Delete saved chat history for this session?", confirmDeleteMemories:"Delete every saved memory? This cannot be undone.", historyDeleted:"Saved chat history deleted.", memoriesDeleted:"All saved memories deleted.", settingsSaved:"Privacy choices saved.", settingsNotPersisted:"The choices could not be saved in browser storage; they may reset when this page closes.", historyDisableDeleteFailed:"History recording is now off, but previously saved history could not be deleted. Use Delete saved history when the backend is available.", localSearch:"Search this page", webSearch:"Web search", webSearchOn:"Web search: on", webSearchOff:"Web search: off", webSearchSource:"DuckDuckGo web results", webSearchHeading:"Search results", webSearchPrompt:"Search the web for", webSearchFailed:"Internet search is temporarily unavailable. Try again later.", webSearchNoResults:"No readable search results were returned. Try a shorter query.", navHighlightMissing:"I reached the section, but could not find that exact phrase to highlight.", searchPlaceholder:"Search words on this page", searchSubmit:"Search", searchClose:"Close search", noResults:"No matching page text found."
+      settingsDescription:"Supported FAQs are answered locally without a model call. Questions needing synthesis may be sent with relevant page/project evidence to configured providers; fallback providers can receive the same request within a shared 12-second model budget. History and memory are saved only when enabled. Public web search runs only when requested.",
+      historyLabel:"Save chat history to the MongoDB database", memoryLabel:"Allow long-term memory only when I explicitly ask to remember something", onlineLabel:"Gemini, Groq, or OpenRouter may process your question and relevant page evidence; a fallback may send it to the next configured provider within the shared time limit. Optional public web search sends the query to a public search provider. Never put passwords or private information in chat.", saveSettings:"Save choices", cancel:"Cancel", historyOn:"History: on", historyOff:"History: off", memoryOn:"Memory: on", memoryOff:"Memory: off",
+      emptySelection:"Select some text on the page first, then choose “Explain selected text”.", working:"Searching the Portfolio and relevant notes…", workingSlow:"This is taking a little longer. You can keep the question focused for a quicker answer.", workingVerySlow:"The model request has a short time limit. MoteLona will use local information when possible if a provider does not respond.", requestTimedOut:"The request timed out. Please try a shorter question or retry.", retry:"Try again", requestFailed:"Could not get a response. Check the backend and configured model-provider keys, then try again.",
+      greetingTip:"Try asking about this website", promptProjects:"Portfolio projects", promptCapabilities:"What MoteLona can do", promptPrivacy:"Chat data and privacy", promptDatabase:"Portfolio database data", suggestionsAria:"Suggested questions", webDisabled:"Internet search is unavailable right now.",
+      stackAria:"Technology stack", previewAria:"MoteLona capabilities", projectKicker:"PORTFOLIO ASSISTANT · LOCAL FAQ FIRST · 12-SECOND MODEL BUDGET", projectTitle:"MoteLona — AI Website Assistant", projectDescription:"A Java and Spring Boot Portfolio assistant that answers common questions from local FAQs and MongoDB data, limits hosted model calls to a shared 12-second budget, and supports optional web research and guided page navigation.", projectStatus:"Supported FAQ and Portfolio answers use the local path; model calls are bounded to 12 seconds total.", learnMore:"View project details", projectAria:"Explore the MoteLona project overview",
+      navDone:"Taking you to the requested section.", navMissing:"I could not find that section on this version of the page.", localAI:"MoteLona Portfolio fallback", actionDone:"Action completed", sourceWebsite:"Website context", sourceGlossary:"Built-in glossary", sourceModel:"MoteLona AI", saved:"Memory saved.", forgotten:"Matching memory items were deleted.", memoryOffNotice:"Long-term memory is off. Open Privacy & memory to enable it before asking me to remember something.",
+      termLevels:"Explanation level", basic:"Basic", technical:"Technical", deep:"In depth", explain:"Explain", exportData:"Export saved data", deleteHistory:"Delete saved history", deleteMemories:"Delete all saved memories", confirmDeleteHistory:"Delete saved chat history for this session?", confirmDeleteMemories:"Delete every saved memory? This cannot be undone.", historyDeleted:"Saved chat history deleted.", memoriesDeleted:"All saved memories deleted.", settingsSaved:"Privacy choices saved.", settingsNotPersisted:"The choices could not be saved in browser storage; they may reset when this page closes.", historyDisableDeleteFailed:"History recording is now off, but previously saved history could not be deleted. Use Delete saved history when the backend is available.", webSearch:"Web search", webSearchOn:"Web search: on", webSearchOff:"Web search: off", webSearchHelp:"When enabled, public web search retrieves sources for the configured model provider to analyze and cite. Portfolio and project-file search always stays on.", webSearchSource:"Web sources", webSearchHeading:"Sources cited", webSearchPrompt:"Search the web for", webSearchFailed:"Online research could not be completed right now. Check the search configuration and try again.", webSearchNoResults:"No cited web sources were returned.", navHighlightMissing:"I reached the section, but could not find that exact phrase to highlight."
     },
     vi: {
       openAssistant:"MoteLona", openAssistantLabel:"Mở trợ lý MoteLona", close:"Đóng trợ lý", title:"MoteLona", subtitle:"Trợ lý website MoteLona", resizePanel:"Kéo góc để đổi kích thước",
-      statusChecking:"Đang kiểm tra backend Java…", statusOnline:"Đã kết nối backend · bộ máy AI Java cục bộ đã sẵn sàng", statusOffline:"Không kết nối được backend · hãy kiểm tra dịch vụ Java", statusConfigure:"Website công khai chưa được cấu hình URL backend", backendNotConfigured:"Giao diện chat đã sẵn sàng nhưng chưa có URL backend Java. Hãy đặt window.MOTELONA_API_BASE thành URL HTTPS của backend đã triển khai để bật phản hồi thực tế.",
-      welcome:"Xin chào! Tôi là MoteLona. Bạn có thể hỏi về Portfolio, yêu cầu giải thích hoặc bảo tôi mở đúng trang và tô vàng đoạn cần xem. Với chủ đề bên ngoài website, hãy bật Tìm web hoặc yêu cầu “Tìm trên Internet: …” để xem nguồn công khai.",
+      statusChecking:"Đang kết nối backend MoteLona…", statusOnline:"Đã sẵn sàng · ưu tiên FAQ cục bộ · giới hạn lượt gọi model trong 12 giây", statusOffline:"Không kết nối được backend · hãy kiểm tra dịch vụ Java", statusFileOrigin:"Bạn đang mở tệp HTML trực tiếp. Hãy mở http://127.0.0.1:5500/ để kết nối backend.", statusConfigure:"Website công khai chưa được cấu hình URL backend", backendNotConfigured:"Giao diện chat đã sẵn sàng nhưng chưa có URL backend AI. Hãy cấu hình window.MOTELONA_API_BASE thành URL HTTPS của backend đã triển khai.",
+      welcome:"Chào bạn, mình là MoteLona. Bạn có thể hỏi về website, Portfolio, dự án MoteLona và các công nghệ liên quan. Những câu thường gặp về hồ sơ, kỹ năng, dự án, học vấn, kinh nghiệm và liên hệ sẽ được trả lời từ dữ liệu Portfolio nếu có. Chỉ bật Tìm web khi cần nguồn công khai; bạn cũng có thể yêu cầu giải thích đoạn đã chọn.",
       placeholder:"Nhập câu hỏi…", send:"Gửi tin nhắn", explainSelection:"Giải thích phần đã bôi đen", settings:"Quyền riêng tư & bộ nhớ", clear:"Xóa hội thoại này", closePanel:"Đóng", settingsTitle:"Quản lý quyền riêng tư",
-      settingsDescription:"Chọn dữ liệu mà trợ lý được phép lưu trong MySQL. Lịch sử chat và bộ nhớ dài hạn tách biệt, mặc định đều tắt. Chat được xử lý bằng thuật toán Java cục bộ, không dùng API AI. Nếu bạn yêu cầu tìm web hoặc bật Tìm web, câu hỏi sẽ được gửi đến DuckDuckGo để lấy nguồn công khai.",
-      historyLabel:"Lưu lịch sử trò chuyện trong MySQL (backend Java)", memoryLabel:"Cho phép bộ nhớ dài hạn, chỉ khi tôi chủ động yêu cầu ghi nhớ", onlineLabel:"Chỉ gửi câu hỏi đến DuckDuckGo khi bạn chủ động yêu cầu hoặc bật Tìm web. Không dùng khóa API AI.",
+      settingsDescription:"FAQ có bằng chứng được trả lời cục bộ, không gọi model. Câu cần tổng hợp có thể gửi cùng nội dung trang/dự án liên quan tới provider đã cấu hình; khi dự phòng, provider tiếp theo có thể nhận cùng yêu cầu trong ngân sách model chung 12 giây. Lịch sử và bộ nhớ chỉ lưu khi bạn bật. Tìm web chỉ chạy khi được yêu cầu.",
+      historyLabel:"Lưu lịch sử trò chuyện trong MongoDB (backend Java)", memoryLabel:"Cho phép bộ nhớ dài hạn, chỉ khi tôi chủ động yêu cầu ghi nhớ", onlineLabel:"Gemini, Groq hoặc OpenRouter có thể xử lý câu hỏi và dữ liệu trang liên quan; khi chuyển dự phòng, provider kế tiếp có thể nhận cùng dữ liệu trong giới hạn thời gian chung. Tìm web chỉ gửi truy vấn tới nhà cung cấp tìm kiếm. Không nhập mật khẩu hoặc thông tin riêng tư vào chat.",
       saveSettings:"Lưu lựa chọn", cancel:"Hủy", historyOn:"Lịch sử: bật", historyOff:"Lịch sử: tắt", memoryOn:"Bộ nhớ: bật", memoryOff:"Bộ nhớ: tắt",
-      emptySelection:"Hãy bôi đen một đoạn chữ trên trang trước, sau đó chọn “Giải thích phần đã bôi đen”.", working:"Đang xử lý…", retry:"Thử lại", requestFailed:"Không nhận được phản hồi từ MoteLona. Hãy kiểm tra backend Java và kết nối MySQL. Hệ thống không cần API key hoặc quota AI bên ngoài.",
-      greetingTip:"Thử hỏi về website này", sampleProjects:"Trang này có những dự án nào?", sampleSkills:"Cuộn đến phần kỹ năng", sampleApi:"Giải thích REST API thật dễ hiểu", webDisabled:"Tìm kiếm trên Internet hiện tạm thời không khả dụng.",
-      stackAria:"Công nghệ sử dụng", previewAria:"Các chức năng MoteLona", projectKicker:"TRỢ LÝ AI WEBSITE BẰNG JAVA · CHẠY CỤC BỘ", projectTitle:"MoteLona — Trợ lý AI cho website", projectDescription:"Trợ lý AI cho website, xây dựng bằng Java: trả lời dựa trên dữ liệu Portfolio và MySQL, giải thích thuật ngữ, mở trang hoặc mục liên quan và tô vàng đoạn cần xem. Người xem có thể chủ động tìm trên web và mở nguồn DuckDuckGo; không cần khóa API AI.", projectStatus:"Chạy cục bộ bằng Java và MySQL. Tìm trên web cần backend có kết nối Internet. Việc kiểm tra database và triển khai còn tùy môi trường sử dụng.", learnMore:"Xem chi tiết dự án", projectAria:"Mở trang giới thiệu dự án MoteLona",
-      navDone:"Đang chuyển đến mục bạn yêu cầu.", navMissing:"Không tìm thấy mục đó trong phiên bản trang này.", localAI:"Java · AI xử lý cục bộ (không API)", actionDone:"Đã thực hiện hành động", sourceWebsite:"Ngữ cảnh website", sourceGlossary:"Từ điển tích hợp", sourceModel:"Bộ máy xử lý cục bộ", saved:"Đã lưu bộ nhớ.", forgotten:"Đã xóa những mục bộ nhớ phù hợp.", memoryOffNotice:"Bộ nhớ dài hạn đang tắt. Mở Quyền riêng tư và bộ nhớ để bật trước khi yêu cầu ghi nhớ.",
-      termLevels:"Mức giải thích", basic:"Cơ bản", technical:"Kỹ thuật", deep:"Chuyên sâu", explain:"Giải thích", exportData:"Xuất dữ liệu đã lưu", deleteHistory:"Xóa lịch sử đã lưu", deleteMemories:"Xóa toàn bộ bộ nhớ đã lưu", confirmDeleteHistory:"Xóa lịch sử chat đã lưu của phiên này?", confirmDeleteMemories:"Xóa tất cả bộ nhớ đã lưu? Thao tác này không thể hoàn tác.", historyDeleted:"Đã xóa lịch sử chat đã lưu.", memoriesDeleted:"Đã xóa toàn bộ bộ nhớ đã lưu.", settingsSaved:"Đã lưu lựa chọn quyền riêng tư.", settingsNotPersisted:"Không thể lưu lựa chọn trong bộ nhớ trình duyệt; cài đặt có thể bị đặt lại khi đóng trang.", historyDisableDeleteFailed:"Đã tắt việc ghi lịch sử mới nhưng không xóa được lịch sử đã lưu trước đó. Hãy thử Xóa lịch sử đã lưu khi backend hoạt động.", localSearch:"Tìm trên trang này", webSearch:"Tìm web", webSearchOn:"Tìm web: bật", webSearchOff:"Tìm web: tắt", webSearchSource:"Kết quả tìm kiếm DuckDuckGo", webSearchHeading:"Kết quả tìm kiếm", webSearchPrompt:"Tìm trên Internet:", webSearchFailed:"Tạm thời không tìm được trên Internet. Bạn hãy thử lại sau.", webSearchNoResults:"Không có kết quả tìm kiếm đọc được. Hãy thử truy vấn ngắn hơn.", navHighlightMissing:"Đã đến mục liên quan nhưng không tìm thấy chính xác cụm từ để tô vàng.", searchPlaceholder:"Tìm từ khóa trong trang", searchSubmit:"Tìm kiếm", searchClose:"Đóng tìm kiếm", noResults:"Không tìm thấy nội dung phù hợp trên trang."
+      emptySelection:"Hãy bôi đen một đoạn chữ trên trang trước, sau đó chọn “Giải thích phần đã bôi đen”.", working:"Đang tìm trong Portfolio và tài liệu liên quan…", workingSlow:"MoteLona đang xử lý thêm một chút. Câu hỏi gọn thường nhận câu trả lời nhanh hơn.", workingVerySlow:"Lượt gọi model có giới hạn thời gian. Nếu provider không phản hồi, MoteLona sẽ dùng thông tin cục bộ khi có.", requestTimedOut:"Yêu cầu đã quá thời gian chờ. Hãy thử câu ngắn hơn hoặc gửi lại.", retry:"Thử lại", requestFailed:"Chưa nhận được câu trả lời. Hãy kiểm tra backend và các API key của provider đã cấu hình, sau đó thử lại.",
+      greetingTip:"Thử hỏi về website này", promptProjects:"Dự án trong Portfolio", promptCapabilities:"MoteLona có thể giúp gì?", promptPrivacy:"Dữ liệu chat và quyền riêng tư", promptDatabase:"Dữ liệu database Portfolio", suggestionsAria:"Gợi ý câu hỏi", webDisabled:"Tìm kiếm trên Internet hiện tạm thời không khả dụng.",
+      stackAria:"Công nghệ sử dụng", previewAria:"Các chức năng MoteLona", projectKicker:"TRỢ LÝ PORTFOLIO · FAQ CỤC BỘ · NGÂN SÁCH MODEL 12 GIÂY", projectTitle:"MoteLona — Trợ lý AI cho website", projectDescription:"Trợ lý Portfolio dùng Java và Spring Boot, trả lời câu hỏi thường gặp từ FAQ cục bộ và dữ liệu MongoDB, giới hạn tổng thời gian gọi model trong 12 giây, đồng thời hỗ trợ tìm web tùy chọn và điều hướng nội dung.", projectStatus:"FAQ và câu hỏi Portfolio được hỗ trợ sẽ trả lời cục bộ; tổng thời gian gọi model được giới hạn trong 12 giây.", learnMore:"Xem chi tiết dự án", projectAria:"Mở trang giới thiệu dự án MoteLona",
+      navDone:"Đang chuyển đến mục bạn yêu cầu.", navMissing:"Không tìm thấy mục đó trong phiên bản trang này.", localAI:"Tra cứu Portfolio", actionDone:"Đã thực hiện hành động", sourceWebsite:"Ngữ cảnh website", sourceGlossary:"Từ điển tích hợp", sourceModel:"AI MoteLona", saved:"Đã lưu bộ nhớ.", forgotten:"Đã xóa những mục bộ nhớ phù hợp.", memoryOffNotice:"Bộ nhớ dài hạn đang tắt. Mở Quyền riêng tư và bộ nhớ để bật trước khi yêu cầu ghi nhớ.",
+      termLevels:"Mức giải thích", basic:"Cơ bản", technical:"Kỹ thuật", deep:"Chuyên sâu", explain:"Giải thích", exportData:"Xuất dữ liệu đã lưu", deleteHistory:"Xóa lịch sử đã lưu", deleteMemories:"Xóa toàn bộ bộ nhớ đã lưu", confirmDeleteHistory:"Xóa lịch sử chat đã lưu của phiên này?", confirmDeleteMemories:"Xóa tất cả bộ nhớ đã lưu? Thao tác này không thể hoàn tác.", historyDeleted:"Đã xóa lịch sử chat đã lưu.", memoriesDeleted:"Đã xóa toàn bộ bộ nhớ đã lưu.", settingsSaved:"Đã lưu lựa chọn quyền riêng tư.", settingsNotPersisted:"Không thể lưu lựa chọn trong bộ nhớ trình duyệt; cài đặt có thể bị đặt lại khi đóng trang.", historyDisableDeleteFailed:"Đã tắt việc ghi lịch sử mới nhưng không xóa được lịch sử đã lưu trước đó. Hãy thử Xóa lịch sử đã lưu khi backend hoạt động.", webSearch:"Tìm web", webSearchOn:"Tìm web: bật", webSearchOff:"Tìm web: tắt", webSearchHelp:"Khi bật, tìm kiếm web công khai lấy nguồn để model provider đã cấu hình phân tích và trích dẫn. Tìm Portfolio và tài liệu dự án luôn bật.", webSearchSource:"Nguồn web tham khảo", webSearchHeading:"Nguồn được trích dẫn", webSearchPrompt:"Tìm trên Internet:", webSearchFailed:"Chưa hoàn tất tìm web. Hãy kiểm tra cấu hình tìm kiếm rồi thử lại.", webSearchNoResults:"Không có nguồn web nào được trích dẫn.", navHighlightMissing:"Đã đến mục liên quan nhưng không tìm thấy chính xác cụm từ để tô vàng."
     }
   };
-  const terms = [
+  Object.assign(dict.en, {
+    explainAdvanced:"Advanced explanation", saveGlossary:"Save to my glossary", glossarySaved:"Saved to my glossary", glossarySaveFailed:"Could not save this explanation on this device.",
+    explainHint:"Select text on the page or enter text in the message box first.", highlightOnPage:"Highlight on this page", highlightDone:"Scrolled to and highlighted the matching passage.", highlightFailed:"I could not find that passage on this page.",
+    researchTerm:"Explain this term with web search", glossarySource:"Saved source", copyAnswer:"Copy explanation", copied:"Explanation copied.", copyFailed:"Could not copy to the clipboard."
+  });
+  Object.assign(dict.vi, {
+    explainAdvanced:"Giải thích nâng cao", saveGlossary:"Lưu vào từ điển của tôi", glossarySaved:"Đã lưu vào từ điển của tôi", glossarySaveFailed:"Không lưu được lời giải trên thiết bị này.",
+    explainHint:"Hãy chọn chữ trên trang hoặc nhập nội dung cần hỏi vào ô nhập trước.", highlightOnPage:"Tô sáng trên trang này", highlightDone:"Đã cuộn đến và tô sáng đoạn trùng khớp.", highlightFailed:"Không tìm thấy đoạn đó trên trang này.",
+    researchTerm:"Giải thích thuật ngữ bằng tìm web", glossarySource:"Nguồn đã lưu", copyAnswer:"Sao chép lời giải", copied:"Đã sao chép lời giải.", copyFailed:"Không sao chép được vào clipboard."
+  });
+  let terms = [
     {term:"REST API", vi:"REST API", en:"REST API", enDef:"A web interface that lets software systems exchange resources through standard HTTP methods such as GET and POST.", viDef:"Giao diện web cho phép các hệ thống phần mềm trao đổi tài nguyên bằng những phương thức HTTP chuẩn như GET và POST."},
     {term:"API", vi:"API", en:"API", enDef:"A defined interface that lets one program request data or actions from another program.", viDef:"Giao diện được quy định để một chương trình yêu cầu dữ liệu hoặc chức năng từ chương trình khác."},
     {term:"Backend", vi:"Backend", en:"Backend", enDef:"The server-side part of an application that validates requests, applies business rules, and accesses data.", viDef:"Phần máy chủ của ứng dụng, kiểm tra yêu cầu, xử lý nghiệp vụ và truy cập dữ liệu."},
@@ -99,9 +112,9 @@
     {term:"Knowledge Base", vi:"Kho kiến thức", en:"Knowledge Base", enDef:"A structured collection of trusted information that an application searches to answer domain-specific questions.", viDef:"Tập hợp thông tin có cấu trúc và được kiểm soát để ứng dụng tìm kiếm khi trả lời câu hỏi theo lĩnh vực."},
     {term:"Machine Learning", vi:"Machine Learning", en:"Machine Learning", enDef:"A branch of AI where algorithms learn patterns from data; rule-based AI does not necessarily use it.", viDef:"Nhánh AI trong đó thuật toán học quy luật từ dữ liệu; AI dựa trên luật không nhất thiết sử dụng Machine Learning."},
     {term:"AI Model", vi:"Mô hình AI", en:"AI Model", enDef:"A computational model designed or trained to map inputs to outputs such as classifications, predictions, or generated text.", viDef:"Mô hình tính toán được thiết kế hoặc huấn luyện để ánh xạ đầu vào thành đầu ra như phân loại, dự đoán hoặc văn bản."},
-    {term:"Local AI", vi:"AI cục bộ", en:"Local AI", enDef:"AI capabilities executed within infrastructure controlled by the application owner without sending prompts to a third-party AI API.", viDef:"Năng lực AI chạy trong hạ tầng do chủ ứng dụng kiểm soát, không gửi câu hỏi đến API AI của bên thứ ba."},
+    {term:"Portfolio fallback", vi:"Chế độ dự phòng theo Portfolio", en:"Portfolio retrieval fallback", enDef:"When no model-provider key is configured, MoteLona uses local rules, glossary entries, and retrieved Portfolio facts. It is not a generative language model.", viDef:"Khi chưa cấu hình key cho model provider, MoteLona dùng luật cục bộ, từ điển và dữ kiện Portfolio được truy xuất. Đây không phải mô hình ngôn ngữ tạo sinh."},
     {term:"Spring Boot", vi:"Spring Boot", en:"Spring Boot", enDef:"A Java framework that simplifies building stand-alone Spring applications.", viDef:"Framework Java giúp đơn giản hóa việc xây dựng ứng dụng Spring độc lập."},
-    {term:"MySQL", vi:"MySQL", en:"MySQL", enDef:"A relational database management system that stores structured data in tables.", viDef:"Hệ quản trị cơ sở dữ liệu quan hệ lưu dữ liệu có cấu trúc trong các bảng."},
+    {term:"MongoDB", vi:"MongoDB", en:"MongoDB", enDef:"A document database that stores flexible BSON documents in collections and supports indexes for common queries.", viDef:"Cơ sở dữ liệu dạng document, lưu dữ liệu BSON linh hoạt trong collection và hỗ trợ index cho các truy vấn thường dùng."},
     {term:"Java", vi:"Java", en:"Java", enDef:"A statically typed, object-oriented programming language commonly executed on the Java Virtual Machine.", viDef:"Ngôn ngữ lập trình hướng đối tượng, kiểu tĩnh, thường chạy trên Java Virtual Machine."},
     {term:"HTML", vi:"HTML", en:"HTML", enDef:"The markup language that defines the structure and content of a web page.", viDef:"Ngôn ngữ đánh dấu xác định cấu trúc và nội dung trang web."},
     {term:"CSS", vi:"CSS", en:"CSS", enDef:"The style language that controls web page appearance and layout.", viDef:"Ngôn ngữ kiểu dáng điều khiển giao diện và bố cục trang web."},
@@ -111,19 +124,21 @@
     {term:"JSON", vi:"JSON", en:"JSON", enDef:"A text format for representing structured data exchanged between programs.", viDef:"Định dạng văn bản biểu diễn dữ liệu có cấu trúc được trao đổi giữa các chương trình."},
     {term:"Prompt Injection", vi:"Prompt Injection", en:"Prompt Injection", enDef:"An attack where untrusted content attempts to override the intended instructions of an AI system.", viDef:"Kiểu tấn công trong đó nội dung không đáng tin cố ghi đè chỉ dẫn dự kiến của hệ thống AI."}
   ];
+  const customGlossary = readCustomGlossary();
+  customGlossary.forEach(mergeGlossaryTerm);
   const termExamples = {
     "REST API": {en:"The website sends JSON requests to Java endpoints such as POST /api/ai/chat and GET /api/ai/health.",vi:"Website gửi yêu cầu JSON đến các endpoint Java như POST /api/ai/chat và GET /api/ai/health."},
-    "Backend": {en:"The Java backend validates input, classifies intent, retrieves relevant Portfolio passages, and stores consented data in MySQL.",vi:"Backend Java kiểm tra đầu vào, phân loại ý định, truy xuất nội dung Portfolio liên quan và lưu dữ liệu được người dùng cho phép trong MySQL."},
+    "Backend": {en:"The Java backend validates input, checks topic scope, searches the current page and Portfolio database, calls configured model providers in order, and stores consented data in MongoDB.",vi:"Backend Java kiểm tra đầu vào và phạm vi câu hỏi, tìm trong trang và dữ liệu Portfolio, lần lượt gọi các model provider đã cấu hình, đồng thời lưu dữ liệu được cho phép trong MongoDB."},
     "Frontend": {en:"HTML, CSS, and JavaScript create the chat interface and send questions to the Java backend.",vi:"HTML, CSS và JavaScript tạo giao diện chat rồi gửi câu hỏi đến backend Java."},
-    "NLP": {en:"MoteLona uses local NLP for text normalization, tokenization, intent classification, and document retrieval.",vi:"MoteLona dùng NLP cục bộ để chuẩn hóa văn bản, tách token, phân loại ý định và truy xuất tài liệu."},
+    "NLP": {en:"MoteLona uses local text processing to find relevant page passages before asking the active configured provider to form an answer.",vi:"MoteLona xử lý văn bản cục bộ để tìm nội dung liên quan trên trang, sau đó yêu cầu model provider đang hoạt động tạo câu trả lời."},
     "TF-IDF": {en:"TF-IDF gives higher weight to useful terms that distinguish one Portfolio text passage from other passages.",vi:"TF-IDF tăng trọng số cho những từ hữu ích giúp phân biệt một đoạn Portfolio với các đoạn khác."},
     "Cosine Similarity": {en:"MoteLona compares the vector for a user question with vectors for content passages to rank relevant text.",vi:"MoteLona so sánh vector câu hỏi với vector các đoạn nội dung để xếp hạng văn bản liên quan."},
     "Intent Classification": {en:"The local classifier maps messages to intents such as skills, projects, education, experience, and contact.",vi:"Bộ phân loại cục bộ ánh xạ tin nhắn vào các ý định như kỹ năng, dự án, học vấn, kinh nghiệm và liên hệ."},
-    "Knowledge Base": {en:"The assistant retrieves facts from visible page text, published Portfolio records, and active MySQL knowledge items.",vi:"Trợ lý truy xuất dữ kiện từ nội dung trang, bản ghi Portfolio đã công khai và mục kiến thức đang hoạt động trong MySQL."},
-    "Local AI": {en:"This implementation does not call Gemini, OpenAI, or another external inference API; its behavior comes from Java algorithms and supplied data.",vi:"Phiên bản này không gọi Gemini, OpenAI hay API suy luận bên ngoài; hành vi của trợ lý đến từ thuật toán Java và dữ liệu được cung cấp."},
-    "Machine Learning": {en:"The current MoteLona release uses TF-IDF retrieval and nearest-example intent matching; it does not train a deep neural network.",vi:"Phiên bản MoteLona hiện tại dùng truy xuất TF-IDF và so khớp ý định theo ví dụ gần nhất; chưa huấn luyện mạng nơ-ron sâu."},
-    "AI Model": {en:"MoteLona's current local engine is an algorithmic NLP pipeline, not a generative large language model.",vi:"Bộ máy cục bộ hiện tại của MoteLona là pipeline NLP theo thuật toán, không phải mô hình ngôn ngữ lớn tạo sinh."},
-    "MySQL": {en:"MySQL stores published Portfolio data, contact messages, opted-in chat history, and user-controlled memories.",vi:"MySQL lưu dữ liệu Portfolio đã công khai, tin nhắn liên hệ, lịch sử chat được cho phép và bộ nhớ do người dùng kiểm soát."},
+    "Knowledge Base": {en:"The assistant retrieves facts from visible page text, published Portfolio records, and active MongoDB knowledge items.",vi:"Trợ lý truy xuất dữ kiện từ nội dung trang, bản ghi Portfolio đã công khai và mục kiến thức đang hoạt động trong MongoDB."},
+    "Portfolio fallback": {en:"Without any model-provider key, MoteLona can answer from glossary entries and retrieved Portfolio facts; local retrieval is not a generative language model.",vi:"Khi chưa cấu hình key cho bất kỳ model provider nào, MoteLona trả lời dựa trên từ điển và dữ kiện Portfolio được tìm thấy; chế độ cục bộ không phải mô hình ngôn ngữ tạo sinh."},
+    "Machine Learning": {en:"The first configured provider supplies the generative model. MoteLona does not train it from chat; local page search still uses text similarity.",vi:"Provider được cấu hình đầu tiên cung cấp mô hình tạo sinh. MoteLona không huấn luyện lại mô hình từ chat; tìm kiếm trang vẫn dùng độ tương đồng văn bản."},
+    "AI Model": {en:"MoteLona calls Gemini first, then can fall back to Groq or OpenRouter from the Java backend; provider keys are never sent to the browser.",vi:"MoteLona ưu tiên Gemini, rồi có thể chuyển sang Groq hoặc OpenRouter ở backend Java; các API key không được gửi đến trình duyệt."},
+    "MongoDB": {en:"MoteLona stores published Portfolio records in collections, embeds each project's technologies, and keeps chat messages as separate documents.",vi:"MoteLona lưu Portfolio trong các collection, nhúng công nghệ trong document dự án và lưu mỗi tin nhắn chat thành document riêng."},
     "Spring Boot": {en:"Spring Boot starts the Java REST backend and wires controllers, services, and configuration.",vi:"Spring Boot khởi chạy backend REST Java và kết nối controller, service cùng cấu hình."},
     "Java": {en:"Java handles API endpoints, text processing, intent classification, retrieval, business logic, and database access.",vi:"Java xử lý endpoint, văn bản, phân loại ý định, truy xuất dữ liệu, nghiệp vụ và truy cập cơ sở dữ liệu."},
     "DOM": {en:"The browser reads approved page sections and uses scrollIntoView for safe, allow-listed navigation.",vi:"Trình duyệt đọc các mục được cho phép và dùng scrollIntoView để điều hướng an toàn theo danh sách."},
@@ -138,7 +153,7 @@
   let messages = [];
   let lastQuestion = "";
   let highlightedRanges = [];
-  let webSearchEnabled = false;
+  let capturedPageSelection = null;
 
   function readLanguage() { try { return localStorage.getItem("animfolio-language") === "vi" ? "vi" : "en"; } catch (_) { return document.documentElement.lang === "vi" ? "vi" : "en"; } }
   function readFlag(key) { try { return localStorage.getItem(key) === "true"; } catch (_) { return false; } }
@@ -156,26 +171,71 @@
     catch (_) { return "mt-" + secureRandomId(); }
   }
   function el(tag, attrs, text) { const node = document.createElement(tag); Object.entries(attrs || {}).forEach(([key,value]) => { if (key === "class") node.className = value; else if (key === "dataset") Object.entries(value).forEach(([k,v]) => node.dataset[k]=v); else if (key === "hidden") node.hidden = value; else node.setAttribute(key,value); }); if (text != null) node.textContent = text; return node; }
+  const glossaryStorageKey = "motelona-custom-glossary-v1";
+  function readCustomGlossary() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(glossaryStorageKey) || "[]");
+      if (!Array.isArray(saved)) return [];
+      return saved.slice(-100).map(item => ({
+        term: String(item && item.term || "").trim().slice(0, 100),
+        enDef: String(item && item.enDef || "").trim().slice(0, 2000),
+        viDef: String(item && item.viDef || "").trim().slice(0, 2000),
+        sourceUrl: safeExternalUrl(item && item.sourceUrl || "")
+      })).filter(item => item.term && (item.enDef || item.viDef));
+    } catch (_) { return []; }
+  }
+  function mergeGlossaryTerm(item) {
+    const term = String(item && item.term || "").trim().slice(0, 100);
+    if (!term) return;
+    const existing = terms.find(entry => entry.term.toLocaleLowerCase() === term.toLocaleLowerCase());
+    if (existing) {
+      existing.enDef = item.enDef || existing.enDef;
+      existing.viDef = item.viDef || existing.viDef;
+      existing.custom = true;
+      existing.sourceUrl = item.sourceUrl || existing.sourceUrl || "";
+      return;
+    }
+    terms.push({term, en:term, vi:term, enDef:item.enDef || "", viDef:item.viDef || "", custom:true, sourceUrl:item.sourceUrl || ""});
+  }
+  function saveGlossaryDefinition(term, definition, sourceUrl) {
+    const cleanTerm = String(term || "").trim().replace(/\s+/g, " ").slice(0, 100);
+    const cleanDefinition = String(definition || "").trim().slice(0, 2000);
+    if (!cleanTerm || !cleanDefinition) return false;
+    const existingTerm = terms.find(item => item.term.toLocaleLowerCase() === cleanTerm.toLocaleLowerCase());
+    let entry = customGlossary.find(item => item.term.toLocaleLowerCase() === cleanTerm.toLocaleLowerCase());
+    if (!entry) {
+      entry = {term: existingTerm ? existingTerm.term : cleanTerm, enDef: existingTerm && existingTerm.enDef || "", viDef: existingTerm && existingTerm.viDef || "", sourceUrl:""};
+      customGlossary.push(entry);
+    }
+    if (language === "vi") entry.viDef = cleanDefinition;
+    else entry.enDef = cleanDefinition;
+    entry.sourceUrl = safeExternalUrl(sourceUrl) || entry.sourceUrl || "";
+    try {
+      localStorage.setItem(glossaryStorageKey, JSON.stringify(customGlossary.slice(-100)));
+      mergeGlossaryTerm(entry);
+      refreshTermHighlights();
+      return true;
+    } catch (_) { return false; }
+  }
 
   root.innerHTML = '<button class="motelona-ai-launcher" type="button" data-motelona-launcher aria-expanded="false" aria-controls="motelona-assistant-panel" aria-haspopup="dialog" aria-label="Open MoteLona"><span data-i18n="openAssistant">MoteLona</span></button>' +
     '<section class="motelona-ai-panel" id="motelona-assistant-panel" data-motelona-panel aria-labelledby="motelona-assistant-title" role="dialog" aria-modal="false" hidden>' +
       '<header class="motelona-ai-header"><div class="motelona-ai-brand" aria-hidden="true">M·</div><div class="motelona-ai-heading"><h2 class="motelona-ai-title" id="motelona-assistant-title" data-i18n="title">MoteLona</h2><p class="motelona-ai-subtitle" data-i18n="subtitle">AI website assistant</p></div><button class="motelona-ai-icon-button" type="button" data-motelona-settings aria-label="Privacy and memory" title="Privacy and memory">⚙</button><button class="motelona-ai-icon-button" type="button" data-motelona-close aria-label="Close assistant" title="Close">×</button></header>' +
-      '<div class="motelona-ai-toolsbar"><button class="motelona-ai-chip" type="button" data-motelona-history aria-pressed="false">History: off</button><button class="motelona-ai-chip" type="button" data-motelona-memory aria-pressed="false">Memory: off</button><button class="motelona-ai-chip" type="button" data-motelona-explain-selection>Explain selection</button><button class="motelona-ai-chip" type="button" data-motelona-web-search aria-pressed="false">Search web: off</button><button class="motelona-ai-chip" type="button" data-motelona-search-toggle data-i18n="localSearch">Search this page</button></div>' +
-      '<form class="motelona-ai-search" data-motelona-search-form hidden><input class="motelona-ai-search__input" data-motelona-search-input type="search" maxlength="120" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="Search words on this page" aria-label="Search words on this page"><button class="motelona-ai-chip" type="submit" data-i18n="searchSubmit">Search</button><button class="motelona-ai-chip" type="button" data-motelona-search-close data-i18n="searchClose">Close search</button></form>' +
-      '<div class="motelona-ai-search-results" data-motelona-search-results hidden aria-live="polite"></div>' +
-      '<div class="motelona-ai-status" data-motelona-status data-state="checking" role="status"><span class="motelona-ai-status__dot"></span><span data-motelona-status-text>Checking Java backend…</span></div>' +
+      '<div class="motelona-ai-toolsbar"><button class="motelona-ai-chip" type="button" data-motelona-history aria-pressed="false">History: off</button><button class="motelona-ai-chip" type="button" data-motelona-memory aria-pressed="false">Memory: off</button><button class="motelona-ai-chip" type="button" data-motelona-explain-advanced>Advanced explanation</button></div>' +
+      '<div class="motelona-ai-status" data-motelona-status data-state="checking" role="status"><span class="motelona-ai-status__dot"></span><span data-motelona-status-text>Connecting to AI…</span></div>' +
       '<div class="motelona-ai-messages" data-motelona-messages role="log" aria-live="polite" aria-relevant="additions text"></div>' +
-      '<div class="motelona-ai-suggestions" data-motelona-suggestions><button class="motelona-ai-chip" type="button" data-prompt="sampleProjects">What projects are on this page?</button><button class="motelona-ai-chip" type="button" data-prompt="sampleSkills">Take me to the skills section</button><button class="motelona-ai-chip" type="button" data-prompt="sampleApi">Explain REST API in simple terms</button></div>' +
+      '<div class="motelona-ai-suggestions" data-motelona-suggestions data-i18n-aria="suggestionsAria" aria-label="Suggested questions"><button class="motelona-ai-chip" type="button" data-prompt="promptProjects" data-question-vi="Kể về các dự án trong Portfolio" data-question-en="List the projects in this Portfolio">Portfolio projects</button><button class="motelona-ai-chip" type="button" data-prompt="promptCapabilities" data-question-vi="MoteLona có thể giúp gì?" data-question-en="What can MoteLona help me with?">What MoteLona can do</button><button class="motelona-ai-chip" type="button" data-prompt="promptPrivacy" data-question-vi="MoteLona xử lý dữ liệu chat thế nào?" data-question-en="How does MoteLona handle chat data?">Chat data and privacy</button><button class="motelona-ai-chip" type="button" data-prompt="promptDatabase" data-question-vi="Dữ liệu Portfolio database hiện có gì?" data-question-en="What data is in the Portfolio database?">Portfolio database data</button></div>' +
       '<form class="motelona-ai-compose" data-motelona-form><textarea class="motelona-ai-input" data-motelona-input rows="1" maxlength="3000" aria-label="Ask MoteLona" placeholder="Ask a question…"></textarea><button class="motelona-ai-send" data-motelona-send type="submit" aria-label="Send message">➤</button></form>' +
-      '<footer class="motelona-ai-footer"><span data-i18n="localAI">Local AI</span><button type="button" data-motelona-clear data-i18n="clear">Clear this chat</button></footer>' +
-      '<div class="motelona-ai-consent" data-motelona-consent><h3 data-i18n="settingsTitle">Privacy controls</h3><p data-i18n="settingsDescription">Choose what this local assistant may save.</p><label class="motelona-ai-consent__row"><input type="checkbox" data-history-consent><span data-i18n="historyLabel">Save chat history to this computer</span></label><label class="motelona-ai-consent__row"><input type="checkbox" data-memory-consent><span data-i18n="memoryLabel">Allow long-term memory only when I explicitly ask</span></label><p data-i18n="onlineLabel">Web searches are sent to DuckDuckGo only when requested.</p><div class="motelona-ai-consent__actions"><button class="motelona-ai-primary" type="button" data-save-consent data-i18n="saveSettings">Save choices</button><button type="button" data-cancel-consent data-i18n="cancel">Cancel</button><button type="button" data-export-data data-i18n="exportData">Export saved data</button><button type="button" data-delete-history data-i18n="deleteHistory">Delete saved history</button><button type="button" data-delete-memories data-i18n="deleteMemories">Delete all saved memories</button></div></div>' +
+      '<footer class="motelona-ai-footer"><span data-i18n="localAI">Portfolio and glossary fallback</span><button type="button" data-motelona-clear data-i18n="clear">Clear this chat</button></footer>' +
+      '<div class="motelona-ai-consent" data-motelona-consent><h3 data-i18n="settingsTitle">Privacy controls</h3><p data-i18n="settingsDescription">When configured, Gemini processes relevant evidence. Without an API key, replies use Portfolio and glossary retrieval.</p><label class="motelona-ai-consent__row"><input type="checkbox" data-history-consent><span data-i18n="historyLabel">Save chat history to the MongoDB database</span></label><label class="motelona-ai-consent__row"><input type="checkbox" data-memory-consent><span data-i18n="memoryLabel">Allow long-term memory only when I explicitly ask</span></label><p data-i18n="onlineLabel">Optional public web search runs only when requested.</p><div class="motelona-ai-consent__actions"><button class="motelona-ai-primary" type="button" data-save-consent data-i18n="saveSettings">Save choices</button><button type="button" data-cancel-consent data-i18n="cancel">Cancel</button><button type="button" data-export-data data-i18n="exportData">Export saved data</button><button type="button" data-delete-history data-i18n="deleteHistory">Delete saved history</button><button type="button" data-delete-memories data-i18n="deleteMemories">Delete all saved memories</button></div></div>' +
     '<button class="motelona-ai-resize-handle" type="button" data-motelona-resize aria-label="Drag the corner to resize" title="Drag the corner to resize"></button>' +
     '</section>' +
-    '<aside class="motelona-ai-popover" data-motelona-popover hidden role="dialog" aria-modal="false"><button class="motelona-ai-icon-button motelona-ai-popover__close" type="button" data-popover-close aria-label="Close">×</button><h4 data-popover-title></h4><p data-popover-content></p></aside>';
+    '<aside class="motelona-ai-popover" data-motelona-popover hidden role="dialog" aria-modal="false"><button class="motelona-ai-icon-button motelona-ai-popover__close" type="button" data-popover-close aria-label="Close">×</button><h4 data-popover-title></h4><p data-popover-content></p><a class="motelona-ai-popover__source" data-popover-source target="_blank" rel="noopener noreferrer" hidden></a><div class="motelona-ai-popover__actions"><button class="motelona-ai-chip" type="button" data-popover-search></button><button class="motelona-ai-chip" type="button" data-popover-highlight></button></div></aside>';
 
   const panel = root.querySelector("[data-motelona-panel]");
   const launcher = root.querySelector("[data-motelona-launcher]");
   const messagesEl = root.querySelector("[data-motelona-messages]");
+  const suggestionsEl = root.querySelector("[data-motelona-suggestions]");
   const form = root.querySelector("[data-motelona-form]");
   const input = root.querySelector("[data-motelona-input]");
   const sendButton = root.querySelector("[data-motelona-send]");
@@ -407,15 +467,11 @@
   }
   enablePanelResizing();
 
-  const searchForm = root.querySelector("[data-motelona-search-form]");
-  const searchInput = root.querySelector("[data-motelona-search-input]");
-  const searchResultsEl = root.querySelector("[data-motelona-search-results]");
-
   function setLanguage(next) {
     language = next === "vi" ? "vi" : "en";
     closePopover();
     document.querySelectorAll(".motelona-project-card [data-i18n], .motelona-project-note [data-i18n], .motelona-ai-root [data-i18n]").forEach(node => { node.textContent = t(node.dataset.i18n); });
-    document.querySelectorAll(".motelona-project-card [data-i18n-aria], .motelona-project-note [data-i18n-aria]").forEach(node => { node.setAttribute("aria-label", t(node.dataset.i18nAria)); });
+    document.querySelectorAll(".motelona-project-card [data-i18n-aria], .motelona-project-note [data-i18n-aria], .motelona-ai-root [data-i18n-aria]").forEach(node => { node.setAttribute("aria-label", t(node.dataset.i18nAria)); });
     root.querySelectorAll("[data-prompt]").forEach(node => { node.textContent = t(node.dataset.prompt); });
     root.querySelectorAll("[data-i18n-placeholder]").forEach(node => { node.placeholder = t(node.dataset.i18nPlaceholder); node.setAttribute("aria-label",t(node.dataset.i18nPlaceholder)); });
     root.querySelectorAll("[data-motelona-launcher] span[data-i18n]").forEach(node => { node.textContent = t("openAssistant"); });
@@ -426,15 +482,18 @@
     root.querySelector("[data-motelona-close]").setAttribute("aria-label",t("closePanel"));
     launcher.setAttribute("aria-label",t("openAssistantLabel"));
     root.querySelector("[data-popover-close]").setAttribute("aria-label",t("closePanel"));
+    root.querySelector("[data-popover-search]").textContent = t("researchTerm");
+    root.querySelector("[data-popover-highlight]").textContent = t("highlightOnPage");
+    root.querySelector("[data-popover-source]").textContent = t("glossarySource");
     root.querySelector("[data-motelona-settings]").title=t("settings");
     root.querySelector("[data-motelona-close]").title=t("closePanel");
     const resizeHandle = root.querySelector("[data-motelona-resize]");
     if (resizeHandle) { resizeHandle.setAttribute("aria-label",t("resizePanel")); resizeHandle.title=t("resizePanel"); }
     panel.setAttribute("aria-label",t("subtitle"));
-    root.querySelector("[data-motelona-explain-selection]").textContent = t("explainSelection");
+    root.querySelector("[data-motelona-explain-advanced]").textContent = t("explainAdvanced");
     root.querySelector("[data-motelona-clear]").textContent = t("clear");
-    syncConsentUI(); syncToggles(); syncWebSearchButton();
-    if (messages.length === 0) addMessage("assistant",t("welcome"),"local");
+    syncConsentUI(); syncToggles();
+    if (messages.length === 0) addMessage("assistant",t("welcome"));
     refreshTermHighlights();
     if (API_CONFIGURED) checkHealth(); else setStatus('offline', t('statusConfigure'));
   }
@@ -443,12 +502,6 @@
     const h = root.querySelector("[data-motelona-history]"), m = root.querySelector("[data-motelona-memory]");
     h.textContent = historyEnabled ? t("historyOn") : t("historyOff"); h.setAttribute("aria-pressed",String(historyEnabled));
     m.textContent = memoryEnabled ? t("memoryOn") : t("memoryOff"); m.setAttribute("aria-pressed",String(memoryEnabled));
-  }
-  function syncWebSearchButton() {
-    const button = root.querySelector("[data-motelona-web-search]");
-    if (!button) return;
-    button.textContent = webSearchEnabled ? t("webSearchOn") : t("webSearchOff");
-    button.setAttribute("aria-pressed", String(webSearchEnabled));
   }
   function syncConsentUI() {
     root.querySelector("[data-history-consent]").checked = historyEnabled;
@@ -482,6 +535,41 @@
       return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
     } catch (_) { return ""; }
   }
+  function addExplanationActions(messageNode, term, answer, results) {
+    if (!messageNode) return;
+    const actions = el("div", {class:"motelona-ai-message__actions"});
+    const highlightButton = el("button", {type:"button", class:"motelona-ai-chip"}, t("highlightOnPage"));
+    highlightButton.addEventListener("click", () => {
+      const page = document.querySelector(".animfolio-container") || document.body;
+      if (highlightRequestedText(page, term)) addMessage("assistant", t("highlightDone"));
+      else addMessage("assistant", t("highlightFailed"));
+    });
+    actions.appendChild(highlightButton);
+
+    const cleanTerm = String(term || "").trim().replace(/\s+/g, " ");
+    if (cleanTerm.length > 0 && cleanTerm.length <= 100 && cleanTerm.split(/\s+/).length <= 10) {
+      const saveButton = el("button", {type:"button", class:"motelona-ai-chip"}, t("saveGlossary"));
+      saveButton.addEventListener("click", () => {
+        const sourceUrl = Array.isArray(results) ? results.map(item => safeExternalUrl(item && item.url)).find(Boolean) : "";
+        if (saveGlossaryDefinition(cleanTerm, answer, sourceUrl)) {
+          saveButton.textContent = t("glossarySaved");
+          saveButton.disabled = true;
+        } else addMessage("assistant", t("glossarySaveFailed"), "", true);
+      });
+      actions.appendChild(saveButton);
+    }
+
+    const copyButton = el("button", {type:"button", class:"motelona-ai-chip"}, t("copyAnswer"));
+    copyButton.addEventListener("click", async () => {
+      try {
+        if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error("Clipboard API unavailable");
+        await navigator.clipboard.writeText(String(answer || "").slice(0, 6000));
+        copyButton.textContent = t("copied");
+      } catch (_) { addMessage("assistant", t("copyFailed"), "", true); }
+    });
+    actions.appendChild(copyButton);
+    messageNode.appendChild(actions);
+  }
   function addTyping() { const item=el("div",{class:"motelona-ai-message motelona-ai-message--assistant"},t("working")); messagesEl.appendChild(item); messagesEl.scrollTop=messagesEl.scrollHeight; return item; }
   let lastOpenTrigger = null;
   function openPanel(event) {
@@ -506,17 +594,36 @@
     } finally { clearTimeout(timer); }
   }
   async function checkHealth() {
+    if (FILE_ORIGIN) { setStatus("offline",t("statusFileOrigin")); return; }
     if (!API_CONFIGURED) { setStatus("offline",t("statusConfigure")); return; }
+    if (healthRetryTimer) { clearTimeout(healthRetryTimer); healthRetryTimer = null; }
     setStatus("checking",t("statusChecking"));
     try {
       const h = await fetchJson(API_BASE + "/api/ai/health",{method:"GET"},4500);
-      if (h.backend === "up" && h.provider === "java-local" && h.apiKeyRequired === false) {
-        const label = language === "vi" ? "Backend trực tuyến · AI Java tự xây đã sẵn sàng · " : "Backend online · self-built Java AI engine ready · ";
-        setStatus("online", label + (h.engineVersion || "Local NLP Engine"));
+      if (h.backend === "up" && h.chatReady === true && h.modelConfigured === true) {
+        const providers = Array.isArray(h.configuredProviders) && h.configuredProviders.length
+          ? h.configuredProviders.join(" → ") : String(h.provider || "model");
+        setStatus("online", language === "vi" ? "AI sẵn sàng · thứ tự provider: " + providers : "AI ready · provider order: " + providers);
+        healthRetryDelay = 2000;
+      } else if (h.backend === "up" && h.chatReady === true && h.fallbackEnabled === true) {
+        setStatus("online", language === "vi" ? "Đang dùng tra cứu Portfolio cục bộ; bật Tìm web nếu muốn hỏi chủ đề khác." : "Local Portfolio retrieval is ready; enable Web search for other topics.");
+        healthRetryDelay = 2000;
       } else if (h.backend === "up") {
-        setStatus("offline", h.message || (language === "vi" ? "Bộ máy AI cục bộ chưa sẵn sàng." : "The local AI engine is not ready."));
-      } else setStatus("offline",t("statusOffline"));
-    } catch (_) { setStatus("offline",t("statusOffline")); }
+        setStatus("offline", language === "vi" ? "Backend chưa sẵn sàng. Đang thử kết nối lại…" : "The backend is not ready. Retrying…");
+        scheduleHealthRetry();
+      } else {
+        setStatus("offline",t("statusOffline"));
+        scheduleHealthRetry();
+      }
+    } catch (_) {
+      setStatus("offline",t("statusOffline"));
+      scheduleHealthRetry();
+    }
+  }
+  function scheduleHealthRetry() {
+    if (healthRetryTimer) clearTimeout(healthRetryTimer);
+    healthRetryTimer = setTimeout(checkHealth, healthRetryDelay);
+    healthRetryDelay = Math.min(healthRetryDelay * 2, 15000);
   }
   function pageContext() {
     const container = document.querySelector(".animfolio-container") || document.body;
@@ -526,63 +633,93 @@
     if (detailPage) {
       const hero = detailPage.querySelector(".ml-hero-copy");
       const heroText = hero ? (hero.innerText || hero.textContent || "").replace(/\s+/g, " ").trim() : "";
-      if (heroText) parts.push("PROJECT OVERVIEW: " + heroText.slice(0, 900));
+      if (heroText) parts.push("PROJECT OVERVIEW: " + heroText.slice(0, 3500));
       ["overview", "features", "architecture", "knowledge", "database", "quality", "scope", "roadmap"].forEach(id => {
         const node = document.getElementById(id);
         if (!node) return;
         const text = (node.innerText || node.textContent || "").replace(/\s+/g, " ").trim();
-        if (text) parts.push("SECTION #" + id + ": " + text.slice(0, 950));
+        if (text) parts.push("SECTION #" + id + ": " + text.slice(0, 5000));
       });
-      return parts.join("\n\n").slice(0, 9000);
+      return parts.join("\n\n").slice(0, 30000);
     }
 
-    const ids = ["hero", "about", "education", "skills", "projects", "stats", "contact"];
+    const ids = ["hero", "projects", "about", "education", "skills", "stats", "contact"];
     ids.forEach(id => {
       const node = document.getElementById(id);
       if (!node) return;
       const text = (node.innerText || node.textContent || "").replace(/\s+/g, " ").trim();
-      if (text) parts.push("SECTION #" + id + ": " + text.slice(0, 1800));
+      const sectionLimit = id === "projects" ? 12000 : (id === "skills" ? 7000 : 5000);
+      if (text) parts.push("SECTION #" + id + ": " + text.slice(0, sectionLimit));
     });
     if (!parts.length) parts.push((container.innerText || container.textContent || "").replace(/\s+/g, " ").slice(0, 5500));
-    return parts.join("\n\n").slice(0, 9000);
+    return parts.join("\n\n").slice(0, 30000);
   }
-  async function sendMessage(rawText, mode) {
+  function pageSelectionText() {
+    if (!window.getSelection) return "";
+    const selection = window.getSelection();
+    if (!selection || !selection.toString().trim()) return "";
+    const anchor = selection.anchorNode && (selection.anchorNode.nodeType === Node.ELEMENT_NODE ? selection.anchorNode : selection.anchorNode.parentElement);
+    if (anchor && anchor.closest && anchor.closest(".motelona-ai-root")) return "";
+    return selection.toString().trim().slice(0, 3000);
+  }
+  function explainCurrentText(searchWeb) {
+    const pageText = pageSelectionText() || (capturedPageSelection && Date.now() - capturedPageSelection.at < 300000 ? capturedPageSelection.text : "");
+    const typedText = input.value.trim();
+    const text = pageText || typedText;
+    capturedPageSelection = null;
+    if (!text) { addMessage("assistant", t("explainHint")); return; }
+    if (!pageText) input.value = "";
+    openPanel();
+    sendMessage(text, "explain", searchWeb ? {searchWeb:true} : undefined);
+  }
+  async function sendMessage(rawText, mode, options) {
     const text=String(rawText || "").trim();
     if (!text || isBusy) return;
+    if (FILE_ORIGIN) { addMessage("user",text); addMessage("assistant",t("statusFileOrigin"),"",true); return; }
     if (!API_CONFIGURED) { addMessage("user",text); addMessage("assistant",t("backendNotConfigured"),"",true); return; }
-    lastQuestion=text; isBusy=true; sendButton.disabled=true; input.disabled=true;
+    const requestMode = mode === "explain" ? "explain" : "chat";
+    const requestText = text;
+    const searchRequested = options && typeof options.searchWeb === "boolean" ? options.searchWeb : isExplicitWebSearch(text);
+    lastQuestion=text; isBusy=true; sendButton.disabled=true; input.disabled=true; suggestionsEl.hidden=true;
     addMessage("user",text);
     const typing=addTyping();
     const context=pageContext();
+    let progressTimers = [];
     try {
       // Keep request bodies aligned with their Java record DTOs. Do not send chat-only
       // fields to ExplainRequest or explain-only fields to ChatRequest.
-      const requestBody = mode === "explain"
-        ? { sessionId, selectedText: text, level: "basic", language, websiteContext: context }
-        : { sessionId, message: text, language, websiteContext: context,
+      const requestBody = requestMode === "explain"
+        ? { sessionId, selectedText: text, level: "basic", language, websiteContext: context, searchWeb: searchRequested }
+        : { sessionId, message: requestText, language, websiteContext: context,
             history: messages.slice(-13,-1).map(m => ({ role: m.role, content: m.content })),
-            historyEnabled, memoryEnabled, searchWeb: webSearchEnabled };
-      const response = await fetchJson(API_BASE + (mode === "explain" ? "/api/ai/explain" : "/api/ai/chat"),{
+            historyEnabled, memoryEnabled, searchWeb: searchRequested };
+      progressTimers = [
+        setTimeout(() => { if (typing.isConnected) typing.textContent = t("workingSlow"); }, 3500),
+        setTimeout(() => { if (typing.isConnected) typing.textContent = t("workingVerySlow"); }, 9000)
+      ];
+      const response = await fetchJson(API_BASE + (requestMode === "explain" ? "/api/ai/explain" : "/api/ai/chat"),{
         method:"POST", body:JSON.stringify(requestBody)
-      },125000);
+      },searchRequested ? 100000 : 25000);
       typing.remove();
       const responseText = response.message || response.answer || (language === "vi" ? "Backend không trả về nội dung." : "The backend returned no content.");
-      const sourceLabel = response.source === "local-ai" ? t("localAI") : (response.source === "web-search" ? t("webSearchSource") : (response.source || (response.aiPowered ? t("sourceModel") : t("sourceWebsite"))));
-      addMessage("assistant",responseText,sourceLabel);
+      const sourceLabel = response.source === "gemini" ? t("sourceModel") : (response.source === "local-knowledge-fallback" ? t("localAI") : (response.source || (response.aiPowered ? t("sourceModel") : t("sourceWebsite"))));
+      const answerMessage = addMessage("assistant",responseText,sourceLabel);
       if (response.webResults) addWebResults(response.webResults);
+      if (requestMode === "explain") addExplanationActions(answerMessage, text, responseText, response.webResults);
       if (response.action && response.action.type === "navigate") performNavigation(response.action.target, response.action.term);
       if (response.action && response.action.type === "explain") showTermPopover(response.action.term || text, response.message, window.innerWidth-360, window.innerHeight-180);
       if (response.source === "web-disabled") addMessage("assistant",t("webDisabled"));
       if (response.health) await checkHealth();
     } catch (error) {
       typing.remove();
-      const msg = webSearchEnabled || isExplicitWebSearch(text) ? t("webSearchFailed") : t("requestFailed");
+      const timedOut = error && error.name === "AbortError";
+      const msg = timedOut ? t("requestTimedOut") : (error && error.message ? error.message : (searchRequested || isExplicitWebSearch(text) ? t("webSearchFailed") : t("requestFailed")));
       addMessage("assistant",msg,"",true);
-      setStatus("offline",t("statusOffline"));
+      if (!timedOut && !(error && Number.isFinite(error.status))) setStatus("offline",t("statusOffline"));
       const retry=el("button",{type:"button",class:"motelona-ai-chip"},t("retry"));
-      retry.addEventListener("click",()=>sendMessage(lastQuestion,mode));
+      retry.addEventListener("click",()=>sendMessage(lastQuestion,mode,options));
       messagesEl.appendChild(retry); messagesEl.scrollTop=messagesEl.scrollHeight;
-    } finally { isBusy=false; sendButton.disabled=false; input.disabled=false; input.focus(); }
+    } finally { progressTimers.forEach(clearTimeout); isBusy=false; sendButton.disabled=false; input.disabled=false; input.focus(); }
   }
   function isExplicitWebSearch(value) {
     return /^(?:t[iì]m(?: ki[eế]m)?\s+(?:tr[eê]n\s+)?(?:internet|m[aạ]ng|web)|tra c[uứ]u\s+(?:tr[eê]n\s+)?(?:internet|m[aạ]ng|web)|search\s+(?:the\s+)?(?:web|internet)|look\s+up(?:\s+online)?)/iu.test(String(value || "").trim());
@@ -620,7 +757,7 @@
     }, reduceMotion ? 0 : 180);
   }
 
-  function highlightRequestedText(container, rawTerm) {
+  function highlightRequestedTextLegacy(container, rawTerm) {
     if (!container || !rawTerm) return false;
     const raw = String(rawTerm).trim().slice(0, 120);
     const tokens = raw.match(/[\\p{L}\\p{N}][\\p{L}\\p{N}'’’-]*/gu) || [];
@@ -678,6 +815,100 @@
     } catch (_) { return false; }
   }
 
+  function highlightRequestedText(container, rawTerm) {
+    if (!container || !rawTerm) return false;
+    const raw = String(rawTerm).trim().slice(0, 120);
+    const words = raw.match(/[\p{L}\p{N}][\p{L}\p{N}'’'-]*/gu) || [];
+    const stopWords = new Set(["the", "and", "that", "this", "about", "section", "paragraph", "part", "find", "show", "take", "me", "to", "đến", "phần", "đoạn", "nói", "về", "cho", "tôi", "xem"]);
+    const useful = words.filter(word => !stopWords.has(word.toLocaleLowerCase()));
+    const candidates = [raw, useful.slice(-3).join(" "), useful.slice(-2).join(" "), ...[...useful].sort((a, b) => b.length - a.length)]
+      .map(value => value.trim()).filter((value, index, all) => value.length > 1 && all.indexOf(value) === index);
+    const excluded = "script,style,noscript,textarea,input,button,a,code,pre,[contenteditable='true'],.motelona-ai-root,.motelona-ai-panel,.motelona-ai-launcher";
+    const blockSelector = "p,li,h1,h2,h3,h4,article";
+    const blocks = container.matches && container.matches(blockSelector) ? [container] : Array.from(container.querySelectorAll ? container.querySelectorAll(blockSelector) : []);
+    if (!blocks.length || blocks[blocks.length - 1] !== container) blocks.push(container);
+    let foundRange = null;
+    let foundBlock = null;
+
+    for (const candidate of candidates) {
+      const escaped = Array.from(candidate).map(char => "\\^$.*+?()[]{}|".includes(char) ? "\\" + char : char).join("").replace(/\s+/g, "\\s+");
+      let expression;
+      try { expression = new RegExp(escaped, "iu"); } catch (_) { continue; }
+      for (const block of blocks) {
+        const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
+          acceptNode(node) {
+            if (!node.nodeValue || !node.nodeValue.trim() || !node.parentElement || node.parentElement.closest(excluded)) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        });
+        let combined = "";
+        const positions = [];
+        let previousBlock = null;
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          const nearestBlock = node.parentElement.closest(blockSelector) || block;
+          if (previousBlock && nearestBlock !== previousBlock) { combined += "\n"; positions.push(null); }
+          previousBlock = nearestBlock;
+          for (let offset = 0; offset < node.nodeValue.length; offset++) {
+            combined += node.nodeValue[offset];
+            positions.push({node, offset});
+          }
+        }
+        expression.lastIndex = 0;
+        let match;
+        while ((match = expression.exec(combined))) {
+          let first = match.index;
+          let last = match.index + match[0].length - 1;
+          while (first <= last && (!positions[first] || /\s/.test(combined[first]))) first++;
+          while (last >= first && (!positions[last] || /\s/.test(combined[last]))) last--;
+          const start = positions[first], end = positions[last];
+          if (start && end) {
+            foundRange = document.createRange();
+            foundRange.setStart(start.node, start.offset);
+            foundRange.setEnd(end.node, end.offset + 1);
+            foundBlock = block;
+            break;
+          }
+          if (!match[0].length) expression.lastIndex++;
+        }
+        if (foundRange) break;
+      }
+      if (foundRange) break;
+    }
+
+    if (!foundRange) return highlightRequestedTextLegacy(container, rawTerm);
+    const scrollTarget = foundRange.startContainer.parentElement.closest(blockSelector) || foundBlock || container;
+    scrollTarget.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+    if (window.CSS && CSS.highlights && typeof Highlight !== "undefined") {
+      try {
+        CSS.highlights.set("motelona-ai-target", new Highlight(foundRange));
+        setTimeout(() => CSS.highlights.delete("motelona-ai-target"), 7000);
+        return true;
+      } catch (_) { /* Use the semantic mark fallback below. */ }
+    }
+    try {
+      const mark = document.createElement("mark");
+      mark.className = "motelona-ai-navigation-highlight";
+      try { foundRange.surroundContents(mark); }
+      catch (_) {
+        const startBlock = foundRange.startContainer.parentElement && foundRange.startContainer.parentElement.closest(blockSelector);
+        const endNode = foundRange.endContainer.nodeType === Node.ELEMENT_NODE ? foundRange.endContainer : foundRange.endContainer.parentElement;
+        const endBlock = endNode && endNode.closest(blockSelector);
+        if (startBlock && endBlock && startBlock !== endBlock) return false;
+        mark.appendChild(foundRange.extractContents());
+        foundRange.insertNode(mark);
+      }
+      setTimeout(() => {
+        if (!mark.parentNode) return;
+        const parent = mark.parentNode;
+        while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+        mark.remove();
+        parent.normalize();
+      }, 7000);
+      return true;
+    } catch (_) { return false; }
+  }
+
   function applyPendingNavigationHighlight() {
     const url = new URL(window.location.href);
     const term = url.searchParams.get("motelonaHighlight");
@@ -714,6 +945,11 @@
   function showTermPopover(term, content, x, y) {
     root.querySelector("[data-popover-title]").textContent=term;
     root.querySelector("[data-popover-content]").textContent=content || (language === "vi" ? "Chưa có định nghĩa." : "No definition available.");
+    const termEntry = terms.find(item => item.term.toLocaleLowerCase() === String(term || "").toLocaleLowerCase());
+    const savedSource = root.querySelector("[data-popover-source]");
+    const sourceUrl = safeExternalUrl(termEntry && termEntry.sourceUrl);
+    savedSource.hidden = !sourceUrl;
+    if (sourceUrl) savedSource.href = sourceUrl;
     popover.hidden=false;
     const width=Math.min(330,window.innerWidth-24), height=popover.offsetHeight || 140;
     popover.style.left=Math.max(12,Math.min(Number(x)||12,window.innerWidth-width-12))+"px";
@@ -746,7 +982,7 @@
     try {
       const data=await fetchJson(API_BASE+"/api/ai/history/"+encodeURIComponent(sessionId),{method:"GET"},8000);
       if (Array.isArray(data.items) && data.items.length) {
-        messages=[]; messagesEl.replaceChildren();
+        messages=[]; messagesEl.replaceChildren(); suggestionsEl.hidden=true;
         data.items.slice(-40).forEach(m=>{ const node=el("div",{class:"motelona-ai-message motelona-ai-message--"+(m.role==="user"?"user":"assistant")},m.content); messagesEl.appendChild(node); messages.push({role:m.role,content:m.content}); });
         messagesEl.scrollTop=messagesEl.scrollHeight;
       }
@@ -766,37 +1002,14 @@
   }
 
   launcher.addEventListener("click",openPanel);
+  document.addEventListener("pointerdown", event => {
+    if (!root.contains(event.target)) return;
+    const selectedText = pageSelectionText();
+    if (selectedText) capturedPageSelection = {text:selectedText, at:Date.now()};
+  }, true);
+  input.addEventListener("input", () => { capturedPageSelection = null; });
   document.querySelectorAll("[data-motelona-open]").forEach(button=>button.addEventListener("click",openPanel));
   root.querySelector("[data-motelona-close]").addEventListener("click",closePanel);
-  root.querySelector("[data-motelona-web-search]").addEventListener("click",()=>{
-    webSearchEnabled = !webSearchEnabled;
-    syncWebSearchButton();
-    addMessage("assistant", webSearchEnabled
-      ? (language === "vi" ? "Đã bật tìm kiếm web. Câu hỏi tiếp theo sẽ được gửi đến DuckDuckGo để lấy nguồn công khai." : "Web search is on. Your next question will be sent to DuckDuckGo for public sources.")
-      : (language === "vi" ? "Đã tắt tìm kiếm web." : "Web search is off."));
-  });
-  root.querySelector("[data-motelona-search-toggle]").addEventListener("click",()=>{
-    searchForm.hidden=!searchForm.hidden;
-    if(!searchForm.hidden){searchInput.focus();}else{searchResultsEl.hidden=true;searchResultsEl.replaceChildren();}
-  });
-  root.querySelector("[data-motelona-search-close]").addEventListener("click",()=>{searchForm.hidden=true;searchResultsEl.hidden=true;searchResultsEl.replaceChildren();root.querySelector("[data-motelona-search-toggle]").focus();});
-  searchForm.addEventListener("submit",async event=>{
-    event.preventDefault();
-    const query=searchInput.value.trim();
-    if(!API_CONFIGURED){searchResultsEl.hidden=false;searchResultsEl.replaceChildren(el("p",{class:"motelona-ai-search-result"},t("backendNotConfigured")));return;}
-    if(!query){searchResultsEl.hidden=false;searchResultsEl.replaceChildren(el("p",{},t("noResults")));return;}
-    const submit=searchForm.querySelector('[type="submit"]'); submit.disabled=true; searchResultsEl.hidden=false; searchResultsEl.replaceChildren(el("p",{},language==="vi"?"Đang tìm…":"Searching…"));
-    try{
-      const result=await fetchJson(API_BASE+"/api/ai/search",{method:"POST",body:JSON.stringify({query,websiteContext:pageContext(),language})},10000);
-      searchResultsEl.replaceChildren();
-      if(!Array.isArray(result.results)||result.results.length===0){searchResultsEl.appendChild(el("p",{},t("noResults")));}
-      else{
-        const heading=el("strong",{},language==="vi"?`Tìm thấy ${result.results.length} kết quả`:`Found ${result.results.length} result(s)`); searchResultsEl.appendChild(heading);
-        result.results.forEach(match=>{searchResultsEl.appendChild(el("p",{class:"motelona-ai-search-result"},String(match.snippet||"")));});
-      }
-    }catch(_){searchResultsEl.replaceChildren(el("p",{class:"motelona-ai-search-result motelona-ai-search-result--error"},t("requestFailed")));}
-    finally{submit.disabled=false;}
-  });
   root.querySelector("[data-motelona-settings]").addEventListener("click",()=>{syncConsentUI();consentEl.classList.add("is-open");});
   root.querySelector("[data-cancel-consent]").addEventListener("click",()=>consentEl.classList.remove("is-open"));
   root.querySelector("[data-save-consent]").addEventListener("click",async()=>{
@@ -833,12 +1046,23 @@
   root.querySelector("[data-motelona-clear]").addEventListener("click",async()=>{
     let historyDeleteFailed=false;
     if(historyEnabled){try{await fetchJson(API_BASE+"/api/ai/history/"+encodeURIComponent(sessionId),{method:"DELETE"},8000);}catch(_){historyDeleteFailed=true;}}
-    messages=[];messagesEl.replaceChildren();addMessage("assistant",t("welcome"),"local");
+    messages=[];messagesEl.replaceChildren();suggestionsEl.hidden=false;addMessage("assistant",t("welcome"));
     if(historyDeleteFailed) addMessage("assistant",t("historyDisableDeleteFailed"),"",true);
   });
-  root.querySelector("[data-motelona-explain-selection]").addEventListener("click",()=>{const selected=String(window.getSelection ? window.getSelection() : "").trim(); if(!selected){addMessage("assistant",t("emptySelection"));return;} openPanel(); sendMessage(selected,"explain");});
+  root.querySelector("[data-motelona-explain-advanced]").addEventListener("click",()=>explainCurrentText(true));
   root.querySelector("[data-popover-close]").addEventListener("click",closePopover);
-  root.querySelectorAll("[data-prompt]").forEach(button=>button.addEventListener("click",()=>sendMessage(t(button.dataset.prompt))));
+  root.querySelector("[data-popover-search]").addEventListener("click",()=>{
+    const term = root.querySelector("[data-popover-title]").textContent.trim();
+    closePopover(); capturedPageSelection = null; openPanel(); sendMessage(term,"explain",{searchWeb:true});
+  });
+  root.querySelector("[data-popover-highlight]").addEventListener("click",()=>{
+    const term = root.querySelector("[data-popover-title]").textContent.trim();
+    closePopover();
+    const page = document.querySelector(".animfolio-container") || document.body;
+    addMessage("assistant",highlightRequestedText(page,term) ? t("highlightDone") : t("highlightFailed"));
+    if (panel.hidden) openPanel();
+  });
+    root.querySelectorAll("[data-prompt]").forEach(button=>button.addEventListener("click",()=>sendMessage(language === "vi" ? button.dataset.questionVi : button.dataset.questionEn)));
   form.addEventListener("submit",event=>{event.preventDefault();const value=input.value;input.value="";sendMessage(value);});
   input.addEventListener("keydown",event=>{if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();form.requestSubmit();}});
   document.addEventListener("click",event=>{
@@ -846,7 +1070,7 @@
     const found=termAtPoint(event); if(!found) return;
     const termObject=terms.find(item=>item.term.toLowerCase()===found.term.toLowerCase() || item.en.toLowerCase()===found.term.toLowerCase() || item.vi.toLowerCase()===found.term.toLowerCase());
     if(!termObject)return;
-    const definition=language==="vi"?termObject.viDef:termObject.enDef;
+    const definition=language==="vi"?(termObject.viDef||termObject.enDef):(termObject.enDef||termObject.viDef);
     const sample=termExamples[termObject.term] ? termExamples[termObject.term][language] : "";
     const normalizedContext=pageContext().toLocaleLowerCase();
     const isOnPage=normalizedContext.includes(termObject.term.toLocaleLowerCase());
@@ -858,7 +1082,7 @@
   window.addEventListener("storage",event=>{if(event.key==="animfolio-language")setLanguage(event.newValue);});
 
   // Initial UI text is synced without mutating existing website text nodes.
-  setLanguage(language); syncToggles(); syncWebSearchButton(); refreshTermHighlights(); applyPendingNavigationHighlight();
+  setLanguage(language); syncToggles(); refreshTermHighlights(); applyPendingNavigationHighlight();
   if(historyEnabled) loadSavedHistory();
   checkHealth();
 })();

@@ -40,10 +40,10 @@ class ActionRouterTest {
     }
 
     @Test void routesToTheRelevantParagraphAndCarriesThePhraseToHighlight() {
-        var action = router.routeExplicitNavigation("Take me to the paragraph about MySQL schema", "SECTION #database: MySQL schema and database setup");
+        var action = router.routeExplicitNavigation("Take me to the paragraph about MongoDB schema", "SECTION #database: MongoDB schema and database setup");
         assertNotNull(action);
         assertEquals("database", action.target());
-        assertEquals("MySQL schema", action.term());
+        assertEquals("MongoDB schema", action.term());
     }
 
     @Test void routesByPageContextWhenTheSectionNameIsNotInTheRequest() {

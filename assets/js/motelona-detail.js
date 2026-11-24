@@ -5,9 +5,10 @@
   var MODE_KEY = 'animfolio_theme_dark_default';
   var LANGUAGE_KEY = 'animfolio-language';
   var palettes = {
-    tree: { accent: '#247A53', hover: '#1D6948', secondary: '#91B96A', accentRgb: '36, 122, 83', secondaryRgb: '145, 185, 106' },
-    peach: { accent: '#C94F7B', hover: '#B8426D', secondary: '#F0A2B2', accentRgb: '201, 79, 123', secondaryRgb: '240, 162, 178' },
-    apricot: { accent: '#B8790E', hover: '#A66A08', secondary: '#EBC45D', accentRgb: '184, 121, 14', secondaryRgb: '235, 196, 93' }
+    midnight: { accent: '#5665D8', hover: '#4F5DC7', secondary: '#A9B7FF', accentRgb: '86, 101, 216', secondaryRgb: '169, 183, 255', lightAccent: '#4957C8', lightHover: '#3F4BB4', lightSecondary: '#5368B4', lightAccentRgb: '73, 87, 200', lightSecondaryRgb: '83, 104, 180' },
+    tree: { accent: '#247A53', hover: '#1D6948', secondary: '#91B96A', accentRgb: '36, 122, 83', secondaryRgb: '145, 185, 106', lightSecondary: '#4D6E30', lightSecondaryRgb: '77, 110, 48' },
+    peach: { accent: '#B8426D', hover: '#A23860', secondary: '#F0A2B2', accentRgb: '184, 66, 109', secondaryRgb: '240, 162, 178', lightSecondary: '#A54764', lightSecondaryRgb: '165, 71, 100' },
+    apricot: { accent: '#986005', hover: '#855000', secondary: '#EBC45D', accentRgb: '152, 96, 5', secondaryRgb: '235, 196, 93', lightSecondary: '#855000', lightSecondaryRgb: '133, 80, 0' }
   };
   var currentLanguage = 'en';
   var rainbowTimer = null;
@@ -138,7 +139,7 @@
   }
 
   function applyPalette(theme, animate) {
-    if (theme !== 'rainbow' && !Object.prototype.hasOwnProperty.call(palettes, theme)) theme = 'tree';
+    if (theme !== 'rainbow' && !Object.prototype.hasOwnProperty.call(palettes, theme)) theme = 'midnight';
     if (animate && theme !== 'rainbow') animatePalette();
     else clearPaletteTransition();
     var root = document.querySelector('.motelona-detail-root');
@@ -150,12 +151,13 @@
     } else {
       stopRainbow();
       var palette = palettes[theme];
+      var lightMode = document.documentElement.getAttribute('data-ml-theme') === 'light';
       themeRoots().forEach(function (element) {
-        element.style.setProperty('--ml-accent', palette.accent);
-        element.style.setProperty('--ml-accent-hover', palette.hover);
-        element.style.setProperty('--ml-secondary', palette.secondary);
-        element.style.setProperty('--ml-accent-rgb', palette.accentRgb);
-        element.style.setProperty('--ml-secondary-rgb', palette.secondaryRgb);
+        element.style.setProperty('--ml-accent', lightMode && palette.lightAccent ? palette.lightAccent : palette.accent);
+        element.style.setProperty('--ml-accent-hover', lightMode && palette.lightHover ? palette.lightHover : palette.hover);
+        element.style.setProperty('--ml-secondary', lightMode && palette.lightSecondary ? palette.lightSecondary : palette.secondary);
+        element.style.setProperty('--ml-accent-rgb', lightMode && palette.lightAccentRgb ? palette.lightAccentRgb : palette.accentRgb);
+        element.style.setProperty('--ml-secondary-rgb', lightMode && palette.lightSecondaryRgb ? palette.lightSecondaryRgb : palette.secondaryRgb);
         element.style.removeProperty('--ml-rainbow-gradient');
       });
     }
@@ -168,8 +170,10 @@
     mode = mode === 'light' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-ml-theme', mode);
     document.documentElement.style.colorScheme = mode;
+    var selectedPalette = document.documentElement.getAttribute('data-portfolio-theme') || safeGet(PALETTE_KEY, 'midnight');
+    if (selectedPalette !== 'rainbow') applyPalette(selectedPalette, false);
     var themeColor = document.querySelector('meta[name="theme-color"]');
-    if (themeColor) themeColor.setAttribute('content', mode === 'light' ? '#F4F7F2' : '#0b1411');
+    if (themeColor) themeColor.setAttribute('content', mode === 'light' ? '#F6F7FC' : '#0B1020');
     var button = document.querySelector('[data-ml-theme-toggle]');
     if (button) {
       var target = mode === 'dark' ? 'light' : 'dark';
@@ -228,7 +232,7 @@
   }
 
   function init() {
-    applyPalette(safeGet(PALETTE_KEY, 'tree'), false);
+    applyPalette(safeGet(PALETTE_KEY, 'midnight'), false);
     applyMode(safeGet(MODE_KEY, 'dark'));
     document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
       button.addEventListener('click', function () {
@@ -274,7 +278,7 @@
 
     setLanguage(safeGet(LANGUAGE_KEY, 'en') === 'vi' ? 'vi' : 'en');
     window.addEventListener('storage', function (event) {
-      if (event.key === PALETTE_KEY) applyPalette(safeGet(PALETTE_KEY, 'tree'), true);
+      if (event.key === PALETTE_KEY) applyPalette(safeGet(PALETTE_KEY, 'midnight'), true);
       if (event.key === MODE_KEY) applyMode(safeGet(MODE_KEY, 'dark'));
       if (event.key === LANGUAGE_KEY) setLanguage(safeGet(LANGUAGE_KEY, 'en') === 'vi' ? 'vi' : 'en');
     });

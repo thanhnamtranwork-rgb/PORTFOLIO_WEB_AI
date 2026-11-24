@@ -1,3 +1,3 @@
 package com.motelona.assistant.dto;
 
-public record ConversationItem(long id, String role, String content, String createdAt) { }
+public record ConversationItem(String id, String role, String content, String createdAt) { }

@@ -4,7 +4,6 @@ import com.motelona.assistant.dto.MemoryRequest;
 import com.motelona.assistant.dto.MemoryItem;
 import com.motelona.assistant.dto.ConversationItem;
 import com.motelona.assistant.memory.MemoryService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +16,10 @@ import com.motelona.assistant.service.RateLimitService;
 @RequestMapping("/api/ai")
 public class MemoryController {
     private final MemoryService memoryService;
-    private final JdbcTemplate jdbc;
+    private final com.motelona.assistant.service.PortfolioService portfolio;
     private final RateLimitService rateLimit;
-    public MemoryController(MemoryService memoryService, JdbcTemplate jdbc, RateLimitService rateLimit){
-        this.memoryService=memoryService; this.jdbc=jdbc; this.rateLimit=rateLimit;
+    public MemoryController(MemoryService memoryService, com.motelona.assistant.service.PortfolioService portfolio, RateLimitService rateLimit){
+        this.memoryService=memoryService; this.portfolio=portfolio; this.rateLimit=rateLimit;
     }
 
     @GetMapping("/memories")
@@ -34,28 +33,26 @@ public class MemoryController {
     }
 
     @DeleteMapping("/memories/{id}")
-    public Map<String,Object> deleteMemory(@PathVariable long id,@RequestParam String sessionId, HttpServletRequest http){rateLimit.check("memory-delete", http.getRemoteAddr(), 10, Duration.ofMinutes(1));memoryService.delete(validateSession(sessionId),id);return Map.of("deleted",true,"id",id);}
+    public Map<String,Object> deleteMemory(@PathVariable String id,@RequestParam String sessionId, HttpServletRequest http){rateLimit.check("memory-delete", http.getRemoteAddr(), 10, Duration.ofMinutes(1));memoryService.delete(validateSession(sessionId),id);return Map.of("deleted",true,"id",id);}
 
     @DeleteMapping("/memories")
     public Map<String,Object> deleteAllMemories(@RequestParam String sessionId, HttpServletRequest http){rateLimit.check("memory-delete-all", http.getRemoteAddr(), 5, Duration.ofMinutes(1));memoryService.deleteAll(validateSession(sessionId));return Map.of("deleted",true);}
 
     @GetMapping("/history/{sessionId}")
-    public Map<String,Object> history(@PathVariable String sessionId, HttpServletRequest http){rateLimit.check("history-read", http.getRemoteAddr(), 30, Duration.ofMinutes(1));validateSession(sessionId);List<ConversationItem> items=jdbc.query("SELECT id, role, content, created_at FROM conversation_messages WHERE session_id = ? ORDER BY id ASC LIMIT 200",(rs,row)->new ConversationItem(rs.getLong("id"),rs.getString("role"),rs.getString("content"),rs.getString("created_at")),sessionId);return Map.of("items",items,"count",items.size());}
+    public Map<String,Object> history(@PathVariable String sessionId, HttpServletRequest http){rateLimit.check("history-read", http.getRemoteAddr(), 30, Duration.ofMinutes(1));List<ConversationItem> items=portfolio.history(validateSession(sessionId));return Map.of("items",items,"count",items.size());}
 
     @DeleteMapping("/history/{sessionId}")
     public Map<String,Object> deleteHistory(@PathVariable String sessionId, HttpServletRequest http){rateLimit.check("history-delete", http.getRemoteAddr(), 10, Duration.ofMinutes(1));
         validateSession(sessionId);
-        int count=jdbc.update("DELETE FROM conversation_messages WHERE session_id = ?",sessionId);
-        boolean archiveDeleted;
-        try { archiveDeleted = jdbc.update("DELETE FROM AIConversation WHERE SessionId = ?", sessionId) >= 0; } catch (Exception ex) { archiveDeleted = false; }
+        int count=portfolio.history(sessionId).size();
+        boolean archiveDeleted=portfolio.deleteArchivedConversation(sessionId)>0;
         return Map.of("deleted",true,"count",count,"archiveDeleted",archiveDeleted);
     }
 
     @GetMapping("/export/{sessionId}")
     public Map<String,Object> exportData(@PathVariable String sessionId, HttpServletRequest http){rateLimit.check("history-export", http.getRemoteAddr(), 5, Duration.ofMinutes(1));
         validateSession(sessionId);
-        List<ConversationItem> history=jdbc.query("SELECT id, role, content, created_at FROM conversation_messages WHERE session_id = ? ORDER BY id ASC LIMIT 200",
-                (rs,row)->new ConversationItem(rs.getLong("id"),rs.getString("role"),rs.getString("content"),rs.getString("created_at")),sessionId);
+        List<ConversationItem> history=portfolio.history(sessionId);
         return Map.of("exportedAt",Instant.now().toString(),"sessionId",sessionId,"memories",memoryService.list(sessionId),"history",history,
                 "note","This export contains data scoped to the current browser session. Keep the file private.");
     }

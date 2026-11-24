@@ -1,4 +1,4 @@
-/* PortfolioAI_DB MySQL bridge. Keeps bundled HTML as a fallback when MySQL is offline. */
+/* MongoDB-backed Portfolio API bridge. Keeps bundled HTML as a fallback when the backend or database is offline. */
 (function () {
   'use strict';
 
@@ -24,7 +24,8 @@
       };
       value = categories[value] || value;
     }
-    return value === null || value === undefined || !String(value).trim() ? (fallback || '') : String(value).trim();
+    if (value === null || value === undefined || !String(value).trim()) return fallback || '';
+    return String(value).trim();
   }
   function formatDate(value) {
     if (!value) return '';
@@ -63,11 +64,29 @@
     var title = localized(project, 'title');
     var titleVariants = [project.title, project.titleVi, project.titleEn].filter(Boolean).map(function (value) { return String(value).trim().toLowerCase(); });
     if (!title) return;
-    var existing = Array.prototype.some.call(grid.querySelectorAll('.animfolio-project__title'), function (node) {
+    var existing = Array.prototype.find.call(grid.querySelectorAll('.animfolio-project__title'), function (node) {
       var current = node.textContent.trim().toLowerCase();
       return titleVariants.indexOf(current) !== -1;
     });
-    if (existing) return;
+    if (existing) {
+      var existingArticle = existing.closest('.animfolio-project');
+      if (!existingArticle) return;
+      existingArticle.setAttribute('data-portfolio-db-hydrated', String(project.projectId || title));
+      text(existing, title);
+      var existingDescription = existingArticle.querySelector('.animfolio-project__description');
+      if (existingDescription) text(existingDescription, localized(project, 'shortDescription') || localized(project, 'fullDescription'));
+      var existingStack = existingArticle.querySelector('.animfolio-project__stack');
+      var existingTechnologies = Array.isArray(project.technologies) ? project.technologies : [];
+      if (existingStack && existingTechnologies.length) {
+        while (existingStack.firstChild) existingStack.removeChild(existingStack.firstChild);
+        existingTechnologies.forEach(function (technology) {
+          var tag = document.createElement('span'); tag.className = 'animfolio-card__tag';
+          text(tag, technology.technologyName || technology.name || '');
+          if (tag.textContent) existingStack.appendChild(tag);
+        });
+      }
+      return;
+    }
 
     var article = document.createElement('article');
     article.className = 'animfolio-project animfolio-card animfolio-card--bordered animfolio-stagger__item';
@@ -126,7 +145,7 @@
       var already = new Set(Array.prototype.map.call(list.querySelectorAll('.animfolio-skills__label span:first-child'), function (node) { return node.textContent.trim().toLowerCase(); }));
       group.items.forEach(function (skill) {
         var name = localized(skill, 'skillName');
-        var variants = [skill.skillName, skill.skillNameVi, skill.skillNameEn].filter(Boolean).map(function (value) { return String(value).trim().toLowerCase(); });
+        var variants = [skill.skillName, skill.skillNameVi, skill.skillNameEn, name].filter(Boolean).map(function (value) { return String(value).trim().toLowerCase(); });
         if (!name || variants.some(function (variant) { return already.has(variant); })) return;
         var item = document.createElement('div'); item.className = 'animfolio-skills__item';
         item.setAttribute('data-portfolio-db-skill', String(skill.skillId || name));

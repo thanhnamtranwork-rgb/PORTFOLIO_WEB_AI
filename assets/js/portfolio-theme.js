@@ -2,7 +2,7 @@
   'use strict';
 
   var STORAGE_KEY = 'animfolio-theme';
-  var allowed = ['tree', 'peach', 'apricot', 'rainbow'];
+  var allowed = ['midnight', 'tree', 'peach', 'apricot', 'rainbow'];
   var rainbowFrameId = null;
   var rainbowTimer = null;
   var rainbowHue = 0;
@@ -21,8 +21,8 @@
   function readTheme() {
     try {
       var saved = localStorage.getItem(STORAGE_KEY);
-      return allowed.indexOf(saved) >= 0 ? saved : 'tree';
-    } catch (_) { return 'tree'; }
+      return allowed.indexOf(saved) >= 0 ? saved : 'midnight';
+    } catch (_) { return 'midnight'; }
   }
 
   function prefersReducedMotion() {
@@ -163,7 +163,7 @@
   function applyTheme(theme, animate) {
     var root = document.querySelector('.animfolio-container');
     if (!root) return;
-    if (allowed.indexOf(theme) < 0) theme = 'tree';
+    if (allowed.indexOf(theme) < 0) theme = 'midnight';
 
     // Rainbow is updated frame-by-frame by JavaScript, so do not layer a slower
     // CSS transition over it. Static palettes retain a quick crossfade.

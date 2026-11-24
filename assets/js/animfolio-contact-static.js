@@ -1,4 +1,4 @@
-/** Contact form integration: saves to PortfolioAI_DB in MySQL and can send an email notification. */
+/** Contact form integration: submits to the configured backend and can send an email notification. */
 (function () {
   'use strict';
   var EMAIL = (window.ANIMFOLIO_CONTACT_EMAIL || '').trim();
