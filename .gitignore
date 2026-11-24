@@ -10,6 +10,7 @@
 **/target/
 **/*.log
 *.pid
+.codex-video-tools/
 
 # Operating system and IDE files
 .DS_Store
